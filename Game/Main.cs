@@ -4,17 +4,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoRogue {
     public class Main : Game {
-
-        // Store textures here temporarily
-        Texture2D wallTexture;
-        Texture2D floorTexture;
-
         System.Random rng;
         World world;
         CreatureFactory creatureFactory;
         Creature player;
 
         private KeyboardTrack keyTrack;
+        private WorldView worldView;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -26,12 +22,13 @@ namespace MonoRogue {
 
         protected override void Initialize() {
             keyTrack = new KeyboardTrack();
+            worldView = new WorldView(25, 15);
 
             rng = new System.Random();
             world = new WorldBuilder(rng, 25, 15).Generate(6);
 
             creatureFactory = new CreatureFactory(Content);
-            
+
             Tile startTile = world.getStartTile();
             player = creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
             base.Initialize();
@@ -40,8 +37,8 @@ namespace MonoRogue {
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            wallTexture = Content.Load<Texture2D>("Tiles/Wall");
-            floorTexture = Content.Load<Texture2D>("Tiles/Floor");
+            worldView.LoadContent(Content);
+            worldView.Update(world, player);
         }
 
         protected override void Update(GameTime gameTime) {
@@ -53,6 +50,9 @@ namespace MonoRogue {
             else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
             else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
 
+            // Update what the world looks like if input has been given
+            if (keyTrack.KeyJustPressed()) { worldView.Update(world, player); }
+
             base.Update(gameTime);
         }
 
@@ -61,19 +61,11 @@ namespace MonoRogue {
 
             _spriteBatch.Begin();
 
-            // First draw the grid of tiles in the world
             for (int x = 0; x < world.Width; x++) {
                 for (int y = 0; y < world.Height; y++) {
-                    Texture2D tile;
-                    Color color;
-                    if (world.Tiles[x,y] == 0) { tile = floorTexture; color = Color.Gray; }
-                    else { tile = wallTexture; color = Color.White; }
-                    _spriteBatch.Draw(tile, new Vector2(32 * x, 32 * y), color);
+                    _spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
                 }
             }
-
-            // Then draw each creature where they are standing, on top of the tile
-            _spriteBatch.Draw(player.Sprite, new Vector2(32 * player.X, 32 * player.Y), player.Color);
 
             _spriteBatch.End();
 

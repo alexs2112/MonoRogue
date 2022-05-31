@@ -18,6 +18,10 @@ namespace MonoRogue {
             Keys = pressed;
         }
 
+        public bool KeyJustPressed() {
+            return !Keys.SequenceEqual(LastKeys);
+        }
+
         public bool KeyJustPressed(Keys key) {
             return Keys.Contains(key) && !LastKeys.Contains(key);
         }
