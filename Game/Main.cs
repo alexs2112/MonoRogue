@@ -4,18 +4,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoRogue {
     public class Main : Game {
-        System.Random rng;
-        World world;
-        CreatureFactory creatureFactory;
-        Creature player;
+        private System.Random rng;
+        private World world;
+        private CreatureFactory creatureFactory;
+        private Creature player;
 
         private KeyboardTrack keyTrack;
         private WorldView worldView;
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         public Main() {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -25,17 +25,17 @@ namespace MonoRogue {
             worldView = new WorldView(25, 15);
 
             rng = new System.Random();
-            world = new WorldBuilder(rng, 25, 15).Generate(6);
+            world = new WorldBuilder(rng, 25, 15).GenerateCaves(8);
 
             creatureFactory = new CreatureFactory(Content);
 
-            Tile startTile = world.getStartTile();
+            Point startTile = world.getStartTile();
             player = creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
             base.Initialize();
         }
 
         protected override void LoadContent() {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             worldView.LoadContent(Content);
             worldView.Update(world, player);
@@ -59,15 +59,15 @@ namespace MonoRogue {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
 
-            _spriteBatch.Begin();
+            spriteBatch.Begin();
 
             for (int x = 0; x < world.Width; x++) {
                 for (int y = 0; y < world.Height; y++) {
-                    _spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
+                    spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
                 }
             }
 
-            _spriteBatch.End();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

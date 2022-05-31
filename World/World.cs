@@ -14,16 +14,15 @@ namespace MonoRogue {
         public bool IsFloor(int x, int y) { return InBounds(x, y) && Tiles[x,y] == 0; }
         public bool IsWall(int x, int y) { return !InBounds(x, y) || Tiles[x,y] == 1; }
 
-        public Tile getStartTile() {
+        public Point getStartTile() {
             // For now, just return the most northwest floor tile
             for (int x = 0; x < Width; x++) {
                 for (int y = 0; y < Height; y++) {
-                    if (Tiles[x, y] == 0) { return new Tile(x, y); }
+                    if (Tiles[x, y] == 0) { return new Point(x, y); }
                 }
             }
-            
-            // This should never happen
-            return new Tile(0, 0);
+
+            throw new System.Exception("Could not find a starting tile for the player!");
         }
     }
 }

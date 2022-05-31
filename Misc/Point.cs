@@ -1,8 +1,8 @@
 namespace MonoRogue {
-    public class Tile {
+    public class Point {
         public int X;
         public int Y;
-        public Tile(int x, int y) {
+        public Point(int x, int y) {
             X = x;
             Y = y;
         }
