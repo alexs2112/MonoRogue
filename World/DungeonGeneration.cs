@@ -26,7 +26,7 @@ namespace MonoRogue {
 
             // Divide up the world into partitions, generate a room in each partition
             List<Rectangle> rooms = new List<Rectangle>();
-            Partitioner partitioner = new Partitioner(Random, 23, 13);
+            Partitioner partitioner = new Partitioner(Random, Width - 2, Height - 2);
             List<Rectangle> partitions = partitioner.Partition(1, 1, iterations);
             foreach (Rectangle p in partitions) {
                 Rectangle room = PlaceRoom(p);

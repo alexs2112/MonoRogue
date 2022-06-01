@@ -24,10 +24,10 @@ namespace MonoRogue {
 
         protected override void Initialize() {
             keyTrack = new KeyboardTrack();
-            worldView = new WorldView(25, 15);
+            worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);
 
             rng = new System.Random();
-            world = new WorldBuilder(rng, 25, 15).GenerateDungeon(Constants.DungeonIterations);
+            world = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight).GenerateDungeon(Constants.DungeonIterations);
 
             creatureFactory = new CreatureFactory(Content);
 
@@ -57,7 +57,7 @@ namespace MonoRogue {
 
                 // Regenerate the world
                 if (keyTrack.KeyJustPressed(Keys.Enter)) {
-                    world = new WorldBuilder(rng, 25, 15).GenerateDungeon(Constants.DungeonIterations);
+                    world = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight).GenerateDungeon(Constants.DungeonIterations);
                     player.World = world;
                     Point p = world.GetStartTile();
                     player.MoveTo(p.X, p.Y);
@@ -75,8 +75,8 @@ namespace MonoRogue {
 
             spriteBatch.Begin();
 
-            for (int x = 0; x < world.Width; x++) {
-                for (int y = 0; y < world.Height; y++) {
+            for (int x = 0; x < worldView.Width; x++) {
+                for (int y = 0; y < worldView.Height; y++) {
                     spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
                 }
             }
