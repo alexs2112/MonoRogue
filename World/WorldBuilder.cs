@@ -12,6 +12,11 @@ namespace MonoRogue {
             Tiles = new int[width, height];
         }
 
+        public World GenerateDungeon(int iterations) {
+            DungeonGeneration generator = new DungeonGeneration(Random, Width, Height, Tiles);
+            return new World(Width, Height, generator.Generate(iterations));
+        }
+
         public World GenerateCaves(int iterations) {
             CaveGeneration generator = new CaveGeneration(Random, Width, Height, Tiles);
             return new World(Width, Height, generator.Generate(iterations));

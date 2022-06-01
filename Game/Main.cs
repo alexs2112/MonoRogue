@@ -14,10 +14,12 @@ namespace MonoRogue {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        public Main() {
+        public Main(string[] args) {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Constants.Debug = System.Array.Exists(args, element => element == "--debug");
+            if (Constants.Debug) { System.Console.WriteLine("Debug Mode Enabled"); }
         }
 
         protected override void Initialize() {
@@ -25,11 +27,11 @@ namespace MonoRogue {
             worldView = new WorldView(25, 15);
 
             rng = new System.Random();
-            world = new WorldBuilder(rng, 25, 15).GenerateCaves(8);
+            world = new WorldBuilder(rng, 25, 15).GenerateDungeon(Constants.DungeonIterations);
 
             creatureFactory = new CreatureFactory(Content);
 
-            Point startTile = world.getStartTile();
+            Point startTile = world.GetStartTile();
             player = creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
             base.Initialize();
         }
@@ -49,6 +51,18 @@ namespace MonoRogue {
             else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
             else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
             else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
+
+            // Debugging Commands
+            else if (Constants.Debug) {
+
+                // Regenerate the world
+                if (keyTrack.KeyJustPressed(Keys.Enter)) {
+                    world = new WorldBuilder(rng, 25, 15).GenerateDungeon(Constants.DungeonIterations);
+                    player.World = world;
+                    Point p = world.GetStartTile();
+                    player.MoveTo(p.X, p.Y);
+                }
+            }
 
             // Update what the world looks like if input has been given
             if (keyTrack.KeyJustPressed()) { worldView.Update(world, player); }
