@@ -45,7 +45,7 @@ namespace MonoRogue {
 
         protected override void Update(GameTime gameTime) {
             KeyboardState kState = Keyboard.GetState();
-            keyTrack.Update(kState.GetPressedKeys());
+            keyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
             if (kState.IsKeyDown(Keys.Escape)) { Exit(); }
             else if (keyTrack.KeyJustPressed(Keys.Up)) { player.MoveRelative(0, -1); }
             else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }

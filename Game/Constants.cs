@@ -10,5 +10,7 @@ namespace MonoRogue {
 
         public static int WorldViewWidth = 25;      // How many tiles are displayed from the world at once
         public static int WorldViewHeight = 15;     //
+
+        public static long TickHoldRate = System.TimeSpan.TicksPerSecond / 8;   // How long you have to hold the same key for it to register again
     }
 }
