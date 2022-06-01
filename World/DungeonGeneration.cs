@@ -142,7 +142,7 @@ namespace MonoRogue {
                 if (source == dest) { break; }
 
                 int e2 = err * 2;
-                if (e2 > -dy) {
+                if (e2 >= -dy) {
                     err -= dy;
                     source.X += sx;
                 } else if (e2 < dx) {

@@ -77,6 +77,7 @@ namespace MonoRogue {
 
             for (int x = 0; x < worldView.Width; x++) {
                 for (int y = 0; y < worldView.Height; y++) {
+                    if (worldView.Glyphs[x,y] == null) { continue; }
                     spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
                 }
             }
