@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,6 +13,7 @@ namespace MonoRogue {
         public int Y { get; set; }
 
         public int HP { get; set; }
+        public int MaxHP { get; set; }
         public int Damage { get; private set; }
         public int Vision { get; private set; }
 
@@ -24,6 +24,7 @@ namespace MonoRogue {
         }
 
         public void SetStats(int hp, int damage) {
+            MaxHP = hp;
             HP = hp;
             Damage = damage;
             Vision = 7;
@@ -33,7 +34,8 @@ namespace MonoRogue {
             HP += value;
             if (HP <= 0) {
                 NotifyOthers($"{Name} dies!");
-                // This creature will be removed from the world at the end of World.TakeTurns()
+            } else if (HP > MaxHP) {
+                HP = MaxHP;
             }
         }
         public bool IsDead() { return HP <= 0; }

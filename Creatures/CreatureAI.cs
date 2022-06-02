@@ -25,7 +25,7 @@ namespace MonoRogue {
 
         public override void AddMessage(string message) {
             Messages.Add(message);
-            System.Console.WriteLine(message);
+            if (Constants.WriteMessagesToConsole) { System.Console.WriteLine(message); }
         }
         public override List<string> GetMessages() { return Messages; }
         public override void ClearMessages() { Messages.Clear(); }
@@ -34,16 +34,12 @@ namespace MonoRogue {
     public class BasicAI : CreatureAI {
         public BasicAI(Creature creature) : base(creature) { }
 
+        private static List<int[]> moves = new List<int[]>() { new int[] {1, 0}, new int[] {0, 1}, new int[] {-1, 0}, new int[] {0, -1} };
         public override void TakeTurn(World world) {
             // For now, move randomly
             System.Random r = new System.Random();
-            int mx;
-            int my;
-            do {
-                mx = r.Next(3) - 1;
-                my = r.Next(3) - 1;
-            } while (mx == 0 && my == 0);
-            Host.MoveRelative(mx, my);
+            int[] XY = moves[r.Next(4)];
+            Host.MoveRelative(XY[0], XY[1]);
         }
     }
 }
