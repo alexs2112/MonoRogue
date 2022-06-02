@@ -1,26 +1,53 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRogue {
     public class Creature {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public string Name { get; private set; }
         public Texture2D Glyph { get; private set; }
         public Color Color { get; private set; }
         public World World { get; set; }
+        public CreatureAI AI { get; set; }
 
+        public int X { get; set; }
+        public int Y { get; set; }
+
+        public int HP { get; set; }
+        public int Damage { get; private set; }
         public int Vision { get; private set; }
 
-        public Creature(Texture2D glyph, Color color) {
+        public Creature(string name, Texture2D glyph, Color color) {
+            Name = name;
             Glyph = glyph;
             Color = color;
-            Vision = 9;
         }
+
+        public void SetStats(int hp, int damage) {
+            HP = hp;
+            Damage = damage;
+            Vision = 7;
+        }
+
+        public void ModifyHP(int value) {
+            HP += value;
+            if (HP <= 0) {
+                NotifyOthers($"{Name} dies!");
+                // This creature will be removed from the world at the end of World.TakeTurns()
+            }
+        }
+        public bool IsDead() { return HP <= 0; }
 
         public bool MoveTo(int x, int y) { 
             if (World.IsWall(x, y)) { return false; }
-            X = x; 
-            Y = y;
+
+            Creature c = World.GetCreatureAt(x, y);
+            if (c != null) {
+                Attack(c);
+            } else {
+                X = x; 
+                Y = y;
+            }
             return true;
         }
         public bool MoveRelative(int dx, int dy) { 
@@ -36,6 +63,25 @@ namespace MonoRogue {
                 return false;
             }
             return true;
+        }
+
+        public void TakeTurn(World world) {
+            if (AI != null) { AI.TakeTurn(world); }
+        }
+
+        public void Attack(Creature target) {
+            Notify($"You attack {target.Name} for {Damage} damage!");
+            NotifyOthers($"{Name} attacks {target.Name} for {Damage} damage!");
+            target.ModifyHP(-Damage);
+        }
+
+        public void Notify(string message) { AI.AddMessage(message); }
+        public void NotifyOthers(string message) {
+            // Notify each creature that can see this one
+            foreach (Creature c in World.Creatures) {
+                if (c == this) { continue; }
+                if (c.CanSee(X, Y)) { c.Notify(message); }
+            }
         }
     }
 }

@@ -31,8 +31,15 @@ namespace MonoRogue {
 
             creatureFactory = new CreatureFactory(Content);
 
-            Point startTile = world.GetStartTile();
+            Point startTile = world.GetRandomFloor(rng);
             player = creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
+
+            for (int i = 0; i < 10; i++) {
+                Point t = world.GetEmptyFloor(rng);
+                Creature p = creatureFactory.NewPig(world, t.X, t.Y);
+                
+            }
+
             base.Initialize();
         }
 
@@ -46,26 +53,20 @@ namespace MonoRogue {
         protected override void Update(GameTime gameTime) {
             KeyboardState kState = Keyboard.GetState();
             keyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
+
+            bool inputGiven = true;
             if (kState.IsKeyDown(Keys.Escape)) { Exit(); }
             else if (keyTrack.KeyJustPressed(Keys.Up)) { player.MoveRelative(0, -1); }
             else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
             else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
             else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
+            else { inputGiven = false; }
 
-            // Debugging Commands
-            else if (Constants.Debug) {
-
-                // Regenerate the world
-                if (keyTrack.KeyJustPressed(Keys.Enter)) {
-                    world = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight).GenerateDungeon(Constants.DungeonIterations);
-                    player.World = world;
-                    Point p = world.GetStartTile();
-                    player.MoveTo(p.X, p.Y);
-                }
+            // If input has been given, update the world
+            if (keyTrack.KeyJustPressed() && inputGiven) { 
+                world.TakeTurns();
+                worldView.Update(world, player);
             }
-
-            // Update what the world looks like if input has been given
-            if (keyTrack.KeyJustPressed()) { worldView.Update(world, player); }
 
             base.Update(gameTime);
         }

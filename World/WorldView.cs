@@ -45,13 +45,6 @@ namespace MonoRogue {
                     Color color;
                     bool canSee = player.CanSee(tileX, tileY);
 
-                    if (canSee) {
-                        HasSeen[tileX, tileY] = true;
-                    } else if (!HasSeen[tileX, tileY]) { 
-                        Glyphs[x, y] = null;
-                        continue;
-                    }
-
                     if (world.Tiles[tileX, tileY] == 0) { 
                         tile = FloorTexture;
                         color = Color.Gray;
@@ -60,7 +53,13 @@ namespace MonoRogue {
                         color = Color.White;
                     }
 
-                    if (!canSee) {
+                    if (canSee) {
+                        HasSeen[tileX, tileY] = true;
+                    } else if (!HasSeen[tileX, tileY]) { 
+                        // Overwrite the tile with null if we have never seen it
+                        Glyphs[x, y] = null;
+                        continue;
+                    } else {
                         color = Color.DarkSlateGray;
                     }
 
@@ -69,10 +68,15 @@ namespace MonoRogue {
                 }
             }
 
-            // Then overwrite tiles with creatures
-            int px = player.X; int py = player.Y;
-            Glyphs[px - offsetX, py - offsetY] = player.Glyph;
-            Colors[px - offsetX, py - offsetY] = player.Color;
+            // Overwrite the tiles that a creature is standing on
+            foreach (Creature c in world.Creatures) {
+                if (c.X >= offsetX && c.X < Width + offsetX && c.Y >= offsetY && c.Y < Height + offsetY) {
+                    if (player.CanSee(c.X, c.Y)) {
+                        Glyphs[c.X - offsetX, c.Y - offsetY] = c.Glyph;
+                        Colors[c.X - offsetX, c.Y - offsetY] = c.Color;
+                    }
+                }
+            }
         }
     }
 }

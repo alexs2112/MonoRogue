@@ -31,7 +31,7 @@ namespace MonoRogue {
         }
 
         public bool KeyJustPressed() {
-            return !Keys.SequenceEqual(LastKeys);
+            return Keys.Count() > 0 && !Keys.SequenceEqual(LastKeys);
         }
 
         public bool KeyJustPressed(Keys key) {
