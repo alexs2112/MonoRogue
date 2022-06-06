@@ -9,11 +9,13 @@ namespace MonoRogue {
         private CreatureFactory creatureFactory;
         private Creature player;
 
-        private KeyboardTrack keyTrack;
         private WorldView worldView;
         private MainInterface mainInterface;
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+
+        private KeyboardTrack keyTrack;
+        private MouseHandler mouse;
 
         public Main(string[] args) {
             graphics = new GraphicsDeviceManager(this);
@@ -29,6 +31,7 @@ namespace MonoRogue {
 
         protected override void Initialize() {
             keyTrack = new KeyboardTrack();
+            mouse = new MouseHandler();
             worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);
             mainInterface = new MainInterface();
 
@@ -61,6 +64,7 @@ namespace MonoRogue {
         }
 
         protected override void Update(GameTime gameTime) {
+            mouse.Update();
             KeyboardState kState = Keyboard.GetState();
             keyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
 
@@ -81,7 +85,7 @@ namespace MonoRogue {
             else { inputGiven = false; }
 
             // If input has been given, update the world
-            if (keyJustPressed && inputGiven) { 
+            if (keyJustPressed && inputGiven && !player.IsDead()) { 
                 world.TakeTurns();
                 worldView.Update(world, player);
                 mainInterface.UpdateMessages(player.AI.GetMessages());
@@ -93,6 +97,20 @@ namespace MonoRogue {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
 
+            // Some mouse handling in draw so we can keep it as a local variable
+            Point tile = mouse.GetTile(worldView);
+            Creature mouseCreature = null;
+
+            // Don't worry about tiles we can't see
+            if (tile.X != -1) {
+                if (!worldView.HasSeen[tile.X, tile.Y]) { 
+                    tile = new Point(-1, -1); 
+                }
+            }
+            if (tile.X != -1) {
+                mouseCreature = world.GetCreatureAt(tile);
+            }
+
             spriteBatch.Begin();
 
             for (int x = 0; x < worldView.Width; x++) {
@@ -103,8 +121,11 @@ namespace MonoRogue {
             }
 
             mainInterface.DrawInterface(spriteBatch);
-            mainInterface.DrawCreatureStats(spriteBatch, player);
             mainInterface.DrawMessages(spriteBatch);
+
+            Creature creature = mouseCreature == null || !player.CanSee(tile) ? creature = player : creature = mouseCreature;
+            mainInterface.DrawCreatureStats(spriteBatch, creature);
+            mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView);
             spriteBatch.End();
 
             base.Draw(gameTime);

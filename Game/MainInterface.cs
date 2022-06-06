@@ -15,6 +15,7 @@ namespace MonoRogue {
 
         private Texture2D InterfaceLine;
         private Texture2D HeartsFull;
+        private Texture2D TileHighlight;
         private SpriteFont Font14;
         private SpriteFont Font12;
 
@@ -24,6 +25,7 @@ namespace MonoRogue {
         public void LoadTextures(ContentManager content) {
             InterfaceLine = content.Load<Texture2D>("Interface/InterfaceDivider");
             HeartsFull = content.Load<Texture2D>("Interface/Hearts");
+            TileHighlight = content.Load<Texture2D>("Interface/TileHighlight");
 
             Font14 = content.Load<SpriteFont>("Interface/sds14");
             Font12 = content.Load<SpriteFont>("Interface/sds12");
@@ -43,10 +45,11 @@ namespace MonoRogue {
             spriteBatch.DrawString(Font14, $"Damage: {creature.Damage}", new Vector2(StartX + 32, y), Color.White);
         }
 
-        private static Rectangle HeartQuarter = new Rectangle(0, 0, 32, 32);
-        private static Rectangle HeartHalf = new Rectangle(32, 0, 32, 32);
-        private static Rectangle HeartThree = new Rectangle(64, 0, 32, 32);
-        private static Rectangle HeartFull = new Rectangle(96, 0, 32, 32);
+        private static Rectangle HeartEmpty = new Rectangle(0, 0, 32, 32);
+        private static Rectangle HeartQuarter = new Rectangle(32, 0, 32, 32);
+        private static Rectangle HeartHalf = new Rectangle(64, 0, 32, 32);
+        private static Rectangle HeartThree = new Rectangle(96, 0, 32, 32);
+        private static Rectangle HeartFull = new Rectangle(128, 0, 32, 32);
         private void DrawCreatureHealth(SpriteBatch spriteBatch, Creature creature, int x, int y) {
             // Each heart counts as 4 HP
             int fullHearts = creature.HP / 4;
@@ -74,8 +77,15 @@ namespace MonoRogue {
             }
 
             for (int i = 0; i < emptyHearts; i++) {
-                spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartQuarter, Color.DarkGray);
+                spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartEmpty, Color.DarkGray);
             }
+        }
+
+        public void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world) {
+            Point p = mouse.GetViewTile(world);
+            if (p.X == -1) { return; }
+
+            spriteBatch.Draw(TileHighlight, new Vector2(p.X * 32, p.Y * 32), Color.White);
         }
 
         public void DrawMessages(SpriteBatch spriteBatch) {

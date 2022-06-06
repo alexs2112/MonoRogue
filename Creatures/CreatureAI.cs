@@ -40,6 +40,9 @@ namespace MonoRogue {
         }
 
         public override void AddMessage(string message) {
+            if (message.Contains(Host.Name)) {
+                message = message.Replace(Host.Name, "you");
+            }
             Messages.Add(message);
             if (Constants.WriteMessagesToConsole) { System.Console.WriteLine(message); }
         }

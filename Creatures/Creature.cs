@@ -8,6 +8,7 @@ namespace MonoRogue {
         public Color Color { get; private set; }
         public World World { get; set; }
         public CreatureAI AI { get; set; }
+        public bool IsPlayer { get; set; }
 
         public int X { get; set; }
         public int Y { get; set; }
@@ -34,6 +35,7 @@ namespace MonoRogue {
             HP += value;
             if (HP <= 0) {
                 NotifyOthers($"{Name} dies!");
+                Notify("You die.");
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }

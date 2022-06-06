@@ -22,6 +22,7 @@ namespace MonoRogue {
 
         public Creature NewPlayer(World world, int x, int y) {
             Creature c = new Creature("Player", Sprites["Player"], Color.SkyBlue);
+            c.IsPlayer = true;
             c.SetStats(12, 2);
             c.AI = new PlayerAI(c);
             c.World = world;
@@ -42,7 +43,7 @@ namespace MonoRogue {
         }
 
         public Creature NewFarmer(World world, int x, int y) {
-            Creature c = new Creature("Farmer", Sprites["Farmer"], Color.Red);
+            Creature c = new Creature("Farmer", Sprites["Farmer"], Color.RosyBrown);
             c.SetStats(8, 2);
             c.AI = new BasicAI(c, Player);
             c.World = world;

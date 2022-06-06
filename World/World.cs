@@ -41,6 +41,7 @@ namespace MonoRogue {
             return new Point(x, y);
         }
 
+        public Creature GetCreatureAt(Point p) { return GetCreatureAt(p.X, p.Y); }
         public Creature GetCreatureAt(int x, int y) {
             foreach (Creature c in Creatures) {
                 if (c.X == x && c.Y == y) { return c; }

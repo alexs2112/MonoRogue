@@ -10,6 +10,9 @@ namespace MonoRogue {
         public int Width;
         public int Height;
 
+        public int OffsetX;
+        public int OffsetY;
+
         private Texture2D WallTexture;
         private Texture2D FloorTexture;
 
@@ -33,13 +36,13 @@ namespace MonoRogue {
 
         public void Update(World world, Creature player) {
             // First prepare the grid of tiles in the world
-            int offsetX = Max(0, Min(player.X - Width / 2, world.Width - Width));
-            int offsetY = Max(0, Min(player.Y - Height / 2, world.Height - Height));
+            OffsetX = Max(0, Min(player.X - Width / 2, world.Width - Width));
+            OffsetY = Max(0, Min(player.Y - Height / 2, world.Height - Height));
 
             for (int x = 0; x < Width; x++) {
                 for (int y = 0; y < Height; y++) {
-                    int tileX = x + offsetX;
-                    int tileY = y + offsetY;
+                    int tileX = x + OffsetX;
+                    int tileY = y + OffsetY;
 
                     Texture2D tile;
                     Color color;
@@ -70,10 +73,10 @@ namespace MonoRogue {
 
             // Overwrite the tiles that a creature is standing on
             foreach (Creature c in world.Creatures) {
-                if (c.X >= offsetX && c.X < Width + offsetX && c.Y >= offsetY && c.Y < Height + offsetY) {
+                if (c.X >= OffsetX && c.X < Width + OffsetX && c.Y >= OffsetY && c.Y < Height + OffsetY) {
                     if (player.CanSee(c.X, c.Y)) {
-                        Glyphs[c.X - offsetX, c.Y - offsetY] = c.Glyph;
-                        Colors[c.X - offsetX, c.Y - offsetY] = c.Color;
+                        Glyphs[c.X - OffsetX, c.Y - OffsetY] = c.Glyph;
+                        Colors[c.X - OffsetX, c.Y - OffsetY] = c.Color;
                     }
                 }
             }
