@@ -14,6 +14,7 @@ namespace MonoRogue {
         private static int MessageLineLength = 20;
 
         private Texture2D InterfaceLine;
+        private Texture2D HeartsFull;
         private SpriteFont Font14;
         private SpriteFont Font12;
 
@@ -22,6 +23,7 @@ namespace MonoRogue {
 
         public void LoadTextures(ContentManager content) {
             InterfaceLine = content.Load<Texture2D>("Interface/InterfaceDivider");
+            HeartsFull = content.Load<Texture2D>("Interface/Hearts");
 
             Font14 = content.Load<SpriteFont>("Interface/sds14");
             Font12 = content.Load<SpriteFont>("Interface/sds12");
@@ -36,9 +38,44 @@ namespace MonoRogue {
             int y = 8;
             spriteBatch.DrawString(Font14, creature.Name, new Vector2(StartX + 32, y), Color.White);
             y += 24;
-            spriteBatch.DrawString(Font14, $"HP: {creature.HP}/{creature.MaxHP}", new Vector2(StartX + 32, y), Color.White);
-            y += 24;
+            DrawCreatureHealth(spriteBatch, creature, StartX + 32, y);
+            y += 40;
             spriteBatch.DrawString(Font14, $"Damage: {creature.Damage}", new Vector2(StartX + 32, y), Color.White);
+        }
+
+        private static Rectangle HeartQuarter = new Rectangle(0, 0, 32, 32);
+        private static Rectangle HeartHalf = new Rectangle(32, 0, 32, 32);
+        private static Rectangle HeartThree = new Rectangle(64, 0, 32, 32);
+        private static Rectangle HeartFull = new Rectangle(96, 0, 32, 32);
+        private void DrawCreatureHealth(SpriteBatch spriteBatch, Creature creature, int x, int y) {
+            // Each heart counts as 4 HP
+            int fullHearts = creature.HP / 4;
+            int partialHearts = creature.HP % 4;
+            int emptyHearts = (creature.MaxHP + 3) / 4 - fullHearts;
+
+            for (int i = 0; i < fullHearts; i++) {
+                spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartFull, Color.Red);
+            }
+            x += fullHearts * 32;
+            
+            if (partialHearts > 0) { 
+                emptyHearts -= 1;   // Reduce the number of empty hearts you need to draw to accomodate the partial one
+                Vector2 partialVector = new Vector2(x, y);
+                Rectangle partialSource;
+                if (partialHearts == 1) {
+                    partialSource = HeartQuarter;
+                } else if (partialHearts == 2) {
+                    partialSource = HeartHalf;
+                } else {
+                    partialSource = HeartThree;
+                }
+                spriteBatch.Draw(HeartsFull, partialVector, partialSource, Color.Red);
+                x += 32;
+            }
+
+            for (int i = 0; i < emptyHearts; i++) {
+                spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartQuarter, Color.DarkGray);
+            }
         }
 
         public void DrawMessages(SpriteBatch spriteBatch) {

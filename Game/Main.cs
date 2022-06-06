@@ -44,6 +44,10 @@ namespace MonoRogue {
                 Point t = world.GetEmptyFloor(rng);
                 Creature p = creatureFactory.NewPig(world, t.X, t.Y);
             }
+            for (int i = 0; i < 5; i++) {
+                Point t = world.GetEmptyFloor(rng);
+                Creature p = creatureFactory.NewFarmer(world, t.X, t.Y);
+            }
 
             base.Initialize();
         }

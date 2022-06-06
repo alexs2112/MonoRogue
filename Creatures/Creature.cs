@@ -40,8 +40,12 @@ namespace MonoRogue {
         }
         public bool IsDead() { return HP <= 0; }
 
+        public bool CanEnter(Point p) { return CanEnter(p.X, p.Y); }
+        public bool CanEnter(int x, int y) { return World.IsFloor(x, y); }
+
+        public bool MoveTo(Point p) { return MoveTo(p.X, p.Y); }
         public bool MoveTo(int x, int y) { 
-            if (World.IsWall(x, y)) { return false; }
+            if (!CanEnter(x, y)) { return false; }
 
             Creature c = World.GetCreatureAt(x, y);
             if (c != null) {
@@ -56,6 +60,7 @@ namespace MonoRogue {
             return MoveTo(X + dx, Y + dy);
         }
 
+        public bool CanSee(Point p) { return CanSee(p.X, p.Y); }
         public bool CanSee(int x, int y) {
             if ((X-x)*(X-x) + (Y-y)*(Y-y) > Vision * Vision) { return false; }
 

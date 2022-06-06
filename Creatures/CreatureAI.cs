@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace MonoRogue {
     public class CreatureAI {
@@ -13,7 +14,22 @@ namespace MonoRogue {
         public virtual List<string> GetMessages() { return null; }
         public virtual void ClearMessages() { }
 
+        // Override this
         public virtual void TakeTurn(World world) { }
+
+        // Some movement methods
+        protected void MoveTowards(Creature target) { MoveTowards(target.X, target.Y); }
+        protected void MoveTowards(int x, int y) {
+            List<Point> path = Pathfinder.FindPath(Host, x, y);
+            if (path.Count > 0) { Host.MoveTo(path[0]); }
+        }
+
+        private static List<int[]> RandomMoves = new List<int[]>() { new int[] {1, 0}, new int[] {0, 1}, new int[] {-1, 0}, new int[] {0, -1} };
+        protected void Wander() {
+            System.Random r = new System.Random();
+            int[] XY = RandomMoves[r.Next(4)];
+            Host.MoveRelative(XY[0], XY[1]);
+        }
     }
 
     public class PlayerAI : CreatureAI {
@@ -31,15 +47,24 @@ namespace MonoRogue {
         public override void ClearMessages() { Messages.Clear(); }
     }
 
-    public class BasicAI : CreatureAI {
-        public BasicAI(Creature creature) : base(creature) { }
+    public class WanderAI : CreatureAI {
+        public WanderAI(Creature creature) : base(creature) { }
 
-        private static List<int[]> moves = new List<int[]>() { new int[] {1, 0}, new int[] {0, 1}, new int[] {-1, 0}, new int[] {0, -1} };
         public override void TakeTurn(World world) {
-            // For now, move randomly
-            System.Random r = new System.Random();
-            int[] XY = moves[r.Next(4)];
-            Host.MoveRelative(XY[0], XY[1]);
+            Wander();
+        }
+    }
+
+    public class BasicAI : CreatureAI {
+        private Creature Player;
+        public BasicAI(Creature creature, Creature player) : base(creature) {
+            Player = player;
+        }
+
+        public override void TakeTurn(World world) {
+            if (Host.CanSee(Player.X, Player.Y)) {
+                MoveTowards(Player);
+            }
         }
     }
 }
