@@ -8,6 +8,7 @@ namespace MonoRogue {
         private World world;
         private CreatureFactory creatureFactory;
         private Creature player;
+        private Subscreen subscreen;
 
         private WorldView worldView;
         private MainInterface mainInterface;
@@ -52,6 +53,8 @@ namespace MonoRogue {
                 Creature p = creatureFactory.NewFarmer(world, t.X, t.Y);
             }
 
+            subscreen = new StartScreen(Content);
+
             base.Initialize();
         }
 
@@ -69,26 +72,34 @@ namespace MonoRogue {
             keyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
 
             bool keyJustPressed = keyTrack.KeyJustPressed();
-            bool inputGiven = true;
 
-            if (keyJustPressed) {
-                // Whenever the player presses a key, clear messages
-                // We can update this in the future to show old messages without being confusing
-                player.AI.ClearMessages();
-            }
+            if (subscreen != null) {
+                if (keyJustPressed) {
+                    Keys k = kState.GetPressedKeys()[0];
+                    subscreen = subscreen.RespondToInput(k, mouse);
+                }
+            } else {
+                bool inputGiven = true;
 
-            if (kState.IsKeyDown(Keys.Escape)) { Exit(); }
-            else if (keyTrack.KeyJustPressed(Keys.Up)) { player.MoveRelative(0, -1); }
-            else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
-            else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
-            else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
-            else { inputGiven = false; }
+                if (keyJustPressed) {
+                    // Whenever the player presses a key, clear messages
+                    // We can update this in the future to show old messages without being confusing
+                    player.AI.ClearMessages();
+                }
 
-            // If input has been given, update the world
-            if (keyJustPressed && inputGiven && !player.IsDead()) { 
-                world.TakeTurns();
-                worldView.Update(world, player);
-                mainInterface.UpdateMessages(player.AI.GetMessages());
+                if (kState.IsKeyDown(Keys.Escape)) { Exit(); }
+                else if (keyTrack.KeyJustPressed(Keys.Up)) { player.MoveRelative(0, -1); }
+                else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
+                else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
+                else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
+                else { inputGiven = false; }
+
+                // If input has been given, update the world
+                if (keyJustPressed && inputGiven && !player.IsDead()) { 
+                    world.TakeTurns();
+                    worldView.Update(world, player);
+                    mainInterface.UpdateMessages(player.AI.GetMessages());
+                }
             }
 
             base.Update(gameTime);
@@ -97,36 +108,42 @@ namespace MonoRogue {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
 
-            // Some mouse handling in draw so we can keep it as a local variable
-            Point tile = mouse.GetTile(worldView);
-            Creature mouseCreature = null;
+            if (subscreen != null) {
+                spriteBatch.Begin();
+                subscreen.Draw(gameTime, spriteBatch, mouse);
+                spriteBatch.End();
+            } else {
+                // Some mouse handling in draw so we can keep it as a local variable
+                Point tile = mouse.GetTile(worldView);
+                Creature mouseCreature = null;
 
-            // Don't worry about tiles we can't see
-            if (tile.X != -1) {
-                if (!worldView.HasSeen[tile.X, tile.Y]) { 
-                    tile = new Point(-1, -1); 
+                // Don't worry about tiles we can't see
+                if (tile.X != -1) {
+                    if (!worldView.HasSeen[tile.X, tile.Y]) { 
+                        tile = new Point(-1, -1); 
+                    }
                 }
-            }
-            if (tile.X != -1) {
-                mouseCreature = world.GetCreatureAt(tile);
-            }
-
-            spriteBatch.Begin();
-
-            for (int x = 0; x < worldView.Width; x++) {
-                for (int y = 0; y < worldView.Height; y++) {
-                    if (worldView.Glyphs[x,y] == null) { continue; }
-                    spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
+                if (tile.X != -1) {
+                    mouseCreature = world.GetCreatureAt(tile);
                 }
+
+                spriteBatch.Begin();
+
+                for (int x = 0; x < worldView.Width; x++) {
+                    for (int y = 0; y < worldView.Height; y++) {
+                        if (worldView.Glyphs[x,y] == null) { continue; }
+                        spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
+                    }
+                }
+
+                mainInterface.DrawInterface(spriteBatch);
+                mainInterface.DrawMessages(spriteBatch);
+
+                Creature creature = mouseCreature == null || !player.CanSee(tile) ? creature = player : creature = mouseCreature;
+                mainInterface.DrawCreatureStats(spriteBatch, creature);
+                mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView);
+                spriteBatch.End();
             }
-
-            mainInterface.DrawInterface(spriteBatch);
-            mainInterface.DrawMessages(spriteBatch);
-
-            Creature creature = mouseCreature == null || !player.CanSee(tile) ? creature = player : creature = mouseCreature;
-            mainInterface.DrawCreatureStats(spriteBatch, creature);
-            mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView);
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }

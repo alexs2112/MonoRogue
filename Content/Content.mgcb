@@ -87,6 +87,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Interface/sds14.spritefont
 
+#begin Interface/sds24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Interface/sds24.spritefont
+
 #begin Interface/TileHighlight.png
 /importer:TextureImporter
 /processor:TextureProcessor

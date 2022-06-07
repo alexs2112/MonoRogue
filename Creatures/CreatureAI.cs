@@ -67,6 +67,8 @@ namespace MonoRogue {
         public override void TakeTurn(World world) {
             if (Host.CanSee(Player.X, Player.Y)) {
                 MoveTowards(Player);
+            } else {
+                Wander();
             }
         }
     }
