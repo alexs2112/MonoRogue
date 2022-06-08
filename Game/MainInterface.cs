@@ -81,6 +81,13 @@ namespace MonoRogue {
             }
         }
 
+        public void DrawFoodInfo(SpriteBatch spriteBatch, Food food) {
+            int y = 8;
+            spriteBatch.DrawString(Font14, food.Name, new Vector2(StartX + 32, y), Color.White);
+            y += 32;
+            spriteBatch.DrawString(Font14, $"Food: {food.Value}", new Vector2(StartX + 32, y), Color.White);
+        }
+
         public void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world) {
             Point p = mouse.GetViewTile(world);
             if (p.X == -1) { return; }

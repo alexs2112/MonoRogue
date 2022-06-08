@@ -43,6 +43,7 @@ namespace MonoRogue {
                 for (int y = 0; y < Height; y++) {
                     int tileX = x + OffsetX;
                     int tileY = y + OffsetY;
+                    Point point = new Point(tileX, tileY);
 
                     Texture2D tile;
                     Color color;
@@ -58,6 +59,10 @@ namespace MonoRogue {
 
                     if (canSee) {
                         HasSeen[tileX, tileY] = true;
+                        if (world.Food.ContainsKey(point)) {
+                            tile = world.Food[point].Glyph;
+                            color = world.Food[point].Color;
+                        }
                     } else if (!HasSeen[tileX, tileY]) { 
                         // Overwrite the tile with null if we have never seen it
                         Glyphs[x, y] = null;

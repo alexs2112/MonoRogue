@@ -36,6 +36,7 @@ namespace MonoRogue {
             if (HP <= 0) {
                 NotifyOthers($"{Name} dies!");
                 Notify("You die.");
+                AI.OnDeath(World);
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }
@@ -55,6 +56,9 @@ namespace MonoRogue {
             } else {
                 X = x; 
                 Y = y;
+
+                // If there exists food in the tile we move to, eat it
+                World.EatFoodAt(this, X, Y);
             }
             return true;
         }

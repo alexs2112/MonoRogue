@@ -6,6 +6,7 @@ namespace MonoRogue {
         public int[,] Tiles { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public Dictionary<Point, Food> Food;
 
         public List<Creature> Creatures;
 
@@ -14,6 +15,7 @@ namespace MonoRogue {
             Height = height;
             Tiles = tiles;
             Creatures = new List<Creature>();
+            Food = new Dictionary<Point, Food>();
         }
 
         public bool InBounds(int x, int y) { return x >= 0 && x < Width && y >= 0 && y < Height; }
@@ -37,7 +39,7 @@ namespace MonoRogue {
             do {
                 x = random.Next(Width);
                 y = random.Next(Height);
-            } while (!IsFloor(x, y) || GetCreatureAt(x, y) != null);
+            } while (!IsFloor(x, y) || GetCreatureAt(x, y) != null || GetFoodAt(x, y) != null);
             return new Point(x, y);
         }
 
@@ -47,6 +49,20 @@ namespace MonoRogue {
                 if (c.X == x && c.Y == y) { return c; }
             }
             return null;
+        }
+
+        public Food GetFoodAt(int x, int y) { return GetFoodAt(new Point(x, y)); }
+        public Food GetFoodAt(Point p) {
+            if (Food.ContainsKey(p)) {
+                return Food[p];
+            }
+            return null;
+        }
+        public void EatFoodAt(Creature c, int x, int y) { EatFoodAt(c, new Point(x, y)); }
+        public void EatFoodAt(Creature c, Point p) {
+            Food f = GetFoodAt(p);
+            if (f == null) { return; }
+            if (f.Eat(c)) { Food.Remove(p); }
         }
 
         // Each alive creature takes their turn, each dead creature is removed from creatures oncec everone is done

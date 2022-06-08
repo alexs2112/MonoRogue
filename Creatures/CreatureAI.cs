@@ -17,6 +17,8 @@ namespace MonoRogue {
         // Override this
         public virtual void TakeTurn(World world) { }
 
+        public virtual void OnDeath(World world) { }
+
         // Some movement methods
         protected void MoveTowards(Creature target) { MoveTowards(target.X, target.Y); }
         protected void MoveTowards(int x, int y) {
@@ -48,13 +50,22 @@ namespace MonoRogue {
         }
         public override List<string> GetMessages() { return Messages; }
         public override void ClearMessages() { Messages.Clear(); }
+
+        public override void OnDeath(World world) { Host.Notify("Press ESC to quit."); }
     }
 
-    public class WanderAI : CreatureAI {
-        public WanderAI(Creature creature) : base(creature) { }
+    public class PigAI : CreatureAI {
+        public PigAI(Creature creature) : base(creature) { }
 
         public override void TakeTurn(World world) {
             Wander();
+        }
+
+        public override void OnDeath(World world) {
+            System.Random random = new System.Random();
+            if (random.NextDouble() < 0.5) {
+                world.Food[new Point(Host.X, Host.Y)] = Food.PigMeat;
+            }
         }
     }
 

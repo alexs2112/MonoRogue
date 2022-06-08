@@ -53,6 +53,13 @@ namespace MonoRogue {
                 Creature p = creatureFactory.NewFarmer(world, t.X, t.Y);
             }
 
+            Food.LoadFood(Content);
+            for (int i = 0; i < 8; i++) {
+                Point t = world.GetEmptyFloor(rng);
+                Food f = Food.RandomFood(rng);
+                world.Food.Add(t, f);
+            }
+
             subscreen = new StartScreen(Content);
 
             base.Initialize();
@@ -116,6 +123,7 @@ namespace MonoRogue {
                 // Some mouse handling in draw so we can keep it as a local variable
                 Point tile = mouse.GetTile(worldView);
                 Creature mouseCreature = null;
+                Food mouseFood = null;
 
                 // Don't worry about tiles we can't see
                 if (tile.X != -1) {
@@ -124,7 +132,10 @@ namespace MonoRogue {
                     }
                 }
                 if (tile.X != -1) {
-                    mouseCreature = world.GetCreatureAt(tile);
+                    if (player.CanSee(tile)) {
+                        mouseCreature = world.GetCreatureAt(tile);
+                        if (mouseCreature == null) { mouseFood = world.GetFoodAt(tile); }
+                    }
                 }
 
                 spriteBatch.Begin();
@@ -139,8 +150,13 @@ namespace MonoRogue {
                 mainInterface.DrawInterface(spriteBatch);
                 mainInterface.DrawMessages(spriteBatch);
 
-                Creature creature = mouseCreature == null || !player.CanSee(tile) ? creature = player : creature = mouseCreature;
-                mainInterface.DrawCreatureStats(spriteBatch, creature);
+                if (mouseCreature == null && mouseFood == null) {
+                    mainInterface.DrawCreatureStats(spriteBatch, player);
+                } else if (mouseCreature != null) {
+                    mainInterface.DrawCreatureStats(spriteBatch, mouseCreature);
+                } else {
+                    mainInterface.DrawFoodInfo(spriteBatch, mouseFood);
+                }
                 mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView);
                 spriteBatch.End();
             }

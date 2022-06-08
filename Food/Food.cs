@@ -1,0 +1,54 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+
+namespace MonoRogue {
+    public class Food {
+        public string Name;
+        public int Value;
+        public Texture2D Glyph;
+        public Color Color;
+
+        // The only item in the game, walking on it heals the creature who eats it
+        public Food(string name, int value, Texture2D glyph, Color color) {
+            Name = name;
+            Value = value;
+            Glyph = glyph;
+            Color = color;
+        }
+
+        public bool Eat(Creature creature) {
+            if (creature.HP < creature.MaxHP) {
+                creature.ModifyHP(Value);
+                creature.Notify($"You eat the {Name}.");
+                creature.Notify($"You heal for {Value} HP!");
+                creature.NotifyOthers($"{creature.Name} eats the {Name}.");
+                return true;
+            } else {
+                creature.Notify($"You are too full to eat the {Name}.");
+                return false;
+            }
+        }
+
+        // Essentially an enum that stores the different foods in the game
+        public static Food Apple;
+        public static Food Cheese;
+        public static Food Meat;
+        public static Food PigMeat; // Dropped by pigs when they die
+
+        public static void LoadFood(ContentManager content) {
+            Apple = new Food("Apple", 2, content.Load<Texture2D>("Food/Apple"), Color.Green);
+            Cheese = new Food("Cheese", 4, content.Load<Texture2D>("Food/Cheese"), Color.Yellow);
+            Meat = new Food("Meat", 8, content.Load<Texture2D>("Food/Meat"), Color.IndianRed);
+            PigMeat = new Food("Pig Meat", 6, content.Load<Texture2D>("Food/PigMeat"), Color.IndianRed);
+        }
+
+        public static Food RandomFood(System.Random random) {
+            int i = random.Next(10);
+            if (i < 4) { return Apple; }
+            else if (i < 8) { return Cheese; }
+            else if (i < 10) { return Meat; }
+            else { return null; } // To stop compiler from complaining
+        }
+    }
+}
