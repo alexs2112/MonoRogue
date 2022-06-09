@@ -10,7 +10,7 @@ namespace MonoRogue {
         public Color Color;
 
         // The only item in the game, walking on it heals the creature who eats it
-        public Food(string name, int value, Texture2D glyph, Color color) {
+        private Food(string name, int value, Texture2D glyph, Color color) {
             Name = name;
             Value = value;
             Glyph = glyph;

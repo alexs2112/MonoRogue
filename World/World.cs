@@ -3,14 +3,14 @@ using Microsoft.Xna.Framework;
 
 namespace MonoRogue {
     public class World {
-        public int[,] Tiles { get; private set; }
+        public Tile[,] Tiles { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Dictionary<Point, Food> Food;
 
         public List<Creature> Creatures;
 
-        public World(int width, int height, int[,] tiles) {
+        public World(int width, int height,Tile[,] tiles) {
             Width = width;
             Height = height;
             Tiles = tiles;
@@ -19,8 +19,8 @@ namespace MonoRogue {
         }
 
         public bool InBounds(int x, int y) { return x >= 0 && x < Width && y >= 0 && y < Height; }
-        public bool IsFloor(int x, int y) { return InBounds(x, y) && Tiles[x,y] == 0; }
-        public bool IsWall(int x, int y) { return !InBounds(x, y) || Tiles[x,y] == 1; }
+        public bool IsFloor(int x, int y) { return InBounds(x, y) && Tiles[x,y].Walkable; }
+        public bool IsWall(int x, int y) { return !InBounds(x, y) || !Tiles[x,y].Walkable; }
 
         public Point GetRandomFloor(System.Random random) {
             int x;
@@ -80,7 +80,10 @@ namespace MonoRogue {
         public void PrintToTerminal() {
             for (int y = 0; y < Height; y++) {
                 for (int x = 0; x < Width; x++) {
-                    System.Console.Write(Tiles[x,y]);
+                    char c;
+                    if (Tiles[x,y].Walkable) { c = '.'; }
+                    else { c = '#'; }
+                    System.Console.Write(c);
                 }
                 System.Console.Write("\n");
             }

@@ -14,12 +14,28 @@ namespace MonoRogue {
 
         public World GenerateDungeon(int iterations) {
             DungeonGeneration generator = new DungeonGeneration(Random, Width, Height, Tiles);
-            return new World(Width, Height, generator.Generate(iterations));
+            int[,] tiles = generator.Generate(iterations);
+            return new World(Width, Height, IntToTiles(tiles));
         }
 
         public World GenerateCaves(int iterations) {
             CaveGeneration generator = new CaveGeneration(Random, Width, Height, Tiles);
-            return new World(Width, Height, generator.Generate(iterations));
+            int[,] tiles = generator.Generate(iterations);
+            return new World(Width, Height, IntToTiles(tiles));
+        }
+
+        private Tile[,] IntToTiles(int[,] old) {
+            Tile[,] tiles = new Tile[Width, Height];
+            for (int x = 0; x < Width; x++) {
+                for (int y = 0; y < Height; y++) {
+                    if (old[x,y] == 0) {
+                        tiles[x,y] = Tile.GetFloor(Random);
+                    } else {
+                        tiles[x,y] = Tile.GetWall(Random);
+                    }
+                }
+            }
+            return tiles;
         }
 
         // Randomly place a bunch of rooms everywhere, ignore hallways and overlap for now
@@ -43,7 +59,7 @@ namespace MonoRogue {
                     }
                 }
             }
-            return new World(Width, Height, Tiles);
+            return new World(Width, Height, IntToTiles(Tiles));
         }
     }
 }

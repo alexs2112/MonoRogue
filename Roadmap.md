@@ -1,7 +1,4 @@
 **Roadmap:**
- * Different tile variants to make it a little more visually interesting
-    * Maybe even floor tiles
-
  * Equipment
     * No inventory, when you stand over an item you will be prompted somewhere to equip it with space
     * Update the player glyph based on equipment

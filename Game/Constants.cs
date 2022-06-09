@@ -16,5 +16,10 @@ namespace MonoRogue {
         public static int WorldViewHeight = 15;     //
 
         public static long TickHoldRate = System.TimeSpan.TicksPerSecond / 8;   // How long you have to hold the same key for it to register again
+
+        public static int Seed = -1;                // Randomization seed, -1 for a random seed
+
+        public static int NumberOfWallSprites = 4;  // The number of floor and wall sprites to load
+        public static int NumberOfFloorSprites = 4; //
     }
 }

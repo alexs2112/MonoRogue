@@ -35,9 +35,12 @@ namespace MonoRogue {
             mouse = new MouseHandler();
             worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);
             mainInterface = new MainInterface();
+            Tile.LoadTiles(Content);
 
-            rng = new System.Random();
+            if (Constants.Seed == -1) { rng = new System.Random(); }
+            else { rng = new System.Random(Constants.Seed); }
             world = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight).GenerateDungeon(Constants.DungeonIterations);
+            if (Constants.Debug) { world.PrintToTerminal(); }
 
             creatureFactory = new CreatureFactory(Content);
 

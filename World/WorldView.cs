@@ -45,17 +45,9 @@ namespace MonoRogue {
                     int tileY = y + OffsetY;
                     Point point = new Point(tileX, tileY);
 
-                    Texture2D tile;
-                    Color color;
                     bool canSee = player.CanSee(tileX, tileY);
-
-                    if (world.Tiles[tileX, tileY] == 0) { 
-                        tile = FloorTexture;
-                        color = Color.Gray;
-                    } else { 
-                        tile = WallTexture;
-                        color = Color.White;
-                    }
+                    Texture2D tile = world.Tiles[tileX, tileY].Glyph;
+                    Color color = world.Tiles[tileX, tileY].Color;
 
                     if (canSee) {
                         HasSeen[tileX, tileY] = true;
