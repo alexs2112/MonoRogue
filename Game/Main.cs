@@ -99,6 +99,7 @@ namespace MonoRogue {
                 else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
                 else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
                 else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
+                else if (keyTrack.KeyJustPressed(Keys.OemPeriod)) { } // Do Nothing
                 else { inputGiven = false; }
 
                 // If input has been given, update the world

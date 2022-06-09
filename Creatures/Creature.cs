@@ -17,6 +17,7 @@ namespace MonoRogue {
         public int MaxHP { get; set; }
         public int Damage { get; private set; }
         public int Vision { get; private set; }
+        public string Faction { get; set; }
 
         public Creature(string name, Texture2D glyph, Color color) {
             Name = name;
@@ -30,6 +31,10 @@ namespace MonoRogue {
             Damage = damage;
             Vision = 7;
         }
+
+        // Private setters to avoid accidentally changing important attributes
+        public void SetColor(Color color) { Color = color; }
+        public void ModifyDamage(int amount) { Damage += amount; }
 
         public void ModifyHP(int value) {
             HP += value;
@@ -52,7 +57,11 @@ namespace MonoRogue {
 
             Creature c = World.GetCreatureAt(x, y);
             if (c != null) {
-                Attack(c);
+                if (Faction != null && Faction == c.Faction) {
+                    c.NotifyOthers($"The {Name} bumps into the {c.Name}.");
+                } else {
+                    Attack(c);
+                }
             } else {
                 X = x; 
                 Y = y;
@@ -86,6 +95,11 @@ namespace MonoRogue {
             Notify($"You attack {target.Name} for {Damage} damage!");
             NotifyOthers($"{Name} attacks {target.Name} for {Damage} damage!");
             target.ModifyHP(-Damage);
+            target.GetAttacked(this);
+        }
+
+        public void GetAttacked(Creature attacker) {
+            AI.OnHit(World, attacker);
         }
 
         public void Notify(string message) { AI.AddMessage(message); }

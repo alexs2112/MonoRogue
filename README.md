@@ -10,3 +10,6 @@ Not very exciting or interesting as of now.
  - Dungeon generation is done by first using Binary Space Partitioning to place non-overlapping rooms. Then uses Kruskal's Algorithm with DFS to construct a minimum spanning tree between those rooms to generate hallways.
  - Field of View is done through the Bresenham line algorithm, storing seen tiles to differentiate between explored and unexplored parts of the dungeon.
  - A* pathfinding algorithm for hostile enemies.
+
+## Current Roadmap:
+[Roadmap](Roadmap.md)

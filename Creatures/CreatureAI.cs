@@ -17,7 +17,9 @@ namespace MonoRogue {
         // Override this
         public virtual void TakeTurn(World world) { }
 
+        // Some ways to let AI handle certain triggers
         public virtual void OnDeath(World world) { }
+        public virtual void OnHit(World world, Creature attacker) { }
 
         // Some movement methods
         protected void MoveTowards(Creature target) { MoveTowards(target.X, target.Y); }
@@ -55,10 +57,29 @@ namespace MonoRogue {
     }
 
     public class PigAI : CreatureAI {
-        public PigAI(Creature creature) : base(creature) { }
+        private bool Hostile;
+        private Creature Player;
+
+        public PigAI(Creature creature, Creature player) : base(creature) { 
+            Player = player;
+        }
 
         public override void TakeTurn(World world) {
-            Wander();
+            if (Hostile && Host.CanSee(Player.X, Player.Y)) {
+                MoveTowards(Player);
+            } else {
+                Wander();
+            }
+        }
+
+        public override void OnHit(World world, Creature attacker) {
+            if (!Hostile && attacker.IsPlayer) {
+                Hostile = true;
+                Host.SetColor(Color.HotPink);
+                Host.NotifyOthers($"The {Host.Name} flies into a rage!");
+                Host.ModifyDamage(1);
+                Host.Faction = null;
+            }
         }
 
         public override void OnDeath(World world) {
