@@ -72,6 +72,7 @@ namespace MonoRogue {
                 Notify("You die.");
                 AI.OnDeath(World);
                 World.Creatures.Remove(this);
+                World.ColorOverlay[X, Y] = Color.DarkRed;
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }

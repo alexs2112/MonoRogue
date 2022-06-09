@@ -54,6 +54,10 @@ namespace MonoRogue {
                         if (world.Items.ContainsKey(point)) {
                             tile = world.Items[point].Glyph;
                             color = world.Items[point].Color;
+                        } else {
+                            if (world.ColorOverlay[tileX, tileY] != Color.Transparent) {
+                                color = world.ColorOverlay[tileX, tileY];
+                            }
                         }
                     } else if (!HasSeen[tileX, tileY]) { 
                         // Overwrite the tile with null if we have never seen it

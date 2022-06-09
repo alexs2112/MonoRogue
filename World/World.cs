@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 namespace MonoRogue {
     public class World {
         public Tile[,] Tiles { get; private set; }
+        public Color[,] ColorOverlay { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Dictionary<Point, Item> Items;
@@ -16,6 +17,9 @@ namespace MonoRogue {
             Tiles = tiles;
             Creatures = new List<Creature>();
             Items = new Dictionary<Point, Item>();
+
+            // To account for bloodstains on the floor, possibly some future usage
+            ColorOverlay = new Color[width, height];
         }
 
         public bool InBounds(int x, int y) { return x >= 0 && x < Width && y >= 0 && y < Height; }
