@@ -10,6 +10,7 @@ namespace MonoRogue {
         private Food(string name, int value, Texture2D glyph, Color color) : base(name, glyph, color) {
             Value = value;
             IsFood = true;
+            SetType(Type.Food);
         }
 
         public bool Eat(Creature creature) {

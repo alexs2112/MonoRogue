@@ -155,6 +155,8 @@ namespace MonoRogue {
 
                 World.Items.Remove(p);
                 if (temp != null) { World.Items.Add(p, temp); }
+
+                Glyph = PlayerGlyph.GetUpdatedGlyph(this);
             } else if (i.IsWeapon) {
                 Weapon weapon = (Weapon)i;
                 Weapon temp = Weapon;
@@ -162,6 +164,8 @@ namespace MonoRogue {
 
                 World.Items.Remove(p);
                 if (temp != null) { World.Items.Add(p, temp); }
+
+                Glyph = PlayerGlyph.GetUpdatedGlyph(this);
             }
         }
     }

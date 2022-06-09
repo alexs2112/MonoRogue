@@ -32,6 +32,7 @@ namespace MonoRogue {
         protected override void Initialize() {
             Tile.LoadTiles(Content);
             Food.LoadFood(Content);
+            PlayerGlyph.LoadGlyphs(Content);
             keyTrack = new KeyboardTrack();
             mouse = new MouseHandler();
             worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);

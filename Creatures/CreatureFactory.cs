@@ -15,13 +15,13 @@ namespace MonoRogue {
             Glyphs = new Dictionary<string, Texture2D>();
             
             // Store all loaded sprites in a dictionary so we don't need to store a ton of variables
-            Glyphs.Add("Player", content.Load<Texture2D>("Creatures/Player"));
             Glyphs.Add("Pig", content.Load<Texture2D>("Creatures/Pig"));
             Glyphs.Add("Farmer", content.Load<Texture2D>("Creatures/Farmer"));
         }
 
         public Creature NewPlayer(World world, int x, int y) {
-            Creature c = new Creature("Player", Glyphs["Player"], Color.SkyBlue);
+            Texture2D glyph = PlayerGlyph.GetDefaultGlyph();
+            Creature c = new Creature("Player", glyph, Color.SkyBlue);
             c.IsPlayer = true;
             c.SetStats(12, (2, 3));
             c.AI = new PlayerAI(c);

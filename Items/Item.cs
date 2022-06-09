@@ -5,6 +5,17 @@ namespace MonoRogue {
 
     // Simple superclass to hold weapons, armors, foods
     public class Item {
+
+        // Store the type of each item, currently only for player sprite purposes
+        public enum Type {
+            Null,   // Specifically as a catch for PlayerGlyph
+            Food,
+            Dagger,
+            Sword,
+            
+            LightArmor
+        }
+
         public string Name { get; private set; }
         public Texture2D Glyph { get; private set; }
         public Color Color { get; private set; }
@@ -12,6 +23,8 @@ namespace MonoRogue {
         public bool IsArmor { get; protected set; }
         public bool IsWeapon { get; protected set; }
         public bool IsFood { get; protected set; }
+        public Type ItemType { get; protected set; }
+        public void SetType(Type itemType) { ItemType = itemType; }
 
         public Item(string name, Texture2D glyph, Color color) {
             Name = name;
