@@ -68,7 +68,7 @@ namespace MonoRogue {
             if (food.Eat(c)) { Items.Remove(p); }
         }
 
-        // Each alive creature takes their turn, each dead creature is removed from creatures oncec everone is done
+        // Each alive creature takes their turn, each dead creature is removed from creatures once everyone is done
         public void TakeTurns() {
             List<Creature> dead = new List<Creature>();
             foreach (Creature c in Creatures) {
@@ -81,16 +81,20 @@ namespace MonoRogue {
         }
 
         public void SpawnObjects(System.Random random, CreatureFactory creatureFactory, EquipmentFactory equipmentFactory) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 6; i++) {
                 Point tile = GetEmptyFloor(random);
-                Creature creature = creatureFactory.NewPig(this, tile.X, tile.Y);
+                creatureFactory.NewRat(this, tile.X, tile.Y);
+            }
+            for (int i = 0; i < 8; i++) {
+                Point tile = GetEmptyFloor(random);
+                creatureFactory.NewPig(this, tile.X, tile.Y);
             }
             for (int i = 0; i < 5; i++) {
                 Point tile = GetEmptyFloor(random);
-                Creature creature = creatureFactory.NewFarmer(this, tile.X, tile.Y);
+                creatureFactory.NewFarmer(this, tile.X, tile.Y);
             }
             
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 5; i++) {
                 Point tile = GetEmptyFloor(random);
                 Item item = equipmentFactory.RandomWeapon(random);
                 Items.Add(tile, item);
@@ -102,7 +106,7 @@ namespace MonoRogue {
                 Items.Add(tile, item);
             }
 
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 6; i++) {
                 Point tile = GetEmptyFloor(random);
                 Food food = Food.RandomFood(random);
                 Items.Add(tile, food);

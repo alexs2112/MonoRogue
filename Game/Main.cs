@@ -17,6 +17,9 @@ namespace MonoRogue {
         private KeyboardTrack keyTrack;
         private MouseHandler mouse;
 
+        // Keep track of whos turn it is
+        private int currentIndex;
+
         public Main(string[] args) {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = Constants.ScreenWidth;
@@ -91,13 +94,23 @@ namespace MonoRogue {
                 else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
                 else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
                 else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(); }
-                else if (keyTrack.KeyJustPressed(Keys.OemPeriod)) { } // Do Nothing
+                else if (keyTrack.KeyJustPressed(Keys.OemPeriod)) { player.TurnTimer = 10; } // Do Nothing
                 else { inputGiven = false; }
 
                 // If input has been given, update the world
-                if (keyJustPressed && inputGiven && !player.IsDead()) { 
-                    world.TakeTurns();
-                    worldView.Update(world, player);
+                if (keyJustPressed && inputGiven && !player.IsDead()) {
+                    while (player.TurnTimer > 0) {
+                        // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
+                        currentIndex = (currentIndex + 1) % world.Creatures.Count;
+                        Creature c = world.Creatures[currentIndex];
+                        c.TurnTimer--;
+                        if (c.TurnTimer <= 0) { 
+                            c.TakeTurn(world);
+                            worldView.Update(world, player);
+
+                            if (player.IsDead()) { break; }
+                        }
+                    }
                     mainInterface.UpdateMessages(player.AI.GetMessages());
                 }
             }

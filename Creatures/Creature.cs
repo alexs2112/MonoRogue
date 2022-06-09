@@ -20,6 +20,11 @@ namespace MonoRogue {
 
         private (int Min, int Max) Damage { get; set; }
 
+        // How many game ticks it takes to recover after taking an action, default 10
+        public int TurnTimer { get; set; }
+        private int MovementDelay { get; set; }
+        private int AttackDelay { get; set; }
+
         public Armor Armor { get; set; }
         public Weapon Weapon { get; set; }
 
@@ -29,11 +34,14 @@ namespace MonoRogue {
             Color = color;
         }
 
-        public void SetStats(int hp, (int, int)damage) {
+        public void SetStats(int hp, (int, int) damage) { SetStats(hp, damage, 10, 10); }
+        public void SetStats(int hp, (int, int) damage, int movementDelay, int attackDelay) {
             MaxHP = hp;
             HP = hp;
             Damage = damage;
             Vision = 7;
+            MovementDelay = movementDelay;
+            AttackDelay = attackDelay;
         }
 
         // Private setters to avoid accidentally changing important attributes
@@ -48,6 +56,14 @@ namespace MonoRogue {
             }
         }
 
+        public int GetMovementDelay() {
+            if (Armor != null) { return MovementDelay + Armor.MovementPenalty; }
+            else { return MovementDelay; }
+        }
+        public int GetAttackDelay() {
+            if (Weapon != null) { return AttackDelay + Weapon.AttackDelay; }
+            else { return AttackDelay; }
+        }
         
         public void ModifyHP(int value) {
             HP += value;
@@ -55,6 +71,7 @@ namespace MonoRogue {
                 NotifyOthers($"{Name} dies!");
                 Notify("You die.");
                 AI.OnDeath(World);
+                World.Creatures.Remove(this);
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }
@@ -88,9 +105,11 @@ namespace MonoRogue {
                 } else {
                     Attack(c);
                 }
+                TurnTimer = GetAttackDelay();
             } else {
                 X = x; 
                 Y = y;
+                TurnTimer = GetMovementDelay();
 
                 Item i = World.GetItemAt(X, Y);
                 if (i != null) { Notify($"You see here a {i.Name}."); }
@@ -157,6 +176,7 @@ namespace MonoRogue {
                 if (temp != null) { World.Items.Add(p, temp); }
 
                 Glyph = PlayerGlyph.GetUpdatedGlyph(this);
+                Notify($"You equip the {i.Name}.");
             } else if (i.IsWeapon) {
                 Weapon weapon = (Weapon)i;
                 Weapon temp = Weapon;
@@ -166,7 +186,9 @@ namespace MonoRogue {
                 if (temp != null) { World.Items.Add(p, temp); }
 
                 Glyph = PlayerGlyph.GetUpdatedGlyph(this);
+                Notify($"You equip the {i.Name}.");
             }
+            TurnTimer = 10;
         }
     }
 }

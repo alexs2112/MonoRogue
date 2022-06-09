@@ -1,15 +1,8 @@
 ### **Roadmap:**
- * Equipment
-    * Update the player glyph based on weapon type. In the future we can add combinations of weapon and armor
-
- * Add a speed stat to balance armors
-    * Otherwise all armor is functionally identical. The armor with more defense is strictly better, all the time
-    * Each in game "tick" will increase a counter for each creature, once their counter reaches their turn delay then they will take a turn and reset their counter.
-    * This isn't super clear to players why enemies sometimes take an extra turn every so often, particularly without animations, if they move two tiles for example it will look like a bug.
-
  * Add very simple animations
     * If the player can see the current creatures turn, wait a set amount of time before they act.
     * Add a "wait" field in main that decrements until it hits 0 before proceeding.
+    * For now it will simply have a small delay after each action, smoothly moving between tiles and attack animations will come later
 
  * Screen to inspect creatures, items
     * Right click them

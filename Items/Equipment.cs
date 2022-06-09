@@ -8,15 +8,19 @@ namespace MonoRogue {
         private int Timer;
         private int Refresh;    // How many turns out of combat it takes to regenerate
 
+        public int MovementPenalty { get; private set; }
+
         public Armor(string name, Texture2D glyph, Color color) : base(name, glyph, color) {
             IsArmor = true;
             IsWeapon = false;
         }
 
-        public void SetArmorStats(int defense, int refresh) {
+        public void SetArmorStats(int defense, int refresh) { SetArmorStats(defense, refresh, 0); }
+        public void SetArmorStats(int defense, int refresh, int movementPenalty) {
             MaxDefense = defense;
             Defense = defense;
             Refresh = refresh;
+            MovementPenalty = movementPenalty;
         }
 
         // Updates the armor for it to regenerate
@@ -29,24 +33,23 @@ namespace MonoRogue {
                 Defense++;
             }
         }
-        
-        // When you get hit, this should be called
-        public void ResetTimer() { Timer = 0; }
     }
 
     public class Weapon : Item {
         public (int Min, int Max) Damage { get; private set; }
+        public int AttackDelay { get; private set; }
 
         public Weapon(string name, Texture2D glyph, Color color) : base(name, glyph, color) {
             IsArmor = false;
             IsWeapon = true;
         }
 
-        public void SetWeaponStats(int minDamage, int maxDamage) {
-            SetWeaponStats((minDamage, maxDamage));
-        }
         public void SetWeaponStats((int, int) damage) {
+            SetWeaponStats(damage, 0);
+        }
+        public void SetWeaponStats((int, int) damage, int attackDelay) {
             Damage = damage;
+            AttackDelay = attackDelay;
         }
     }
 }

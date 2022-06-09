@@ -15,6 +15,7 @@ namespace MonoRogue {
             Glyphs = new Dictionary<string, Texture2D>();
             
             // Store all loaded sprites in a dictionary so we don't need to store a ton of variables
+            Glyphs.Add("Rat", content.Load<Texture2D>("Creatures/Rat"));
             Glyphs.Add("Pig", content.Load<Texture2D>("Creatures/Pig"));
             Glyphs.Add("Farmer", content.Load<Texture2D>("Creatures/Farmer"));
         }
@@ -32,9 +33,20 @@ namespace MonoRogue {
             return c;
         }
 
+        public Creature NewRat(World world, int x, int y) {
+            Creature c = new Creature("Rat", Glyphs["Rat"], Color.SaddleBrown);
+            c.SetStats(4, (1,2), 6, 6);
+            c.AI = new BasicAI(c, Player);
+            c.World = world;
+            c.Faction = "Vermin";
+            world.Creatures.Add(c);
+            c.MoveTo(x, y);
+            return c;
+        }
+
         public Creature NewPig(World world, int x, int y) {
             Creature c = new Creature("Pig", Glyphs["Pig"], Color.Pink);
-            c.SetStats(4, (1, 2));
+            c.SetStats(6, (1, 2));
             c.AI = new PigAI(c, Player);
             c.World = world;
             c.Faction = "Farmer";
