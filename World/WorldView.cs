@@ -51,9 +51,9 @@ namespace MonoRogue {
 
                     if (canSee) {
                         HasSeen[tileX, tileY] = true;
-                        if (world.Food.ContainsKey(point)) {
-                            tile = world.Food[point].Glyph;
-                            color = world.Food[point].Color;
+                        if (world.Items.ContainsKey(point)) {
+                            tile = world.Items[point].Glyph;
+                            color = world.Items[point].Color;
                         }
                     } else if (!HasSeen[tileX, tileY]) { 
                         // Overwrite the tile with null if we have never seen it

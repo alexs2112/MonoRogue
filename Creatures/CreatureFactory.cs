@@ -23,7 +23,7 @@ namespace MonoRogue {
         public Creature NewPlayer(World world, int x, int y) {
             Creature c = new Creature("Player", Glyphs["Player"], Color.SkyBlue);
             c.IsPlayer = true;
-            c.SetStats(12, 2);
+            c.SetStats(12, (2, 3));
             c.AI = new PlayerAI(c);
             c.World = world;
             world.Creatures.Add(c);
@@ -34,7 +34,7 @@ namespace MonoRogue {
 
         public Creature NewPig(World world, int x, int y) {
             Creature c = new Creature("Pig", Glyphs["Pig"], Color.Pink);
-            c.SetStats(4, 1);
+            c.SetStats(4, (1, 2));
             c.AI = new PigAI(c, Player);
             c.World = world;
             c.Faction = "Farmer";
@@ -45,7 +45,7 @@ namespace MonoRogue {
 
         public Creature NewFarmer(World world, int x, int y) {
             Creature c = new Creature("Farmer", Glyphs["Farmer"], Color.RosyBrown);
-            c.SetStats(8, 2);
+            c.SetStats(8, (1, 3));
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Faction = "Farmer";

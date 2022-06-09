@@ -42,7 +42,19 @@ namespace MonoRogue {
             y += 24;
             DrawCreatureHealth(spriteBatch, creature, StartX + 32, y);
             y += 40;
-            spriteBatch.DrawString(Font14, $"Damage: {creature.Damage}", new Vector2(StartX + 32, y), Color.White);
+            (int Min, int Max) damage = creature.GetDamage();
+            spriteBatch.DrawString(Font14, $"Damage: {damage.Min}-{damage.Max}", new Vector2(StartX + 32, y), Color.White);
+            y += 32;
+            string s;
+            Color c;
+            if (creature.Armor == null) { s = "None"; c = Color.Gray; }
+            else { s = creature.Armor.Name; c = Color.White; }
+            spriteBatch.DrawString(Font14, $"Armor: {s}", new Vector2(StartX + 32, y), c);
+            
+            y += 32;
+            if (creature.Weapon == null) { s = "None"; c = Color.Gray; }
+            else { s = creature.Weapon.Name; c = Color.White; }
+            spriteBatch.DrawString(Font14, $"Weapon: {s}", new Vector2(StartX + 32, y), c);
         }
 
         private static Rectangle HeartEmpty = new Rectangle(0, 0, 32, 32);
@@ -81,11 +93,15 @@ namespace MonoRogue {
             }
         }
 
-        public void DrawFoodInfo(SpriteBatch spriteBatch, Food food) {
+        public void DrawItemInfo(SpriteBatch spriteBatch, Item item) {
             int y = 8;
-            spriteBatch.DrawString(Font14, food.Name, new Vector2(StartX + 32, y), Color.White);
+            spriteBatch.DrawString(Font14, item.Name, new Vector2(StartX + 32, y), Color.White);
             y += 32;
-            spriteBatch.DrawString(Font14, $"Food: {food.Value}", new Vector2(StartX + 32, y), Color.White);
+
+            if (item.IsFood) {
+                Food food = (Food)item;
+                spriteBatch.DrawString(Font14, $"Food: {food.Value}", new Vector2(StartX + 32, y), Color.White);
+            }
         }
 
         public void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world) {

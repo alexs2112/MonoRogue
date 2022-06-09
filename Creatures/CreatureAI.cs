@@ -74,6 +74,7 @@ namespace MonoRogue {
 
         public override void OnHit(World world, Creature attacker) {
             if (!Hostile && attacker.IsPlayer) {
+                if (Host.IsDead()) { return; }
                 Hostile = true;
                 Host.SetColor(Color.HotPink);
                 Host.NotifyOthers($"The {Host.Name} flies into a rage!");
@@ -85,7 +86,7 @@ namespace MonoRogue {
         public override void OnDeath(World world) {
             System.Random random = new System.Random();
             if (random.NextDouble() < 0.5) {
-                world.Food[new Point(Host.X, Host.Y)] = Food.PigMeat;
+                world.Items[new Point(Host.X, Host.Y)] = Food.PigMeat;
             }
         }
     }

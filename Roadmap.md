@@ -1,13 +1,19 @@
-**Roadmap:**
+### **Roadmap:**
  * Equipment
-    * No inventory, when you stand over an item you will be prompted somewhere to equip it with space
+    * One weapon slot and one armor slot. Add armored hearts, which are essentially just normal hearts but regenerate over time
+        * Framework is set up for this, not implemented yet
     * Update the player glyph based on equipment
+    * Equipment can be revamped later to be more interesting, for now only have armored hearts and damage
+        * Such as different weapon types functioning differently, armor can regen at different speeds
+        * Don't want it to be a boring "bigger numbers better" game with limited inventory
 
  * Screen to inspect creatures, items
     * Right click them
+    * Other subscreens: Help screen, better start screen
 
  * Ranged Attacks
     * Mousing over an enemy will draw a line to them, clicking them will attack them
+    * Clicking tiles should path you towards them until an enemy is in sight (then just move you 1 tile at a time)
 
  * An actual win condition
     * Have a start and end room in the dungeon
@@ -28,6 +34,8 @@
 
  * Music and sound effects
 
+ * Settings screen with persistent settings
+
  * Screenshots, Itch page
 
- * Release!
+ * **Release!**

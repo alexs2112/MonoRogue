@@ -15,9 +15,13 @@ namespace MonoRogue {
 
         public int HP { get; set; }
         public int MaxHP { get; set; }
-        public int Damage { get; private set; }
         public int Vision { get; private set; }
         public string Faction { get; set; }
+
+        private (int Min, int Max) Damage { get; set; }
+
+        public Armor Armor { get; set; }
+        public Weapon Weapon { get; set; }
 
         public Creature(string name, Texture2D glyph, Color color) {
             Name = name;
@@ -25,7 +29,7 @@ namespace MonoRogue {
             Color = color;
         }
 
-        public void SetStats(int hp, int damage) {
+        public void SetStats(int hp, (int, int)damage) {
             MaxHP = hp;
             HP = hp;
             Damage = damage;
@@ -34,7 +38,15 @@ namespace MonoRogue {
 
         // Private setters to avoid accidentally changing important attributes
         public void SetColor(Color color) { Color = color; }
-        public void ModifyDamage(int amount) { Damage += amount; }
+        public void ModifyDamage(int amount) { ModifyDamage(amount, amount); }
+        public void ModifyDamage(int min, int max) { Damage = (Damage.Min + min, Damage.Max + max); }
+        public (int Min, int Max) GetDamage() {
+            if (Weapon != null) {
+                return (Damage.Min + Weapon.Damage.Min, Damage.Max + Weapon.Damage.Max);
+            } else {
+                return Damage;
+            }
+        }
 
         public void ModifyHP(int value) {
             HP += value;
@@ -66,8 +78,8 @@ namespace MonoRogue {
                 X = x; 
                 Y = y;
 
-                // If there exists food in the tile we move to, eat it
-                World.EatFoodAt(this, X, Y);
+                Item i = World.GetItemAt(X, Y);
+                if (i != null) { Notify($"You see here a {i.Name}."); }
             }
             return true;
         }
@@ -92,9 +104,10 @@ namespace MonoRogue {
         }
 
         public void Attack(Creature target) {
-            Notify($"You attack {target.Name} for {Damage} damage!");
-            NotifyOthers($"{Name} attacks {target.Name} for {Damage} damage!");
-            target.ModifyHP(-Damage);
+            int damage = new System.Random().Next(GetDamage().Min, GetDamage().Max + 1);
+            Notify($"You attack {target.Name} for {damage} damage!");
+            NotifyOthers($"{Name} attacks {target.Name} for {damage} damage!");
+            target.ModifyHP(-damage);
             target.GetAttacked(this);
         }
 
@@ -108,6 +121,32 @@ namespace MonoRogue {
             foreach (Creature c in World.Creatures) {
                 if (c == this) { continue; }
                 if (c.CanSee(X, Y)) { c.Notify(message); }
+            }
+        }
+
+        public void PickUp() { PickUp(new Point(X, Y)); }
+        public void PickUp(Point p) {
+            Item i = World.GetItemAt(p);
+            if (i == null) { 
+                Notify("There is nothing to pick up.");
+                return;
+            }
+
+            if (i.IsFood) { World.EatFoodAt(this, p); }
+            else if (i.IsArmor) {
+                Armor armor = (Armor)i;
+                Armor temp = Armor;
+                Armor = armor;
+
+                World.Items.Remove(p);
+                if (temp != null) { World.Items.Add(p, temp); }
+            } else if (i.IsWeapon) {
+                Weapon weapon = (Weapon)i;
+                Weapon temp = Weapon;
+                Weapon = weapon;
+
+                World.Items.Remove(p);
+                if (temp != null) { World.Items.Add(p, temp); }
             }
         }
     }

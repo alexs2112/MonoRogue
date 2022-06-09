@@ -6,7 +6,6 @@ namespace MonoRogue {
     public class Main : Game {
         private System.Random rng;
         private World world;
-        private CreatureFactory creatureFactory;
         private Creature player;
         private Subscreen subscreen;
 
@@ -31,40 +30,28 @@ namespace MonoRogue {
         }
 
         protected override void Initialize() {
+            Tile.LoadTiles(Content);
+            Food.LoadFood(Content);
             keyTrack = new KeyboardTrack();
             mouse = new MouseHandler();
             worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);
             mainInterface = new MainInterface();
-            Tile.LoadTiles(Content);
 
             if (Constants.Seed == -1) { rng = new System.Random(); }
             else { rng = new System.Random(Constants.Seed); }
+
             world = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight).GenerateDungeon(Constants.DungeonIterations);
             if (Constants.Debug) { world.PrintToTerminal(); }
 
-            creatureFactory = new CreatureFactory(Content);
-
+            CreatureFactory creatureFactory = new CreatureFactory(Content);
+            EquipmentFactory equipmentFactory = new EquipmentFactory(Content);
+            
             Point startTile = world.GetRandomFloor(rng);
             player = creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
 
-            for (int i = 0; i < 10; i++) {
-                Point t = world.GetEmptyFloor(rng);
-                Creature p = creatureFactory.NewPig(world, t.X, t.Y);
-            }
-            for (int i = 0; i < 5; i++) {
-                Point t = world.GetEmptyFloor(rng);
-                Creature p = creatureFactory.NewFarmer(world, t.X, t.Y);
-            }
-
-            Food.LoadFood(Content);
-            for (int i = 0; i < 8; i++) {
-                Point t = world.GetEmptyFloor(rng);
-                Food f = Food.RandomFood(rng);
-                world.Food.Add(t, f);
-            }
-
-            subscreen = new StartScreen(Content);
-
+            world.SpawnObjects(rng, creatureFactory, equipmentFactory);
+            
+            if (!Constants.Debug) { subscreen = new StartScreen(Content); }
             base.Initialize();
         }
 
@@ -102,6 +89,7 @@ namespace MonoRogue {
                 else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
                 else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
                 else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
+                else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(); }
                 else if (keyTrack.KeyJustPressed(Keys.OemPeriod)) { } // Do Nothing
                 else { inputGiven = false; }
 
@@ -127,7 +115,7 @@ namespace MonoRogue {
                 // Some mouse handling in draw so we can keep it as a local variable
                 Point tile = mouse.GetTile(worldView);
                 Creature mouseCreature = null;
-                Food mouseFood = null;
+                Item mouseItem = null;
 
                 // Don't worry about tiles we can't see
                 if (tile.X != -1) {
@@ -138,7 +126,7 @@ namespace MonoRogue {
                 if (tile.X != -1) {
                     if (player.CanSee(tile)) {
                         mouseCreature = world.GetCreatureAt(tile);
-                        if (mouseCreature == null) { mouseFood = world.GetFoodAt(tile); }
+                        if (mouseCreature == null) { mouseItem = world.GetItemAt(tile); }
                     }
                 }
 
@@ -154,12 +142,12 @@ namespace MonoRogue {
                 mainInterface.DrawInterface(spriteBatch);
                 mainInterface.DrawMessages(spriteBatch);
 
-                if (mouseCreature == null && mouseFood == null) {
+                if (mouseCreature == null && mouseItem == null) {
                     mainInterface.DrawCreatureStats(spriteBatch, player);
                 } else if (mouseCreature != null) {
                     mainInterface.DrawCreatureStats(spriteBatch, mouseCreature);
                 } else {
-                    mainInterface.DrawFoodInfo(spriteBatch, mouseFood);
+                    mainInterface.DrawItemInfo(spriteBatch, mouseItem);
                 }
                 mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView);
                 spriteBatch.End();

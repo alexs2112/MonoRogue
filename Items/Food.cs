@@ -3,18 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 namespace MonoRogue {
-    public class Food {
-        public string Name;
+    public class Food : Item {
         public int Value;
-        public Texture2D Glyph;
-        public Color Color;
 
         // The only item in the game, walking on it heals the creature who eats it
-        private Food(string name, int value, Texture2D glyph, Color color) {
-            Name = name;
+        private Food(string name, int value, Texture2D glyph, Color color) : base(name, glyph, color) {
             Value = value;
-            Glyph = glyph;
-            Color = color;
+            IsFood = true;
         }
 
         public bool Eat(Creature creature) {
