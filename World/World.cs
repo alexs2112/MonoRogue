@@ -96,6 +96,12 @@ namespace MonoRogue {
                 Items.Add(tile, item);
             }
 
+            for (int i = 0; i < 4; i++) {
+                Point tile = GetEmptyFloor(random);
+                Item item = equipmentFactory.RandomArmor(random);
+                Items.Add(tile, item);
+            }
+
             for (int i = 0; i < 8; i++) {
                 Point tile = GetEmptyFloor(random);
                 Food food = Food.RandomFood(random);

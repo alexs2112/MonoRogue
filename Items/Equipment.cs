@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRogue {
     public class Armor : Item {
-        public int Defense { get; private set; }
+        public int Defense { get; set; }
         public int MaxDefense { get; private set; }
         private int Timer;
         private int Refresh;    // How many turns out of combat it takes to regenerate

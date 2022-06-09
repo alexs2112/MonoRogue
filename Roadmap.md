@@ -1,11 +1,15 @@
 ### **Roadmap:**
  * Equipment
-    * One weapon slot and one armor slot. Add armored hearts, which are essentially just normal hearts but regenerate over time
-        * Framework is set up for this, not implemented yet
-    * Update the player glyph based on equipment
-    * Equipment can be revamped later to be more interesting, for now only have armored hearts and damage
-        * Such as different weapon types functioning differently, armor can regen at different speeds
-        * Don't want it to be a boring "bigger numbers better" game with limited inventory
+    * Update the player glyph based on weapon type. In the future we can add combinations of weapon and armor
+
+ * Add a speed stat to balance armors
+    * Otherwise all armor is functionally identical. The armor with more defense is strictly better, all the time
+    * Each in game "tick" will increase a counter for each creature, once their counter reaches their turn delay then they will take a turn and reset their counter.
+    * This isn't super clear to players why enemies sometimes take an extra turn every so often, particularly without animations, if they move two tiles for example it will look like a bug.
+
+ * Add very simple animations
+    * If the player can see the current creatures turn, wait a set amount of time before they act.
+    * Add a "wait" field in main that decrements until it hits 0 before proceeding.
 
  * Screen to inspect creatures, items
     * Right click them

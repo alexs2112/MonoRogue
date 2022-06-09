@@ -48,6 +48,7 @@ namespace MonoRogue {
             }
         }
 
+        
         public void ModifyHP(int value) {
             HP += value;
             if (HP <= 0) {
@@ -57,6 +58,19 @@ namespace MonoRogue {
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }
+        }
+        public void TakeDamage(int value) {
+            if (Armor != null) {
+                if (Armor.Defense > value) {
+                    Armor.Defense -= value;
+                    value = 0;
+                    return;
+                } else {
+                    value -= Armor.Defense;
+                    Armor.Defense = 0;
+                }
+            }
+            ModifyHP(-value);
         }
         public bool IsDead() { return HP <= 0; }
 
@@ -100,6 +114,7 @@ namespace MonoRogue {
         }
 
         public void TakeTurn(World world) {
+            if (Armor != null) { Armor.Tick(); }
             if (AI != null) { AI.TakeTurn(world); }
         }
 
@@ -107,7 +122,7 @@ namespace MonoRogue {
             int damage = new System.Random().Next(GetDamage().Min, GetDamage().Max + 1);
             Notify($"You attack {target.Name} for {damage} damage!");
             NotifyOthers($"{Name} attacks {target.Name} for {damage} damage!");
-            target.ModifyHP(-damage);
+            target.TakeDamage(damage);
             target.GetAttacked(this);
         }
 

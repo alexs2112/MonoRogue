@@ -37,24 +37,30 @@ namespace MonoRogue {
         }
 
         public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature) {
+            int x = StartX + 32;
             int y = 8;
-            spriteBatch.DrawString(Font14, creature.Name, new Vector2(StartX + 32, y), Color.White);
+            spriteBatch.DrawString(Font14, creature.Name, new Vector2(x, y), Color.White);
             y += 24;
-            DrawCreatureHealth(spriteBatch, creature, StartX + 32, y);
+            DrawCreatureHealth(spriteBatch, creature, x, y);
+            DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
+            if (creature.Armor == null) {
+                y += 32;
+                spriteBatch.DrawString(Font14, "No armor", new Vector2(x, y), Color.Gray);
+            } else {
+                y += 32;
+                DrawHearts(spriteBatch, creature.Armor.MaxDefense, creature.Armor.Defense, x, y, Color.LightSkyBlue);
+            }
+
             y += 40;
             (int Min, int Max) damage = creature.GetDamage();
-            spriteBatch.DrawString(Font14, $"Damage: {damage.Min}-{damage.Max}", new Vector2(StartX + 32, y), Color.White);
+            spriteBatch.DrawString(Font14, $"Damage: {damage.Min}-{damage.Max}", new Vector2(x, y), Color.White);
             y += 32;
+
             string s;
             Color c;
-            if (creature.Armor == null) { s = "None"; c = Color.Gray; }
-            else { s = creature.Armor.Name; c = Color.White; }
-            spriteBatch.DrawString(Font14, $"Armor: {s}", new Vector2(StartX + 32, y), c);
-            
-            y += 32;
             if (creature.Weapon == null) { s = "None"; c = Color.Gray; }
             else { s = creature.Weapon.Name; c = Color.White; }
-            spriteBatch.DrawString(Font14, $"Weapon: {s}", new Vector2(StartX + 32, y), c);
+            spriteBatch.DrawString(Font14, $"Weapon: {s}", new Vector2(x, y), c);
         }
 
         private static Rectangle HeartEmpty = new Rectangle(0, 0, 32, 32);
@@ -88,6 +94,39 @@ namespace MonoRogue {
                 x += 32;
             }
 
+            for (int i = 0; i < emptyHearts; i++) {
+                spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartEmpty, Color.DarkGray);
+            }
+        }
+        private void DrawHearts(SpriteBatch spriteBatch, int max, int health, int x, int y, Color color) {
+            // Each heart counts as 4 HP
+            int fullHearts = health / 4;
+            int partialHearts = health % 4;
+            int emptyHearts = (max + 3) / 4 - fullHearts;
+
+            // Draw each undamaged heart
+            for (int i = 0; i < fullHearts; i++) {
+                spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartFull, color);
+            }
+            x += fullHearts * 32;
+
+            // Draw the partial heart at the end
+            if (partialHearts > 0) { 
+                emptyHearts -= 1;   // Reduce the number of empty hearts you need to draw to accomodate the partial one
+                Vector2 partialVector = new Vector2(x, y);
+                Rectangle partialSource;
+                if (partialHearts == 1) {
+                    partialSource = HeartQuarter;
+                } else if (partialHearts == 2) {
+                    partialSource = HeartHalf;
+                } else {
+                    partialSource = HeartThree;
+                }
+                spriteBatch.Draw(HeartsFull, partialVector, partialSource, color);
+                x += 32;
+            }
+
+            // Then draw the empty hearts to show capacity
             for (int i = 0; i < emptyHearts; i++) {
                 spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartEmpty, Color.DarkGray);
             }
