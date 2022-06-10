@@ -20,11 +20,15 @@ namespace MonoRogue {
         }
 
         public bool LeftClicked() {
-            return State.LeftButton == ButtonState.Pressed && LastState.LeftButton == ButtonState.Pressed;
+            return State.LeftButton == ButtonState.Pressed && LastState.LeftButton != ButtonState.Pressed;
         }
 
         public bool RightClicked() {
-            return State.RightButton == ButtonState.Pressed && LastState.RightButton == ButtonState.Pressed;
+            return State.RightButton == ButtonState.Pressed && LastState.RightButton != ButtonState.Pressed;
+        }
+
+        public bool ButtonClicked() {
+            return LeftClicked() || RightClicked();
         }
 
         // Return the tile that the mouse is over in the worldview

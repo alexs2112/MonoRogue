@@ -61,7 +61,7 @@ namespace MonoRogue {
 
         protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mainInterface.LoadTextures(Content);
+            MainInterface.LoadTextures(Content);
 
             worldView.LoadContent(Content);
             worldView.Update(world, player);
@@ -75,8 +75,9 @@ namespace MonoRogue {
             bool keyJustPressed = keyTrack.KeyJustPressed();
 
             if (subscreen != null) {
-                if (keyJustPressed) {
-                    Keys k = kState.GetPressedKeys()[0];
+                if (keyJustPressed || mouse.ButtonClicked()) {
+                    Keys k = Keys.None;
+                    if (keyJustPressed) { k = kState.GetPressedKeys()[0]; }
                     subscreen = subscreen.RespondToInput(k, mouse);
                 }
             } else {
@@ -88,14 +89,25 @@ namespace MonoRogue {
                     player.AI.ClearMessages();
                 }
 
-                if (kState.IsKeyDown(Keys.Escape)) { Exit(); }
+                if (keyTrack.KeyJustPressed(Keys.Escape)) { Exit(); }
                 else if (keyTrack.KeyJustPressed(Keys.Up)) { player.MoveRelative(0, -1); }
                 else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
                 else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
                 else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
                 else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(); }
                 else if (keyTrack.KeyJustPressed(Keys.OemPeriod)) { player.TurnTimer = 10; } // Do Nothing
-                else { inputGiven = false; }
+                else {
+                    if (mouse.RightClicked()) {
+                        Point tile = mouse.GetTile(worldView);
+                        Creature mouseCreature = GetMouseCreature(tile);
+                        Item mouseItem = GetMouseItem(tile);
+                        if (mouseCreature != null) { subscreen = new CreatureScreen(Content, mouseCreature); }
+                        else if (mouseItem != null) { subscreen = new ItemScreen(Content, mouseItem); }
+                    } else if (mouse.LeftClicked() && mouse.Position().X > MainInterface.StartX + 16) {
+                        subscreen = new CreatureScreen(Content, player);
+                    } else if (keyTrack.KeyJustPressed(Keys.S)) { subscreen = new CreatureScreen(Content, player); }
+                    inputGiven = false; 
+                }
 
                 // If input has been given, update the world
                 if (keyJustPressed && inputGiven && !player.IsDead()) {
@@ -128,21 +140,8 @@ namespace MonoRogue {
             } else {
                 // Some mouse handling in draw so we can keep it as a local variable
                 Point tile = mouse.GetTile(worldView);
-                Creature mouseCreature = null;
-                Item mouseItem = null;
-
-                // Don't worry about tiles we can't see
-                if (tile.X != -1) {
-                    if (!worldView.HasSeen[tile.X, tile.Y]) { 
-                        tile = new Point(-1, -1); 
-                    }
-                }
-                if (tile.X != -1) {
-                    if (player.CanSee(tile)) {
-                        mouseCreature = world.GetCreatureAt(tile);
-                        if (mouseCreature == null) { mouseItem = world.GetItemAt(tile); }
-                    }
-                }
+                Creature mouseCreature = GetMouseCreature(tile);
+                Item mouseItem = GetMouseItem(tile);
 
                 spriteBatch.Begin();
 
@@ -168,6 +167,23 @@ namespace MonoRogue {
             }
 
             base.Draw(gameTime);
+        }
+        
+        private Creature GetMouseCreature(Point tile) {
+            if (tile.X != -1) {
+                if (player.CanSee(tile)) {
+                    return world.GetCreatureAt(tile);
+                }
+            }
+            return null;
+        }
+        private Item GetMouseItem(Point tile) {
+            if (tile.X != -1) {
+                if (player.CanSee(tile)) {
+                    return world.GetItemAt(tile);
+                }
+            }
+            return null;
         }
     }
 }

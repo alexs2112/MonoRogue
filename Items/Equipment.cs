@@ -6,7 +6,7 @@ namespace MonoRogue {
         public int Defense { get; set; }
         public int MaxDefense { get; private set; }
         private int Timer;
-        private int Refresh;    // How many turns out of combat it takes to regenerate
+        public int Refresh { get; private set; }    // How many turns out of combat it takes to regenerate
 
         public int MovementPenalty { get; private set; }
 

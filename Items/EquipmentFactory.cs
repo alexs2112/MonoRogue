@@ -26,13 +26,13 @@ namespace MonoRogue {
             }
         }
         public Weapon NewDagger() {
-            Weapon w = new Weapon("Dagger", Glyphs["Dagger"], Color.LightGray);
+            Weapon w = new Weapon("Dagger", Glyphs["Dagger"], Color.LightSteelBlue);
             w.SetWeaponStats((1, 1));
             w.SetType(Item.Type.Dagger);
             return w;
         }
         public Weapon NewSword() {
-            Weapon w = new Weapon("Sword", Glyphs["Sword"], Color.LightGray);
+            Weapon w = new Weapon("Sword", Glyphs["Sword"], Color.AliceBlue);
             w.SetWeaponStats((2, 2), 4);
             w.SetType(Item.Type.Sword);
             return w;
@@ -47,7 +47,7 @@ namespace MonoRogue {
             }
         }
         public Armor NewClothArmor() {
-            Armor a = new Armor("Cloth Armor", Glyphs["Cloth Armor"], Color.AliceBlue);
+            Armor a = new Armor("Cloth Armor", Glyphs["Cloth Armor"], Color.LightBlue);
             a.SetArmorStats(4, 4);
             a.SetType(Item.Type.LightArmor);
             return a;

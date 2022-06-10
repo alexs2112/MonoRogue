@@ -145,6 +145,30 @@
 /processorParam:TextureFormat=Color
 /build:Food/PigMeat.png
 
+#begin Interface/BorderCorners.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Interface/BorderCorners.png
+
+#begin Interface/BorderSides.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Interface/BorderSides.png
+
 #begin Interface/Hearts.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -182,6 +206,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Interface/sds14.spritefont
+
+#begin Interface/sds16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Interface/sds16.spritefont
 
 #begin Interface/sds24.spritefont
 /importer:FontDescriptionImporter

@@ -1,13 +1,4 @@
 ### **Roadmap:**
- * Add very simple animations
-    * If the player can see the current creatures turn, wait a set amount of time before they act.
-    * Add a "wait" field in main that decrements until it hits 0 before proceeding.
-    * For now it will simply have a small delay after each action, smoothly moving between tiles and attack animations will come later
-
- * Screen to inspect creatures, items
-    * Right click them
-    * Other subscreens: Help screen, better start screen
-
  * Ranged Attacks
     * Mousing over an enemy will draw a line to them, clicking them will attack them
     * Clicking tiles should path you towards them until an enemy is in sight (then just move you 1 tile at a time)
