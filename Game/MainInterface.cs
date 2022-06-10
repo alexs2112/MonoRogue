@@ -157,7 +157,7 @@ namespace MonoRogue {
             }
         }
 
-        private static List<string> SplitMessage(string[] words, int maxChars) {
+        public static List<string> SplitMessage(string[] words, int maxChars) {
             List<string> output = new List<string>();
             string current = "";
             foreach (string s in words) {

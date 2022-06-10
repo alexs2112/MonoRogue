@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -6,13 +7,17 @@ using Microsoft.Xna.Framework.Content;
 namespace MonoRogue {
     public class CreatureScreen : BorderedScreen {
         private Creature Creature;
+        private List<string> Description;
+
         public CreatureScreen(ContentManager content, Creature creature) : base(content) {
             Creature = creature;
+            if (Creature.Description != null) {
+                Description = MainInterface.SplitMessage(Creature.Description.Split(' '), MaxScreenChars);
+            }
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
-            if (key == Keys.Escape) { return null; }
-            else if (mouse.RightClicked()) { return null; }
+            if (key == Keys.Escape || mouse.RightClicked()) { return null; }
             return this;
         }
         
@@ -35,7 +40,8 @@ namespace MonoRogue {
             x = Constants.ScreenWidth / 2;
             y = 32;
             y = DrawEquipment(spriteBatch, x, y);
-            
+
+            DrawDescription(spriteBatch);
         }
 
         private int DrawHealthAndArmor(SpriteBatch spriteBatch, int x, int y) {
@@ -113,6 +119,16 @@ namespace MonoRogue {
                 spriteBatch.DrawString(Font14, $"Move Delay: {a.MovementPenalty}", new Vector2(x, y), Color.White);
             }
             return y + 48;
+        }
+
+        private void DrawDescription(SpriteBatch spriteBatch) {
+            if (Description == null) { return; }
+            int x = 32;
+            int y = Constants.ScreenHeight - (Description.Count + 1) * 32;
+            foreach (string s in Description) {
+                spriteBatch.DrawString(Font14, s, new Vector2(x, y), Color.Gray);
+                y += 32;
+            }
         }
     }
 }

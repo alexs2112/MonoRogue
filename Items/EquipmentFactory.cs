@@ -29,12 +29,14 @@ namespace MonoRogue {
             Weapon w = new Weapon("Dagger", Glyphs["Dagger"], Color.LightSteelBlue);
             w.SetWeaponStats((1, 1));
             w.SetType(Item.Type.Dagger);
+            w.SetDescription("A double-edged fighting knife with a sharp point, particularly useful as a form of dispute resolution.");
             return w;
         }
         public Weapon NewSword() {
             Weapon w = new Weapon("Sword", Glyphs["Sword"], Color.AliceBlue);
             w.SetWeaponStats((2, 2), 4);
             w.SetType(Item.Type.Sword);
+            w.SetDescription("TEMP: A simple sword with a long, slashing blade.");
             return w;
         }
 
@@ -50,12 +52,14 @@ namespace MonoRogue {
             Armor a = new Armor("Cloth Armor", Glyphs["Cloth Armor"], Color.LightBlue);
             a.SetArmorStats(4, 4);
             a.SetType(Item.Type.LightArmor);
+            a.SetDescription("TEMP: A large, loose-fitting, wide-sleeved outer garment made of light cloth. It offers little protection against physical harm but does not hinder your movement.");
             return a;
         }
         public Armor NewLeatherArmor() {
             Armor a = new Armor("Leather Armor", Glyphs["Leather Armor"], Color.SandyBrown);
             a.SetArmorStats(8, 6, 4);
             a.SetType(Item.Type.LightArmor);
+            a.SetDescription("TEMP: A suit made from layers of tanned animal hide, this light armour provides basic protection with almost no hindrance to elaborate gestures or swift, stealthy movement.");
             return a;
         }
     }

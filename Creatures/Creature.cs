@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoRogue {
     public class Creature {
         public string Name { get; private set; }
+        public string Description { get; private set; }
         public Texture2D Glyph { get; private set; }
         public Color Color { get; private set; }
         public World World { get; set; }
@@ -46,6 +47,7 @@ namespace MonoRogue {
 
         // Private setters to avoid accidentally changing important attributes
         public void SetColor(Color color) { Color = color; }
+        public void SetDescription(string s) { Description = s; }
         public void ModifyDamage(int amount) { ModifyDamage(amount, amount); }
         public void ModifyDamage(int min, int max) { Damage = (Damage.Min + min, Damage.Max + max); }
         public (int Min, int Max) GetDamage() {

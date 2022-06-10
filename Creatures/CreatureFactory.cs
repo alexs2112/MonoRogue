@@ -25,6 +25,7 @@ namespace MonoRogue {
             Creature c = new Creature("Player", glyph, Color.SkyBlue);
             c.IsPlayer = true;
             c.SetStats(12, (2, 3));
+            c.SetDescription("A hapless adventurer.");
             c.AI = new PlayerAI(c);
             c.World = world;
             world.Creatures.Add(c);
@@ -36,6 +37,7 @@ namespace MonoRogue {
         public Creature NewRat(World world, int x, int y) {
             Creature c = new Creature("Rat", Glyphs["Rat"], Color.SaddleBrown);
             c.SetStats(4, (1,2), 6, 6);
+            c.SetDescription("TEMP: A dirty rodent that has grown large and aggressive in the dungeon environment. It moves and attacks quite quickly.");
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Faction = "Vermin";
@@ -47,6 +49,7 @@ namespace MonoRogue {
         public Creature NewPig(World world, int x, int y) {
             Creature c = new Creature("Pig", Glyphs["Pig"], Color.Pink);
             c.SetStats(6, (1, 2));
+            c.SetDescription("TEMP: A stout-bodied, short-legged, omnivorous mammal.");
             c.AI = new PigAI(c, Player);
             c.World = world;
             c.Faction = "Farmer";
@@ -58,6 +61,7 @@ namespace MonoRogue {
         public Creature NewFarmer(World world, int x, int y) {
             Creature c = new Creature("Farmer", Glyphs["Farmer"], Color.RosyBrown);
             c.SetStats(8, (1, 3));
+            c.SetDescription("A simple farmer, tending to the herd of pigs in the dungeon.");
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Faction = "Farmer";

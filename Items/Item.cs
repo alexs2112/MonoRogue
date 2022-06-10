@@ -17,6 +17,7 @@ namespace MonoRogue {
         }
 
         public string Name { get; private set; }
+        public string Description { get; private set; }
         public Texture2D Glyph { get; private set; }
         public Color Color { get; private set; }
 
@@ -25,6 +26,7 @@ namespace MonoRogue {
         public bool IsFood { get; protected set; }
         public Type ItemType { get; protected set; }
         public void SetType(Type itemType) { ItemType = itemType; }
+        public void SetDescription(string s) { Description = s; }
 
         public Item(string name, Texture2D glyph, Color color) {
             Name = name;

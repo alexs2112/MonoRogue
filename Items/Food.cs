@@ -34,9 +34,13 @@ namespace MonoRogue {
 
         public static void LoadFood(ContentManager content) {
             Apple = new Food("Apple", 2, content.Load<Texture2D>("Food/Apple"), Color.Green);
+            Apple.SetDescription("TEMP: A delicious, firm green-skinned fruit, tart to the tongue.");
             Cheese = new Food("Cheese", 4, content.Load<Texture2D>("Food/Cheese"), Color.Yellow);
+            Cheese.SetDescription("A lump of cheese. Nobody knows how it made its way into the dungeon.");
             Meat = new Food("Meat", 8, content.Load<Texture2D>("Food/Meat"), Color.IndianRed);
+            Meat.SetDescription("TEMP: A hearty chunk of cooked meat from an unknown creature. Best not think too hard about where it came from.");
             PigMeat = new Food("Pig Meat", 6, content.Load<Texture2D>("Food/PigMeat"), Color.IndianRed);
+            PigMeat.SetDescription("Meat doesn't get much fresher than this!");
         }
 
         public static Food RandomFood(System.Random random) {

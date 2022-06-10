@@ -105,7 +105,9 @@ namespace MonoRogue {
                         else if (mouseItem != null) { subscreen = new ItemScreen(Content, mouseItem); }
                     } else if (mouse.LeftClicked() && mouse.Position().X > MainInterface.StartX + 16) {
                         subscreen = new CreatureScreen(Content, player);
-                    } else if (keyTrack.KeyJustPressed(Keys.S)) { subscreen = new CreatureScreen(Content, player); }
+                    } 
+                    else if (keyTrack.KeyJustPressed(Keys.S)) { subscreen = new CreatureScreen(Content, player); }
+                    else if (keyTrack.KeyJustPressed(Keys.OemQuestion)) { subscreen = new HelpScreen(Content); }
                     inputGiven = false; 
                 }
 

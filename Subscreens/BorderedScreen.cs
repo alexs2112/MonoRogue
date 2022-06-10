@@ -12,6 +12,9 @@ namespace MonoRogue {
         private Texture2D BorderCorners;
         private Texture2D BorderSides;
 
+        // Maximum chars to fit on a screen with a starting X of 32, font 14
+        protected static int MaxScreenChars = 40;
+
         public BorderedScreen(ContentManager content) { 
             Font24 = content.Load<SpriteFont>("Interface/sds24");
             Font16 = content.Load<SpriteFont>("Interface/sds16");
