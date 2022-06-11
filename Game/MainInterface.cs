@@ -36,7 +36,8 @@ namespace MonoRogue {
             spriteBatch.Draw(InterfaceLine, new Vector2(StartX, 0), Color.Gray);
         }
 
-        public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature) {
+        public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature) { DrawCreatureStats(spriteBatch, creature, null); }
+        public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature, Creature player) {
             int x = StartX + 32;
             int y = 8;
             spriteBatch.DrawString(Font14, creature.Name, new Vector2(x, y), Color.White);
@@ -48,6 +49,19 @@ namespace MonoRogue {
             } else {
                 y += 32;
                 DrawHearts(spriteBatch, creature.Armor.MaxDefense, creature.Armor.Defense, x, y, Color.LightSkyBlue);
+            }
+
+            if (player != null) {
+                y = 8;
+                int width = (int)Font14.MeasureString(player.Name).X;
+                int playerX = Constants.ScreenWidth - 16;
+                spriteBatch.DrawString(Font14, player.Name, new Vector2(playerX - width, y), Color.White);
+                y += 24;
+                DrawHearts(spriteBatch, player.MaxHP, player.HP, playerX - 32 * ((player.MaxHP + 3) / 4), y, Color.Red);
+                y += 32;
+                if (player.Armor != null) {
+                    DrawHearts(spriteBatch, player.Armor.MaxDefense, player.Armor.Defense, playerX - 32 * ((player.Armor.MaxDefense + 3) / 4), y, Color.LightSkyBlue);
+                }
             }
 
             y += 40;
@@ -127,11 +141,22 @@ namespace MonoRogue {
             }
         }
 
-        public void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world) {
+        public void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Color color) {
             Point p = mouse.GetViewTile(world);
             if (p.X == -1 || !world.HasSeen[p.X + world.OffsetX, p.Y + world.OffsetY]) { return; }
 
-            spriteBatch.Draw(TileHighlight, new Vector2(p.X * 32, p.Y * 32), Color.White);
+            spriteBatch.Draw(TileHighlight, new Vector2(p.X * 32, p.Y * 32), color);
+        }
+
+        public void DrawLineToCreature(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Creature start, Creature end, Color color) {
+            Point p = mouse.GetViewTile(world);
+            Point tile = new Point(p.X + world.OffsetX, p.Y + world.OffsetY);
+            if (p.X == -1 || !world.HasSeen[tile.X, tile.Y]) { return; }
+
+            List<Point> line = start.GetLineToPoint(new Point(end.X, end.Y));
+            foreach (Point point in line) {
+                spriteBatch.Draw(TileHighlight, new Vector2((point.X - world.OffsetX) * 32, (point.Y - world.OffsetY) * 32), color);
+            }
         }
 
         public void DrawMessages(SpriteBatch spriteBatch) {

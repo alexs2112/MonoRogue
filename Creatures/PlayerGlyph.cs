@@ -34,6 +34,10 @@ namespace MonoRogue {
             // Sword is equipped
             glyphs.Add(Item.Type.Sword, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Sword].Add(Item.Type.Null, content.Load<Texture2D>("Player/Sword-Null"));
+
+            // Bow is equipped
+            glyphs.Add(Item.Type.Bow, new Dictionary<Item.Type, Texture2D>());
+            glyphs[Item.Type.Bow].Add(Item.Type.Null, content.Load<Texture2D>("Player/Bow-Null"));
         }
 
         public static Texture2D GetDefaultGlyph() {

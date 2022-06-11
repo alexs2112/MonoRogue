@@ -20,6 +20,8 @@ namespace MonoRogue {
             WriteCentered(spriteBatch, Font24, "MonoRogue", new Vector2(x, y), Color.White);
             y += 48;
             WriteCentered(spriteBatch, Font14, "Press Enter to start", new Vector2(x, y), Color.White);
+            y = Constants.ScreenHeight - 64;
+            WriteCentered(spriteBatch, Font14, "Press [?] in game for help", new Vector2(x, y), Color.Gray);
         }
     }
 }

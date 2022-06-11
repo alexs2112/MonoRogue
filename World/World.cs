@@ -22,8 +22,11 @@ namespace MonoRogue {
             ColorOverlay = new Color[width, height];
         }
 
+        public bool InBounds(Point p) { return InBounds(p.X, p.Y); }
         public bool InBounds(int x, int y) { return x >= 0 && x < Width && y >= 0 && y < Height; }
+        public bool IsFloor(Point p) { return IsFloor(p.X, p.Y); }
         public bool IsFloor(int x, int y) { return InBounds(x, y) && Tiles[x,y].Walkable; }
+        public bool IsWall(Point p) { return IsWall(p.X, p.Y); }
         public bool IsWall(int x, int y) { return !InBounds(x, y) || !Tiles[x,y].Walkable; }
 
         public Point GetRandomFloor(System.Random random) {

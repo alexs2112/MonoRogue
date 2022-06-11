@@ -34,14 +34,43 @@ namespace MonoRogue {
             int[] XY = RandomMoves[r.Next(4)];
             Host.MoveRelative(XY[0], XY[1]);
         }
+
+        // Some vision methods
+        public Creature CreatureInView(World world) { 
+            foreach (Creature c in world.Creatures) {
+                if (c == Host) { continue; }
+                if (Host.CanSee(c.X, c.Y)) {
+                    return c;
+                }
+            }
+            return null;
+        }
     }
 
     public class PlayerAI : CreatureAI {
         private List<string> Messages;
+        private List<Point> Path;
 
         public PlayerAI(Creature creature) : base(creature) {
             Messages = new List<string>();
         }
+
+        public override void TakeTurn(World world) {
+            // If the player has a path to follow, move to the next one if there are no enemies in sight
+            if (Path == null) { return; }
+            if (Path.Count == 0) { Path = null; return; }
+            Creature c = CreatureInView(world);
+            if (c != null) {
+                Host.Notify($"A {c.Name} comes into view.");
+                Path = null;
+                return;
+            }
+            ClearMessages();
+            Host.MoveTo(Path[0]);
+            Path.RemoveAt(0);
+        }
+
+        public void SetPath(List<Point> path) { Path = path; }
 
         public override void AddMessage(string message) {
             if (message.Contains(Host.Name)) {

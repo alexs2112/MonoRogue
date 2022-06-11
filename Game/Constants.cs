@@ -21,5 +21,7 @@ namespace MonoRogue {
 
         public static int NumberOfWallSprites = 4;  // The number of floor and wall sprites to load
         public static int NumberOfFloorSprites = 4; //
+
+        public static bool AllowDiagonalMovement = true;    // Keeping this here in case we want to revert it to only Orthogonal movement
     }
 }

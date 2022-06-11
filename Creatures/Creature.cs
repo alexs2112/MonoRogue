@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -66,6 +67,7 @@ namespace MonoRogue {
             if (Weapon != null) { return AttackDelay + Weapon.AttackDelay; }
             else { return AttackDelay; }
         }
+        public int GetRange() { return Weapon == null ? 1 : Weapon.Range; }
         
         public void ModifyHP(int value) {
             HP += value;
@@ -135,6 +137,13 @@ namespace MonoRogue {
             return true;
         }
 
+        public List<Point> GetLineToPoint(int x, int y) { return GetLineToPoint(new Point(x, y)); }
+        public List<Point> GetLineToPoint(Point p) {
+            List<Point> line = World.GetLine(X, Y, p.X, p.Y);
+            if (line.Count > 0) { line.RemoveAt(0); }
+            return line;
+        }
+
         public void TakeTurn(World world) {
             if (Armor != null) { Armor.Tick(); }
             if (AI != null) { AI.TakeTurn(world); }
@@ -142,14 +151,38 @@ namespace MonoRogue {
 
         public void Attack(Creature target) {
             int damage = new System.Random().Next(GetDamage().Min, GetDamage().Max + 1);
-            Notify($"You attack {target.Name} for {damage} damage!");
-            NotifyOthers($"{Name} attacks {target.Name} for {damage} damage!");
+            string action;
+            if (Weapon != null && Weapon.AttackText != null) {
+                action = Weapon.AttackText;
+            } else {
+                action = "attack";
+            }
+
+            Notify($"You {action} {target.Name} for {damage} damage!");
+            NotifyOthers($"{Name} {action}s {target.Name} for {damage} damage!");
             target.TakeDamage(damage);
             target.GetAttacked(this);
         }
 
         public void GetAttacked(Creature attacker) {
             AI.OnHit(World, attacker);
+        }
+        
+        public Creature GetCreatureFromLine(List<Point> line) {
+            // Return the first creature from a line of points, or null
+            foreach (Point p in line) {
+                Creature c = World.GetCreatureAt(p);
+                if (c != null) { return c; }
+            }
+            return null;
+        }
+        public Creature GetCreatureInRange(Creature target) {
+            // Return the first creature in a line to the target that is in range
+            if (target == null) { return null; }
+            Creature c = GetCreatureFromLine(GetLineToPoint(target.X, target.Y));
+            if (c == null) { return null; }
+            if (GetLineToPoint(c.X, c.Y).Count > GetRange()) { c = null; }
+            return c;
         }
 
         public void Notify(string message) { AI.AddMessage(message); }

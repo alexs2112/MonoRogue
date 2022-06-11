@@ -38,18 +38,22 @@ namespace MonoRogue {
     public class Weapon : Item {
         public (int Min, int Max) Damage { get; private set; }
         public int AttackDelay { get; private set; }
+        public int Range { get; private set; }
+        public string AttackText { get; private set; }
 
         public Weapon(string name, Texture2D glyph, Color color) : base(name, glyph, color) {
             IsArmor = false;
             IsWeapon = true;
+            Range = 1;
         }
 
-        public void SetWeaponStats((int, int) damage) {
-            SetWeaponStats(damage, 0);
-        }
+        public void SetWeaponStats((int, int) damage) { SetWeaponStats(damage, 0); }
         public void SetWeaponStats((int, int) damage, int attackDelay) {
             Damage = damage;
             AttackDelay = attackDelay;
         }
+
+        public void SetRange(int range) { Range = range; }
+        public void SetAttackText(string s) { AttackText = s; }
     }
 }

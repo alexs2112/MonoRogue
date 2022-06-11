@@ -12,6 +12,7 @@ namespace MonoRogue {
             Food,
             Dagger,
             Sword,
+            Bow,
             
             LightArmor
         }

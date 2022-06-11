@@ -72,6 +72,13 @@ namespace MonoRogue {
             res.Add(new Point(p.X + 1, p.Y));
             res.Add(new Point(p.X, p.Y - 1));
             res.Add(new Point(p.X, p.Y + 1));
+
+            if (Constants.AllowDiagonalMovement) {
+                res.Add(new Point(p.X - 1, p.Y - 1));
+                res.Add(new Point(p.X - 1, p.Y + 1));
+                res.Add(new Point(p.X + 1, p.Y - 1));
+                res.Add(new Point(p.X + 1, p.Y + 1));
+            }
             return res;
         }
 

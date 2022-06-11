@@ -35,6 +35,8 @@ namespace MonoRogue {
 
             (int Min, int Max) damage = Creature.GetDamage();
             spriteBatch.DrawString(Font14, $"Damage: {damage.Min}-{damage.Max}", new Vector2(x, y), Color.White);
+            y += 32;
+            spriteBatch.DrawString(Font14, $"Range: {Creature.GetRange()}", new Vector2(x, y), Color.White);
             y += 48;
 
             x = Constants.ScreenWidth / 2;
@@ -101,6 +103,8 @@ namespace MonoRogue {
             spriteBatch.DrawString(Font16, w.Name, new Vector2(x - 8, y), Color.White);
             y += 32;
             spriteBatch.DrawString(Font14, $"Damage: {w.Damage.Min}-{w.Damage.Max}", new Vector2(x, y), Color.White);
+            y += 32;
+            spriteBatch.DrawString(Font14, $"Range: {w.Range}", new Vector2(x, y), Color.White);
             if (w.AttackDelay != 0) {
                 y += 32;
                 spriteBatch.DrawString(Font14, $"Attack Delay: {w.AttackDelay}", new Vector2(x, y), Color.White);

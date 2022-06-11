@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -83,49 +84,76 @@ namespace MonoRogue {
             } else {
                 bool inputGiven = true;
 
-                if (keyJustPressed) {
+                if (keyJustPressed || mouse.ButtonClicked()) {
                     // Whenever the player presses a key, clear messages
                     // We can update this in the future to show old messages without being confusing
                     player.AI.ClearMessages();
                 }
 
                 if (keyTrack.KeyJustPressed(Keys.Escape)) { Exit(); }
-                else if (keyTrack.KeyJustPressed(Keys.Up)) { player.MoveRelative(0, -1); }
-                else if (keyTrack.KeyJustPressed(Keys.Down)) { player.MoveRelative(0, 1); }
-                else if (keyTrack.KeyJustPressed(Keys.Left)) { player.MoveRelative(-1, 0); }
-                else if (keyTrack.KeyJustPressed(Keys.Right)) { player.MoveRelative(1, 0); }
-                else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(); }
-                else if (keyTrack.KeyJustPressed(Keys.OemPeriod)) { player.TurnTimer = 10; } // Do Nothing
-                else {
-                    if (mouse.RightClicked()) {
+                
+                if (!player.IsDead()) {
+                    if (keyTrack.MovementNPressed()) { player.MoveRelative(0, -1); }
+                    else if (keyTrack.MovementSPressed()) { player.MoveRelative(0, 1); }
+                    else if (keyTrack.MovementWPressed()) { player.MoveRelative(-1, 0); }
+                    else if (keyTrack.MovementEPressed()) { player.MoveRelative(1, 0); }
+                    else if (keyTrack.MovementNEPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(1, -1); }
+                    else if (keyTrack.MovementSEPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(1, 1); }
+                    else if (keyTrack.MovementNWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, -1); }
+                    else if (keyTrack.MovementSWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, 1); }
+                    else if (keyTrack.WaitPressed()) { player.TurnTimer = 10; } // Do Nothing
+                    else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(); }
+                    else if (mouse.RightClicked()) {
                         Point tile = mouse.GetTile(worldView);
                         Creature mouseCreature = GetMouseCreature(tile);
                         Item mouseItem = GetMouseItem(tile);
                         if (mouseCreature != null) { subscreen = new CreatureScreen(Content, mouseCreature); }
                         else if (mouseItem != null) { subscreen = new ItemScreen(Content, mouseItem); }
-                    } else if (mouse.LeftClicked() && mouse.Position().X > MainInterface.StartX + 16) {
-                        subscreen = new CreatureScreen(Content, player);
-                    } 
-                    else if (keyTrack.KeyJustPressed(Keys.S)) { subscreen = new CreatureScreen(Content, player); }
-                    else if (keyTrack.KeyJustPressed(Keys.OemQuestion)) { subscreen = new HelpScreen(Content); }
-                    inputGiven = false; 
-                }
+                        inputGiven = false;
+                    } else if (mouse.LeftClicked()) {
+                        Point tile = mouse.GetTile(worldView);
+                        Creature mouseCreature = GetMouseCreature(tile);
+                        Creature target = player.GetCreatureInRange(mouseCreature);
 
-                // If input has been given, update the world
-                if (keyJustPressed && inputGiven && !player.IsDead()) {
-                    while (player.TurnTimer > 0) {
-                        // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
-                        currentIndex = (currentIndex + 1) % world.Creatures.Count;
-                        Creature c = world.Creatures[currentIndex];
-                        c.TurnTimer--;
-                        if (c.TurnTimer <= 0) { 
-                            c.TakeTurn(world);
-                            worldView.Update(world, player);
+                        if (mouse.Position().X > MainInterface.StartX + 16) {
+                            subscreen = new CreatureScreen(Content, player);
+                            inputGiven = false;
+                        } else if (mouseCreature == player) {
+                            player.PickUp();
+                        } else if (target != null) {
+                            player.Attack(target);
+                            player.TurnTimer = player.GetAttackDelay();
+                        } else if (worldView.HasSeen[tile.X, tile.Y] && player.CanEnter(tile)) {
+                            // If the player has seen the tile and is not clicking a creature, give them a path to automatically follow
+                            List<Point> path = Pathfinder.FindPath(player, tile.X, tile.Y);
+                            if (path.Count > 0) { player.MoveTo(path[0]); path.RemoveAt(0); }
 
-                            if (player.IsDead()) { break; }
+                            if (player.AI.CreatureInView(world) == null) {
+                                if (path.Count > 0) { ((PlayerAI)player.AI).SetPath(path); }
+                            }
                         }
+                    } else {     
+                        if (keyTrack.KeyJustPressed(Keys.S)) { subscreen = new CreatureScreen(Content, player); }
+                        else if (keyTrack.KeyJustPressed(Keys.OemQuestion)) { subscreen = new HelpScreen(Content); }
+                        inputGiven = false; 
                     }
-                    mainInterface.UpdateMessages(player.AI.GetMessages());
+
+                    // If input has been given, update the world
+                    if ((keyJustPressed || mouse.ButtonClicked()) && inputGiven && !player.IsDead()) {
+                        while (player.TurnTimer > 0) {
+                            // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
+                            currentIndex = (currentIndex + 1) % world.Creatures.Count;
+                            Creature c = world.Creatures[currentIndex];
+                            c.TurnTimer--;
+                            if (c.TurnTimer <= 0) { 
+                                c.TakeTurn(world);
+                                worldView.Update(world, player);
+
+                                if (player.IsDead()) { break; }
+                            }
+                        }
+                        mainInterface.UpdateMessages(player.AI.GetMessages());
+                    }
                 }
             }
 
@@ -142,8 +170,9 @@ namespace MonoRogue {
             } else {
                 // Some mouse handling in draw so we can keep it as a local variable
                 Point tile = mouse.GetTile(worldView);
-                Creature mouseCreature = GetMouseCreature(tile);
                 Item mouseItem = GetMouseItem(tile);
+                Creature mouseCreature = GetMouseCreature(tile);
+                if (mouseCreature == player) { mouseCreature = null; }
 
                 spriteBatch.Begin();
 
@@ -156,15 +185,20 @@ namespace MonoRogue {
 
                 mainInterface.DrawInterface(spriteBatch);
                 mainInterface.DrawMessages(spriteBatch);
+                mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.White);
 
                 if (mouseCreature == null && mouseItem == null) {
                     mainInterface.DrawCreatureStats(spriteBatch, player);
                 } else if (mouseCreature != null) {
-                    mainInterface.DrawCreatureStats(spriteBatch, mouseCreature);
+                    mainInterface.DrawCreatureStats(spriteBatch, mouseCreature, player);
+
+                    Creature target = player.GetCreatureInRange(mouseCreature);
+                    if (target != null) { mainInterface.DrawLineToCreature(spriteBatch, mouse, worldView, player, target, Color.Red); }
+                    else { mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
                 } else {
                     mainInterface.DrawItemInfo(spriteBatch, mouseItem);
                 }
-                mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView);
+
                 spriteBatch.End();
             }
 
