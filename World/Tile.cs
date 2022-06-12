@@ -16,27 +16,47 @@ namespace MonoRogue {
         }
 
         // Essentially an enum that stores the different tiles in the game
-        private static List<Tile> Walls;
-        private static List<Tile> Floors;
+        private static List<Tile> DungeonWalls;
+        private static List<Tile> DungeonFloors;
+        private static List<Tile> CaveWalls;
+        private static List<Tile> CaveFloors;
         public static void LoadTiles(ContentManager content) {
-            Walls = new List<Tile>();
-            for (int i = 0; i < Constants.NumberOfWallSprites; i++) {
-                Walls.Add(new Tile(false, content.Load<Texture2D>($"Tiles/Wall{i}"), Color.White));
+            DungeonWalls = new List<Tile>();
+            for (int i = 0; i < Constants.NumberOfDungeonWallSprites; i++) {
+                DungeonWalls.Add(new Tile(false, content.Load<Texture2D>($"Tiles/Wall{i}"), Color.White));
             }
 
-            Floors = new List<Tile>();
-            for (int i = 0; i < Constants.NumberOfFloorSprites; i++) {
-                Floors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/Floor{i}"), Color.Gray));
+            DungeonFloors = new List<Tile>();
+            for (int i = 0; i < Constants.NumberOfDungeonFloorSprites; i++) {
+                DungeonFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/Floor{i}"), Color.Gray));
+            }
+
+            CaveWalls = new List<Tile>();
+            for (int i = 0; i < Constants.NumberOfCaveWallSprites; i++) {
+                CaveWalls.Add(new Tile(false, content.Load<Texture2D>($"Tiles/CaveWall{i}"), Color.SaddleBrown));
+            }
+
+            CaveFloors = new List<Tile>();
+            for (int i = 0; i < Constants.NumberOfCaveFloorSprites; i++) {
+                CaveFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/CaveFloor{i}"), Color.SandyBrown));
             }
         }
 
-        public static Tile GetWall(System.Random random) {
-            int i = random.Next(Walls.Count);
-            return Walls[i];
+        public static Tile GetDungeonWall(System.Random random) {
+            int i = random.Next(DungeonWalls.Count);
+            return DungeonWalls[i];
         }
-        public static Tile GetFloor(System.Random random) {
-            int i = random.Next(Floors.Count);
-            return Floors[i];
+        public static Tile GetDungeonFloor(System.Random random) {
+            int i = random.Next(DungeonFloors.Count);
+            return DungeonFloors[i];
+        }
+        public static Tile GetCaveWall(System.Random random) {
+            int i = random.Next(CaveWalls.Count);
+            return CaveWalls[i];
+        }
+        public static Tile GetCaveFloor(System.Random random) {
+            int i = random.Next(CaveFloors.Count);
+            return CaveFloors[i];
         }
     }
 }

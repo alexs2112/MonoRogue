@@ -7,7 +7,7 @@ Not very exciting or interesting as of now.
  - `dotnet run program.cs` in the terminal will compile and run the game for testing. `--debug` option to enter debug mode.
 
 ## Algorithms in use:
- - Dungeon generation is done by first using Binary Space Partitioning to place non-overlapping rooms. Then uses Kruskal's Algorithm with DFS to construct a minimum spanning tree between those rooms to generate hallways.
+ - Dungeon generation uses a combination of Binary Space Partitioning, Cellular Automata, Depth First Search, and Kruskal's Algorithm to create world of Caves and Rooms connected by hallways. [DungeonGeneration.cs](World/DungeonGeneration.cs)
  - Field of View is done through the Bresenham line algorithm, storing seen tiles to differentiate between explored and unexplored parts of the dungeon.
  - A* pathfinding algorithm for hostile enemies.
 

@@ -19,8 +19,10 @@ namespace MonoRogue {
 
         public static int Seed = -1;                // Randomization seed, -1 for a random seed
 
-        public static int NumberOfWallSprites = 4;  // The number of floor and wall sprites to load
-        public static int NumberOfFloorSprites = 4; //
+        public static int NumberOfDungeonWallSprites = 4;  // The number of floor and wall glyphs to load
+        public static int NumberOfDungeonFloorSprites = 4; //
+        public static int NumberOfCaveWallSprites = 4;  //
+        public static int NumberOfCaveFloorSprites = 4; //
 
         public static bool AllowDiagonalMovement = true;    // Keeping this here in case we want to revert it to only Orthogonal movement
     }
