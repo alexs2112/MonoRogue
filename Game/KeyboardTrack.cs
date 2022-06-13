@@ -42,48 +42,56 @@ namespace MonoRogue {
             return
                 KeyJustPressed(Keys.Up) ||
                 KeyJustPressed(Keys.D8) ||
+                KeyJustPressed(Keys.K) ||
                 KeyJustPressed(Keys.NumPad8);
         }
         public bool MovementSPressed() {
             return
                 KeyJustPressed(Keys.Down) ||
                 KeyJustPressed(Keys.D2) ||
+                KeyJustPressed(Keys.J) ||
                 KeyJustPressed(Keys.NumPad2);
         }
         public bool MovementEPressed() {
             return
                 KeyJustPressed(Keys.Right) ||
                 KeyJustPressed(Keys.D6) ||
+                KeyJustPressed(Keys.L) ||
                 KeyJustPressed(Keys.NumPad6);
         }
         public bool MovementWPressed() {
             return
                 KeyJustPressed(Keys.Left) ||
                 KeyJustPressed(Keys.D4) ||
+                KeyJustPressed(Keys.H) ||
                 KeyJustPressed(Keys.NumPad4);
         }
         public bool MovementNEPressed() {
             return
                 KeyJustPressed(Keys.PageUp) ||
                 KeyJustPressed(Keys.D9) ||
+                KeyJustPressed(Keys.U) ||
                 KeyJustPressed(Keys.NumPad9);
         }
         public bool MovementNWPressed() {
             return
                 KeyJustPressed(Keys.Home) ||
                 KeyJustPressed(Keys.D7) ||
+                KeyJustPressed(Keys.Y) ||
                 KeyJustPressed(Keys.NumPad7);
         }
         public bool MovementSEPressed() {
             return
                 KeyJustPressed(Keys.PageDown) ||
                 KeyJustPressed(Keys.D3) ||
+                KeyJustPressed(Keys.N) ||
                 KeyJustPressed(Keys.NumPad3);
         }
         public bool MovementSWPressed() {
             return
                 KeyJustPressed(Keys.End) ||
                 KeyJustPressed(Keys.D1) ||
+                KeyJustPressed(Keys.B) ||
                 KeyJustPressed(Keys.NumPad1);
         }
         public bool WaitPressed() {
