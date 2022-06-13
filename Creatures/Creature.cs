@@ -198,8 +198,12 @@ namespace MonoRogue {
         public void PickUp(bool OnlyPickup) { PickUp(new Point(X, Y), OnlyPickup); }
         public void PickUp(Point p, bool OnlyPickup) {
             Item i = World.GetItemAt(p);
-            if (i == null && OnlyPickup) { 
-                Notify("There is nothing to pick up.");
+            if (i == null) { 
+                if (OnlyPickup) {
+                    Notify("There is nothing to pick up.");
+                } else {
+                    TurnTimer = 10;
+                }
                 return;
             }
 

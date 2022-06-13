@@ -75,8 +75,8 @@ namespace MonoRogue {
             System.Console.WriteLine(origins.Count);
 
             List<Edge> edges = GetHallwayCandidates(origins);
-            List<Edge> trimmed = TrimHallwayCandidates(edges);
-            List<Edge> hallways = FinalizeHallways(origins, trimmed);
+            //List<Edge> trimmed = TrimHallwayCandidates(edges);
+            List<Edge> hallways = FinalizeHallways(origins, edges);
             ConstructHallways(hallways);
 
             return Tiles;
@@ -274,8 +274,25 @@ namespace MonoRogue {
         // Once they are finalized, we go and mark each hallway tile as a floor
         private void ConstructHallways(List<Edge> hallways) {
             foreach (Edge e in hallways) {
+                bool isDungeon;
+                if (DungeonTiles[e.A.X, e.A.Y] && DungeonTiles[e.B.X, e.B.Y]) {
+                    isDungeon = true;
+                } else {
+                    isDungeon = false;
+                }
+
                 foreach (Point p in e.Path) {
                     Tiles[p.X, p.Y] = 0;
+
+                    if (isDungeon) { SetHallwayTileDungeon(p); }
+                }
+            }
+        }
+        private void SetHallwayTileDungeon(Point p) {
+            for (int x = -1; x < 2; x++) {
+                for (int y = -1; y < 2; y++) {
+                    if (p.X + x < 0 || p.X + x >= Width || p.Y + y < 0 || p.Y + y >= Height) { continue; }
+                    DungeonTiles[p.X + x, p.Y + y] = true;
                 }
             }
         }
