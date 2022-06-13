@@ -75,7 +75,6 @@ namespace MonoRogue {
             System.Console.WriteLine(origins.Count);
 
             List<Edge> edges = GetHallwayCandidates(origins);
-            //List<Edge> trimmed = TrimHallwayCandidates(edges);
             List<Edge> hallways = FinalizeHallways(origins, edges);
             ConstructHallways(hallways);
 
@@ -234,19 +233,6 @@ namespace MonoRogue {
                 }
             }
             return edges;
-        }
-
-        // Go over each edge, remove points that are already floors (overlap with rooms)
-        private List<Edge> TrimHallwayCandidates(List<Edge> edges) {
-            List<Edge> trimmed = new List<Edge>();
-            foreach (Edge e in edges) {
-                List<Point> newPath = new List<Point>();
-                foreach (Point p in e.Path) {
-                    if (Tiles[p.X, p.Y] == 1) { newPath.Add(p); }
-                }
-                trimmed.Add(new Edge(e.A, e.B, newPath));
-            }
-            return trimmed;
         }
 
         // Go over all hallways, use kruskals algorithm to find the edges that create a minimum spanning tree
