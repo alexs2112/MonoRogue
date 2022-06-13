@@ -29,8 +29,20 @@ namespace MonoRogue {
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            Constants.Debug = System.Array.Exists(args, element => element == "--debug");
+
+            List<string> cmd = new List<string>(args);
+            Constants.Debug = cmd.Contains("--debug");
             if (Constants.Debug) { System.Console.WriteLine("Debug Mode Enabled"); }
+
+            int seedIndex = cmd.IndexOf("--seed");
+            if (seedIndex > -1) {
+                try {
+                    Constants.Seed = System.Int32.Parse(cmd[seedIndex + 1]);
+                } catch {
+                    System.Console.WriteLine("The --seed argument requires an integer parameter to follow it.");
+                    System.Console.WriteLine("Using random seed instead.");
+                }
+            }
         }
 
         protected override void Initialize() {
@@ -42,8 +54,10 @@ namespace MonoRogue {
             worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);
             mainInterface = new MainInterface();
 
-            if (Constants.Seed == -1) { rng = new System.Random(); }
-            else { rng = new System.Random(Constants.Seed); }
+            int seed = Constants.Seed;
+            if (seed == -1) { seed = new System.Random().Next(); }
+            rng = new System.Random(seed);
+            if (Constants.Debug) { System.Console.WriteLine($"Using seed {seed}"); }
 
             world = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight).GenerateDungeon(Constants.DungeonIterations);
             if (Constants.Debug) { world.PrintToTerminal(); }

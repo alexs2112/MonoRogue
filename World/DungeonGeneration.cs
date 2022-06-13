@@ -72,8 +72,6 @@ namespace MonoRogue {
             List<Region> regions = GetRegions();
             List<Point> origins = GetRegionOrigins(regions);
 
-            System.Console.WriteLine(origins.Count);
-
             List<Edge> edges = GetHallwayCandidates(origins);
             List<Edge> hallways = FinalizeHallways(origins, edges);
             ConstructHallways(hallways);
@@ -169,7 +167,12 @@ namespace MonoRogue {
                     if (Tiles[x, y] == 1) { continue; }
                     if (Regionized[x, y]) { continue; }
                     Region r = FloodFillRegion(x, y);
-                    Regions.Add(r);
+
+                    if (r.Tiles.Count < (Constants.RoomMinSize - 1) * (Constants.RoomMinSize - 1)) {
+                        foreach (Point p in r.Tiles) { Tiles[p.X, p.Y] = 1; }
+                    } else {
+                        Regions.Add(r); 
+                    }
                 }
             }
             return Regions;
