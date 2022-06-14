@@ -1,7 +1,5 @@
 ### **Roadmap:**
  * Dungeon balance overhaul
-    * Keep track of each room as room objects
-    * Have a start and end room in the dungeon. Rooms should have a depth stat to keep track of how deep they are, so you can scale the difficulty and loot the deeper into the dungeon you go
     * Reflavour the dungeon as an actual dungeon, guards trying to keep you in, you win when you escape
     * We can probably estimate damage by depth and spawn food at points where it will be needed
     * Doors: Cannot be closed again, can handle it as a tile that turns into a floor when bumped into by the player

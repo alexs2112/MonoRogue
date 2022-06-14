@@ -46,6 +46,8 @@ namespace MonoRogue {
         }
 
         protected override void Initialize() {
+            CreatureFactory creatureFactory = new CreatureFactory(Content);
+            EquipmentFactory equipmentFactory = new EquipmentFactory(Content);
             Tile.LoadTiles(Content);
             Food.LoadFood(Content);
             PlayerGlyph.LoadGlyphs(Content);
@@ -59,16 +61,11 @@ namespace MonoRogue {
             rng = new System.Random(seed);
             if (Constants.Debug) { System.Console.WriteLine($"Using seed {seed}"); }
 
-            world = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight).GenerateDungeon(Constants.DungeonIterations);
-            if (Constants.Debug) { world.PrintToTerminal(); }
-
-            CreatureFactory creatureFactory = new CreatureFactory(Content);
-            EquipmentFactory equipmentFactory = new EquipmentFactory(Content);
+            WorldBuilder worldBuilder = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight);
+            world = worldBuilder.GenerateDungeon(Constants.DungeonIterations, creatureFactory, equipmentFactory);
+            player = world.Player;
             
-            Point startTile = world.GetRandomFloor(rng);
-            player = creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
-
-            world.SpawnObjects(rng, creatureFactory, equipmentFactory);
+            if (Constants.Debug) { world.PrintToTerminal(); }
             
             if (!Constants.Debug) { subscreen = new StartScreen(Content); }
             base.Initialize();

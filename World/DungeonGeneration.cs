@@ -9,8 +9,8 @@ namespace MonoRogue {
         private int Height;
         private int[,] Tiles;
         private bool[,] Regionized;
-        private List<Region> Regions;
         public bool[,] DungeonTiles;
+        public List<Region> Regions { get; private set; }
 
         // Algorithm Overview:
         /*
@@ -55,7 +55,7 @@ namespace MonoRogue {
             List<Rectangle> partitions = partitioner.Partition(1, 1, iterations);
             Dictionary<Rectangle, PartitionType> partitionTypes = new Dictionary<Rectangle, PartitionType>();
             foreach (Rectangle p in partitions) {
-                partitionTypes[p] = Random.Next(2) == 0 ? PartitionType.ROOM : PartitionType.CAVE;
+                partitionTypes[p] = Random.Next(3) < 2 ? PartitionType.ROOM : PartitionType.CAVE;
             }
 
             RandomizeTiles(partitionTypes);
@@ -69,9 +69,8 @@ namespace MonoRogue {
             }
 
             // Find all possible hallways, use Kruskal's algorithm to construct a minimum spanning tree
-            List<Region> regions = GetRegions();
-            List<Point> origins = GetRegionOrigins(regions);
-
+            Regions = GetRegions();
+            List<Point> origins = GetRegionOrigins(Regions);
             List<Edge> edges = GetHallwayCandidates(origins);
             List<Edge> hallways = FinalizeHallways(origins, edges);
             ConstructHallways(hallways);
@@ -161,6 +160,8 @@ namespace MonoRogue {
             // Keep track of each tile that has already been placed into a region
             Regionized = new bool[Width, Height];
 
+            int id = 0;
+
             // For each tile that is not in a region and is a floor, run the flood fill algorithm on it
             for (int x = 0; x < Width; x++) {
                 for (int y = 0; y < Height; y++) {
@@ -171,6 +172,8 @@ namespace MonoRogue {
                     if (r.Tiles.Count < (Constants.RoomMinSize - 1) * (Constants.RoomMinSize - 1)) {
                         foreach (Point p in r.Tiles) { Tiles[p.X, p.Y] = 1; }
                     } else {
+                        r.ID = id;
+                        id++;
                         Regions.Add(r); 
                     }
                 }
@@ -254,10 +257,23 @@ namespace MonoRogue {
                 if (!dfs.ContainsCycleWith(candidate)) { 
                     hallways.Add(candidate);                     
                     dfs.AddHallway(candidate);
+                    (Region a, Region b) = GetRegionsByEdge(candidate);
+                    a.Neighbours.Add(b);
+                    b.Neighbours.Add(a);
                 }
                 i++;
             }
             return hallways;
+        }
+        private (Region, Region) GetRegionsByEdge(Edge e) {
+            Region a = null; Region b = null;
+            foreach (Region r in Regions) {
+                if (e.A == r.Origin || e.B == r.Origin) {
+                    if (a == null) { a = r; }
+                    else { b = r; return (a, b); }
+                }
+            }
+            throw new System.Exception("Failed to find region neighbours, this should never happen...");
         }
 
         // Once they are finalized, we go and mark each hallway tile as a floor
@@ -270,10 +286,11 @@ namespace MonoRogue {
                     isDungeon = false;
                 }
 
-                foreach (Point p in e.Path) {
-                    Tiles[p.X, p.Y] = 0;
-
-                    if (isDungeon) { SetHallwayTileDungeon(p); }
+                foreach (Point p in e.Path) { Tiles[p.X, p.Y] = 0; }
+                if (isDungeon) { 
+                    for (int i = 2; i < e.Path.Count; i += 3) {
+                        SetHallwayTileDungeon(e.Path[i]); 
+                    }
                 }
             }
         }
@@ -335,15 +352,39 @@ namespace MonoRogue {
             B = b;
             Path = path;
         }
+
+        public bool ContainsPoint(Point p) {
+            return p == A || p == B;
+        }
     }
 
-    struct Region {
+    public class Region {
         public List<Point> Tiles;
         public Point Origin;
+        public List<Region> Neighbours;
+        public int ID;
+
+        // How many regions are between this one and each other region, Depth is distance from the start region
+        public int[] CostMap;
+        public int Depth;
 
         public Region(List<Point> tiles, Point origin) {
             Tiles = tiles;
             Origin = origin;
+            Neighbours = new List<Region>();
         }
+
+        public Point GetEmptyTile(System.Random random, World world) {
+            while (Tiles.Count > 0) {
+                Point p = Tiles[random.Next(Tiles.Count)];
+                if (world.IsFloor(p) && world.GetCreatureAt(p) == null && world.GetItemAt(p) == null)  {
+                    return p;
+                }
+            }
+            if (Constants.Debug) { System.Console.WriteLine($"Could not find an empty tile in region {ID}"); }
+            return new Point(-1, -1);
+        }
+
+        public int Size() { return Tiles.Count; }
     }
 }

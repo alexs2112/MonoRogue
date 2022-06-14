@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+
 namespace MonoRogue {
     public class WorldBuilder {
         private System.Random Random;
@@ -12,11 +15,61 @@ namespace MonoRogue {
             Tiles = new int[width, height];
         }
 
-        public World GenerateDungeon(int iterations) {
+        public World GenerateDungeon(int iterations, CreatureFactory creatureFactory, EquipmentFactory equipmentFactory) {
             DungeonGeneration generator = new DungeonGeneration(Random, Width, Height, Tiles);
             int[,] tiles = generator.Generate(iterations);
             bool[,] dungeonTiles = generator.DungeonTiles;
-            return new World(Width, Height, IntToTiles(tiles, dungeonTiles));
+            
+            List<Region> regions = generator.Regions;
+            (Region start, Region end) = SetRegionsCostMap(regions);
+            SetRegionsDepth(regions, start.ID);
+
+            World w = new World(Width, Height, IntToTiles(tiles, dungeonTiles));
+
+            SpawnPlayer(w, creatureFactory, start);
+            SpawnObjects(w, creatureFactory, equipmentFactory);
+
+            return w;
+        }
+
+        public Creature SpawnPlayer(World world, CreatureFactory creatureFactory, Region start) {
+            Point startTile = start.GetEmptyTile(Random, world);
+            return creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
+        }
+
+        public void SpawnObjects(World world, CreatureFactory creatureFactory, EquipmentFactory equipmentFactory) {
+            // Spawn Enemies
+            for (int i = 0; i < 6; i++) {
+                Point tile = world.GetRandomFloor(Random);
+                creatureFactory.NewRat(world, tile.X, tile.Y);
+            }
+            for (int i = 0; i < 8; i++) {
+                Point tile = world.GetRandomFloor(Random);
+                creatureFactory.NewPig(world, tile.X, tile.Y);
+            }
+            for (int i = 0; i < 5; i++) {
+                Point tile = world.GetRandomFloor(Random);
+                creatureFactory.NewFarmer(world, tile.X, tile.Y);
+            }
+
+            // Spawn Items
+            for (int i = 0; i < 5; i++) {
+                Point tile = world.GetRandomFloor(Random);
+                Item item = equipmentFactory.RandomWeapon(Random);
+                world.Items.Add(tile, item);
+            }
+
+            for (int i = 0; i < 4; i++) {
+                Point tile = world.GetRandomFloor(Random);
+                Item item = equipmentFactory.RandomArmor(Random);
+                world.Items.Add(tile, item);
+            }
+
+            for (int i = 0; i < 6; i++) {
+                Point tile = world.GetRandomFloor(Random);
+                Food food = Food.RandomFood(Random);
+                world.Items.Add(tile, food);
+            }
         }
 
         private Tile[,] IntToTiles(int[,] old, bool[,] dungeonTiles) {
@@ -33,6 +86,59 @@ namespace MonoRogue {
                 }
             }
             return tiles;
+        }
+
+        private (Region start, Region end) SetRegionsCostMap(List<Region> regions) {
+            // Set the cost to get to itself as 0
+            // Set the cost to get to each neighbour as 1
+            // Set the cost to get to each other region as -1 (unknown)
+            foreach (Region r in regions) {
+                r.CostMap = new int[regions.Count];
+                System.Array.Fill(r.CostMap, -1);
+                r.CostMap[r.ID] = 0;
+                foreach (Region n in r.Neighbours) {
+                    r.CostMap[n.ID] = 1;
+                }
+            }
+
+            // For each iteration, pass over each region and their neighbours and pass costs between them
+            int highest_cost = -1;
+            Region start = null;
+            Region end = null;
+            for (int iteration = 0; iteration < regions.Count / 2; iteration++) {
+                foreach (Region r in regions) {
+                    foreach (Region n in r.Neighbours) {
+                        for (int i = 0; i < regions.Count; i++) {
+                            // If either r or n know how much it costs to get to regions[i], share that info
+                            // if the other region does not know it
+                            int r_cost = r.CostMap[i];
+                            int n_cost = n.CostMap[i];
+                            
+                            if (r_cost == -1 && n_cost > -1) {
+                                r.CostMap[i] = n_cost + 1;
+
+                                if (n_cost + 1 > highest_cost) {
+                                    highest_cost = n_cost + 1;
+                                    start = r;
+                                    end = regions[i];
+                                }
+                            } else if (n_cost == -1 && r_cost > -1) {
+                                n.CostMap[i] = r_cost + 1;
+
+                                if (r_cost + 1 > highest_cost) {
+                                    highest_cost = r_cost + 1;
+                                    start = n;
+                                    end = regions[i];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return (start, end);
+        }
+        private void SetRegionsDepth(List<Region> regions, int startID) {
+            foreach (Region r in regions) { r.Depth = r.CostMap[startID]; }
         }
     }
 }

@@ -9,6 +9,7 @@ namespace MonoRogue {
         public int Height { get; private set; }
         public Dictionary<Point, Item> Items;
 
+        public Creature Player;
         public List<Creature> Creatures;
 
         public World(int width, int height,Tile[,] tiles) {
@@ -30,16 +31,6 @@ namespace MonoRogue {
         public bool IsWall(int x, int y) { return !InBounds(x, y) || !Tiles[x,y].Walkable; }
 
         public Point GetRandomFloor(System.Random random) {
-            int x;
-            int y;
-
-            do {
-                x = random.Next(Width);
-                y = random.Next(Height);
-            } while (!IsFloor(x, y));
-            return new Point(x, y);
-        }
-        public Point GetEmptyFloor(System.Random random) {
             int x;
             int y;
 
@@ -84,39 +75,6 @@ namespace MonoRogue {
             }
             foreach(Creature c in dead) {
                 Creatures.Remove(c);
-            }
-        }
-
-        public void SpawnObjects(System.Random random, CreatureFactory creatureFactory, EquipmentFactory equipmentFactory) {
-            for (int i = 0; i < 6; i++) {
-                Point tile = GetEmptyFloor(random);
-                creatureFactory.NewRat(this, tile.X, tile.Y);
-            }
-            for (int i = 0; i < 8; i++) {
-                Point tile = GetEmptyFloor(random);
-                creatureFactory.NewPig(this, tile.X, tile.Y);
-            }
-            for (int i = 0; i < 5; i++) {
-                Point tile = GetEmptyFloor(random);
-                creatureFactory.NewFarmer(this, tile.X, tile.Y);
-            }
-            
-            for (int i = 0; i < 5; i++) {
-                Point tile = GetEmptyFloor(random);
-                Item item = equipmentFactory.RandomWeapon(random);
-                Items.Add(tile, item);
-            }
-
-            for (int i = 0; i < 4; i++) {
-                Point tile = GetEmptyFloor(random);
-                Item item = equipmentFactory.RandomArmor(random);
-                Items.Add(tile, item);
-            }
-
-            for (int i = 0; i < 6; i++) {
-                Point tile = GetEmptyFloor(random);
-                Food food = Food.RandomFood(random);
-                Items.Add(tile, food);
             }
         }
 

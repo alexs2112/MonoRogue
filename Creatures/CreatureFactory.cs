@@ -29,6 +29,7 @@ namespace MonoRogue {
             c.AI = new PlayerAI(c);
             c.World = world;
             world.Creatures.Add(c);
+            world.Player = c;
             c.MoveTo(x, y);
             this.Player = c;
             return c;
