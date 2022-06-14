@@ -299,30 +299,27 @@ namespace MonoRogue {
                     for (int i = 1; i < e.Path.Count; i++) {
                         SetHallwayTileDungeon(e.Path[i]); 
                     }
-
-                    // For each new hallway tile, find the first and last valid door
-                    Point first = Point.Zero;
-                    Point last = Point.Zero;
-                    int j;
-                    for (j = 0; j < potentialDoors.Count; j++) {
-                        if (IsValidDoor(potentialDoors[j])) {
-                            first = potentialDoors[j];
-                            j += 1; // So that two doors arent placed next to each other
-                            break;
-                        }
-                    }
-                    for (int k = potentialDoors.Count - 1; k > j; k--) {
-                        if (IsValidDoor(potentialDoors[k])) {
-                            last = potentialDoors[k];
-                            break;
-                        }
-                    }
-                    if (first != Point.Zero) { Doors.Add(first); }
-                    if (last != Point.Zero) { Doors.Add(last); }
                 }
-            }
-            foreach (Point p in Doors) {
-                System.Console.WriteLine($"{p.X} : {p.Y}");
+
+                 // For each new hallway tile, find the first and last valid door
+                Point first = Point.Zero;
+                Point last = Point.Zero;
+                int j;
+                for (j = 0; j < potentialDoors.Count; j++) {
+                    if (IsValidDoor(potentialDoors[j])) {
+                        first = potentialDoors[j];
+                        j += 1; // So that two doors arent placed next to each other
+                        break;
+                    }
+                }
+                for (int k = potentialDoors.Count - 1; k > j; k--) {
+                    if (IsValidDoor(potentialDoors[k])) {
+                        last = potentialDoors[k];
+                        break;
+                    }
+                }
+                if (first != Point.Zero) { Doors.Add(first); }
+                if (last != Point.Zero) { Doors.Add(last); }
             }
         }
         private void SetHallwayTileDungeon(Point p) {
@@ -344,7 +341,8 @@ namespace MonoRogue {
             * #.#
             * x.x
             */
-            return Tiles[p.X - 1, p.Y] == Tiles[p.X + 1, p.Y] &&
+            return DungeonTiles[p.X, p.Y] &&
+                Tiles[p.X - 1, p.Y] == Tiles[p.X + 1, p.Y] &&
                 Tiles[p.X, p.Y - 1] == Tiles[p.X, p.Y + 1] &&
                 Tiles[p.X - 1, p.Y] != Tiles[p.X, p.Y - 1];
         }

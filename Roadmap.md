@@ -16,10 +16,14 @@
     * Settings screen, volume settings and player character colour. Settings should persist in a text file somewhere
     * Keybindings screen in settings
     * Screen to inspect tiles on right click
+    * Map screen to show a much larger portion of explored tiles that you can scroll around. Center it on what we can see without giving hints as to what region of the full world you are in.
 
  * Animate projectiles
     * Same as movement, could have multiple projectile sprites based on what is shooting them
     * Might not be doable since it locks you out of input for a handful of frames, worth looking into
+
+ * Tab to auto attack nearest enemy in range, to avoid having to repeatedly use the mouse when ranged
+    * A fire key of some sort ([f]?) to let you select an enemy from available enemies in sight to shoot at, default to pointing at the nearest one
 
  * Screenshots, Itch page
 
