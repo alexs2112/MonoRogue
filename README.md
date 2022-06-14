@@ -9,6 +9,7 @@ A work in progress simple turn based roguelike written in monogame to learn how 
 
 ## Algorithms in use:
  - Dungeon generation uses a combination of Binary Space Partitioning, Cellular Automata, Depth First Search, and Kruskal's Algorithm to create world of Caves and Rooms connected by hallways. [DungeonGeneration.cs](World/DungeonGeneration.cs)
+ - Using a pseudo dynamic-routing algorithm to find start and end regions that are furthest from each other, and assign each other dungeon region a level of difficulty based on how far they are from the start.
  - Field of View is done through the Bresenham line algorithm, storing seen tiles to differentiate between explored and unexplored parts of the dungeon.
  - A* pathfinding algorithm for hostile enemies.
 

@@ -135,7 +135,9 @@ namespace MonoRogue {
                     }
                 }
             }
-            return (start, end);
+            // Start should be the smaller region between the two
+            if (start.Size() > end.Size()) { return (end, start); }
+            else { return (start, end); }
         }
         private void SetRegionsDepth(List<Region> regions, int startID) {
             foreach (Region r in regions) { r.Depth = r.CostMap[startID]; }

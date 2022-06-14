@@ -13,7 +13,7 @@ namespace MonoRogue {
             Font12 = content.Load<SpriteFont>("Interface/sds12");
             string[] text = new string[] {
                 "Controls:",
-                " - Arrow keys or left click to move and attack",
+                " - Arrow keys, Left Click, Numpad, or Vi Keys to move and attack",
                 " - Spacebar or click yourself to interact with items on the ground",
                 " - Right click creatures or items to see their stats",
                 " - [s] to see your own stats",

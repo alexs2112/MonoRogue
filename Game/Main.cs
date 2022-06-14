@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace MonoRogue {
     public class Main : Game {
         private System.Random rng;
+        private int seed;
         private World world;
         private Creature player;
         private Subscreen subscreen;
@@ -17,6 +18,9 @@ namespace MonoRogue {
 
         private KeyboardTrack keyTrack;
         private MouseHandler mouse;
+
+        private CreatureFactory creatureFactory;
+        private EquipmentFactory equipmentFactory;
 
         // Keep track of whos turn it is
         private int currentIndex;
@@ -46,8 +50,8 @@ namespace MonoRogue {
         }
 
         protected override void Initialize() {
-            CreatureFactory creatureFactory = new CreatureFactory(Content);
-            EquipmentFactory equipmentFactory = new EquipmentFactory(Content);
+            creatureFactory = new CreatureFactory(Content);
+            equipmentFactory = new EquipmentFactory(Content);
             Tile.LoadTiles(Content);
             Food.LoadFood(Content);
             PlayerGlyph.LoadGlyphs(Content);
@@ -55,8 +59,17 @@ namespace MonoRogue {
             mouse = new MouseHandler();
             worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);
             mainInterface = new MainInterface();
+            
+            if (!Constants.Debug) { 
+                subscreen = new StartScreen(this, Content); 
+            } else {
+                CreateWorld();
+            }
+            base.Initialize();
+        }
 
-            int seed = Constants.Seed;
+        public void CreateWorld() {
+            seed = Constants.Seed;
             if (seed == -1) { seed = new System.Random().Next(); }
             rng = new System.Random(seed);
             if (Constants.Debug) { System.Console.WriteLine($"Using seed {seed}"); }
@@ -66,9 +79,8 @@ namespace MonoRogue {
             player = world.Player;
             
             if (Constants.Debug) { world.PrintToTerminal(); }
-            
-            if (!Constants.Debug) { subscreen = new StartScreen(Content); }
-            base.Initialize();
+
+            worldView.Update(world, player);
         }
 
         protected override void LoadContent() {
@@ -76,7 +88,6 @@ namespace MonoRogue {
             MainInterface.LoadTextures(Content);
 
             worldView.LoadContent(Content);
-            worldView.Update(world, player);
         }
 
         protected override void Update(GameTime gameTime) {
