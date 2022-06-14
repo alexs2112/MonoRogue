@@ -49,13 +49,13 @@ namespace MonoRogue {
 
     public class PlayerAI : CreatureAI {
         private List<string> Messages;
-        private List<Point> Path;
+        public List<Point> Path {get; private set; }
 
         public PlayerAI(Creature creature) : base(creature) {
             Messages = new List<string>();
         }
 
-        public override void TakeTurn(World world) {
+        public void FollowPath(World world) {
             // If the player has a path to follow, move to the next one if there are no enemies in sight
             if (Path == null) { return; }
             if (Path.Count == 0) { Path = null; return; }
@@ -71,6 +71,11 @@ namespace MonoRogue {
         }
 
         public void SetPath(List<Point> path) { Path = path; }
+        public void ClearPath() { Path = null; }
+
+        public bool PathNullOrEmpty() {
+            return Path == null || Path.Count == 0;
+        }
 
         public override void AddMessage(string message) {
             if (message.Contains(Host.Name)) {

@@ -104,7 +104,18 @@ namespace MonoRogue {
                 if (keyTrack.KeyJustPressed(Keys.Escape)) { Exit(); }
                 
                 if (!player.IsDead()) {
-                    if (keyTrack.MovementNPressed()) { player.MoveRelative(0, -1); }
+                    if (!((PlayerAI)player.AI).PathNullOrEmpty()) {
+                        // If the player is automatically following a path, follow it
+                        if (keyTrack.KeyJustPressed() || mouse.ButtonClicked()) {
+                            // Any input cancels the move
+                            ((PlayerAI)player.AI).ClearPath();
+                            player.Notify("Input given, cancelling pathing.");
+                        } else {
+                            ((PlayerAI)player.AI).FollowPath(world);
+                            inputGiven = true;
+                        }
+                    }
+                    else if (keyTrack.MovementNPressed()) { player.MoveRelative(0, -1); }
                     else if (keyTrack.MovementSPressed()) { player.MoveRelative(0, 1); }
                     else if (keyTrack.MovementWPressed()) { player.MoveRelative(-1, 0); }
                     else if (keyTrack.MovementEPressed()) { player.MoveRelative(1, 0); }
@@ -150,7 +161,7 @@ namespace MonoRogue {
                     }
 
                     // If input has been given, update the world
-                    if ((keyJustPressed || mouse.ButtonClicked()) && inputGiven && !player.IsDead()) {
+                    if (inputGiven && !player.IsDead()) {
                         while (player.TurnTimer > 0) {
                             // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
                             currentIndex = (currentIndex + 1) % world.Creatures.Count;

@@ -288,7 +288,7 @@ namespace MonoRogue {
 
                 foreach (Point p in e.Path) { Tiles[p.X, p.Y] = 0; }
                 if (isDungeon) { 
-                    for (int i = 2; i < e.Path.Count; i += 3) {
+                    for (int i = 1; i < e.Path.Count; i++) {
                         SetHallwayTileDungeon(e.Path[i]); 
                     }
                 }
