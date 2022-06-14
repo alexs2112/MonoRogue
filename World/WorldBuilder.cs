@@ -24,7 +24,7 @@ namespace MonoRogue {
             (Region start, Region end) = SetRegionsCostMap(regions);
             SetRegionsDepth(regions, start.ID);
 
-            World w = new World(Width, Height, IntToTiles(tiles, dungeonTiles));
+            World w = new World(Width, Height, IntToTiles(tiles, dungeonTiles, generator.Doors));
 
             SpawnPlayer(w, creatureFactory, start);
             SpawnObjects(w, creatureFactory, equipmentFactory);
@@ -72,7 +72,7 @@ namespace MonoRogue {
             }
         }
 
-        private Tile[,] IntToTiles(int[,] old, bool[,] dungeonTiles) {
+        private Tile[,] IntToTiles(int[,] old, bool[,] dungeonTiles, List<Point> doors) {
             Tile[,] tiles = new Tile[Width, Height];
             for (int x = 0; x < Width; x++) {
                 for (int y = 0; y < Height; y++) {
@@ -84,6 +84,9 @@ namespace MonoRogue {
                         else { tiles[x,y] = Tile.GetCaveWall(Random); }
                     }
                 }
+            }
+            foreach (Point d in doors) {
+                tiles[d.X,d.Y] = Tile.GetClosedDoor();
             }
             return tiles;
         }

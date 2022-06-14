@@ -11,6 +11,7 @@ namespace MonoRogue {
         private bool[,] Regionized;
         public bool[,] DungeonTiles;
         public List<Region> Regions { get; private set; }
+        public List<Point> Doors { get; private set; }
 
         // Algorithm Overview:
         /*
@@ -73,7 +74,7 @@ namespace MonoRogue {
             List<Point> origins = GetRegionOrigins(Regions);
             List<Edge> edges = GetHallwayCandidates(origins);
             List<Edge> hallways = FinalizeHallways(origins, edges);
-            ConstructHallways(hallways);
+            ConstructHallwaysAndDoors(hallways);
 
             return Tiles;
         }
@@ -277,7 +278,8 @@ namespace MonoRogue {
         }
 
         // Once they are finalized, we go and mark each hallway tile as a floor
-        private void ConstructHallways(List<Edge> hallways) {
+        private void ConstructHallwaysAndDoors(List<Edge> hallways) {
+            Doors = new List<Point>();
             foreach (Edge e in hallways) {
                 bool isDungeon;
                 if (DungeonTiles[e.A.X, e.A.Y] && DungeonTiles[e.B.X, e.B.Y]) {
@@ -286,12 +288,41 @@ namespace MonoRogue {
                     isDungeon = false;
                 }
 
-                foreach (Point p in e.Path) { Tiles[p.X, p.Y] = 0; }
+                List<Point> potentialDoors = new List<Point>();
+                foreach (Point p in e.Path) {
+                    if (Tiles[p.X, p.Y] == 1) {
+                        Tiles[p.X, p.Y] = 0;
+                        potentialDoors.Add(p);
+                    }
+                }
                 if (isDungeon) { 
                     for (int i = 1; i < e.Path.Count; i++) {
                         SetHallwayTileDungeon(e.Path[i]); 
                     }
+
+                    // For each new hallway tile, find the first and last valid door
+                    Point first = Point.Zero;
+                    Point last = Point.Zero;
+                    int j;
+                    for (j = 0; j < potentialDoors.Count; j++) {
+                        if (IsValidDoor(potentialDoors[j])) {
+                            first = potentialDoors[j];
+                            j += 1; // So that two doors arent placed next to each other
+                            break;
+                        }
+                    }
+                    for (int k = potentialDoors.Count - 1; k > j; k--) {
+                        if (IsValidDoor(potentialDoors[k])) {
+                            last = potentialDoors[k];
+                            break;
+                        }
+                    }
+                    if (first != Point.Zero) { Doors.Add(first); }
+                    if (last != Point.Zero) { Doors.Add(last); }
                 }
+            }
+            foreach (Point p in Doors) {
+                System.Console.WriteLine($"{p.X} : {p.Y}");
             }
         }
         private void SetHallwayTileDungeon(Point p) {
@@ -301,6 +332,21 @@ namespace MonoRogue {
                     DungeonTiles[p.X + x, p.Y + y] = true;
                 }
             }
+        }
+        private bool IsValidDoor(Point p) {
+            // A valid door is a tile that is either
+            /*  x = any, # = wall, . = floor
+            * x#x
+            * ...
+            * x#x
+
+            * x.x
+            * #.#
+            * x.x
+            */
+            return Tiles[p.X - 1, p.Y] == Tiles[p.X + 1, p.Y] &&
+                Tiles[p.X, p.Y - 1] == Tiles[p.X, p.Y + 1] &&
+                Tiles[p.X - 1, p.Y] != Tiles[p.X, p.Y - 1];
         }
 
         // Return a line of points between a source and destination without including diagonals

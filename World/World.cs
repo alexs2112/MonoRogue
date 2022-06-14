@@ -29,6 +29,8 @@ namespace MonoRogue {
         public bool IsFloor(int x, int y) { return InBounds(x, y) && Tiles[x,y].Walkable; }
         public bool IsWall(Point p) { return IsWall(p.X, p.Y); }
         public bool IsWall(int x, int y) { return !InBounds(x, y) || !Tiles[x,y].Walkable; }
+        public bool IsDoor(Point p) { return IsDoor(p.X, p.Y); }
+        public bool IsDoor(int x, int y) { return Tiles[x,y].Breakable; }
 
         public Point GetRandomFloor(System.Random random) {
             int x;
@@ -66,6 +68,12 @@ namespace MonoRogue {
             if (food.Eat(c)) { Items.Remove(p); }
         }
 
+        public void OpenDoor(int x, int y) {
+            if (Tiles[x,y].Breakable) {
+                Tiles[x,y] = Tile.GetOpenDoor();
+            }
+        }
+
         // Each alive creature takes their turn, each dead creature is removed from creatures once everyone is done
         public void TakeTurns() {
             List<Creature> dead = new List<Creature>();
@@ -83,6 +91,7 @@ namespace MonoRogue {
                 for (int x = 0; x < Width; x++) {
                     char c;
                     if (Tiles[x,y].Walkable) { c = '.'; }
+                    else if (Tiles[x,y].Breakable) { c = '+'; }
                     else { c = '#'; }
                     System.Console.Write(c);
                 }

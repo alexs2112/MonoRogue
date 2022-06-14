@@ -46,7 +46,7 @@ namespace MonoRogue {
         }
         public Weapon NewShortbow() {
             Weapon w = new Weapon("Shortbow", Glyphs["Shortbow"], Color.SandyBrown);
-            w.SetWeaponStats((1, 1), 5);
+            w.SetWeaponStats((0, 1), 5);
             w.SetRange(5);
             w.SetType(Item.Type.Bow);
             w.SetDescription("TEMP: A curved piece of wood and string, for shooting arrows. It does good damage in combat, and a skilled user can use it to great effect.");

@@ -2,7 +2,6 @@
  * Dungeon balance overhaul
     * Reflavour the dungeon as an actual dungeon, guards trying to keep you in, you win when you escape
     * We can probably estimate damage by depth and spawn food at points where it will be needed
-    * Doors: Cannot be closed again, can handle it as a tile that turns into a floor when bumped into by the player
 
  * Refine dungeon generation
     * Locked doors that require keys to open
@@ -16,6 +15,11 @@
     * Screen after the [esc] key has been pressed, to not immediately kill the game
     * Settings screen, volume settings and player character colour. Settings should persist in a text file somewhere
     * Keybindings screen in settings
+    * Screen to inspect tiles on right click
+
+ * Animate projectiles
+    * Same as movement, could have multiple projectile sprites based on what is shooting them
+    * Might not be doable since it locks you out of input for a handful of frames, worth looking into
 
  * Screenshots, Itch page
 
@@ -25,5 +29,6 @@
    * See if we can clean up app builds to include no unnecessary dlls
    * Test persistent settings
    * Look into mac and linux deploys
+   * Make sure each item and creature have non-temp description text
 
  * **Release!**

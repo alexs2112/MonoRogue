@@ -97,11 +97,19 @@ namespace MonoRogue {
         public bool IsDead() { return HP <= 0; }
 
         public bool CanEnter(Point p) { return CanEnter(p.X, p.Y); }
-        public bool CanEnter(int x, int y) { return World.IsFloor(x, y); }
+        public bool CanEnter(int x, int y) { return World.IsFloor(x, y) || World.IsDoor(x, y); }
 
         public bool MoveTo(Point p) { return MoveTo(p.X, p.Y); }
         public bool MoveTo(int x, int y) { 
             if (!CanEnter(x, y)) { return false; }
+            if (World.IsDoor(x, y)) {
+                if (!IsPlayer) { return false; }
+                World.OpenDoor(x, y);
+                Notify("You break down the door.");
+                NotifyOthers($"The {Name} breaks down the door.");
+                TurnTimer = GetAttackDelay();
+                return true;
+            }
 
             Creature c = World.GetCreatureAt(x, y);
             if (c != null) {

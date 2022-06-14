@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 namespace MonoRogue {
     public class Tile {
         public bool Walkable;
+        public bool Breakable;
         public Texture2D Glyph;
         public Color Color;
 
@@ -20,6 +21,8 @@ namespace MonoRogue {
         private static List<Tile> DungeonFloors;
         private static List<Tile> CaveWalls;
         private static List<Tile> CaveFloors;
+        private static Tile DoorClosed;
+        private static Tile DoorOpen;
         public static void LoadTiles(ContentManager content) {
             DungeonWalls = new List<Tile>();
             for (int i = 0; i < Constants.NumberOfDungeonWallSprites; i++) {
@@ -28,7 +31,7 @@ namespace MonoRogue {
 
             DungeonFloors = new List<Tile>();
             for (int i = 0; i < Constants.NumberOfDungeonFloorSprites; i++) {
-                DungeonFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/Floor{i}"), Color.Gray));
+                DungeonFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/Floor{i}"), Color.LightGray));
             }
 
             CaveWalls = new List<Tile>();
@@ -38,8 +41,12 @@ namespace MonoRogue {
 
             CaveFloors = new List<Tile>();
             for (int i = 0; i < Constants.NumberOfCaveFloorSprites; i++) {
-                CaveFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/CaveFloor{i}"), Color.SandyBrown));
+                CaveFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/CaveFloor{i}"), Color.Tan));
             }
+
+            DoorClosed = new Tile(false, content.Load<Texture2D>("Tiles/DoorClosed"), Color.Brown);
+            DoorClosed.Breakable = true;
+            DoorOpen = new Tile(true, content.Load<Texture2D>("Tiles/DoorOpen"), Color.Brown);
         }
 
         public static Tile GetDungeonWall(System.Random random) {
@@ -57,6 +64,12 @@ namespace MonoRogue {
         public static Tile GetCaveFloor(System.Random random) {
             int i = random.Next(CaveFloors.Count);
             return CaveFloors[i];
+        }
+        public static Tile GetClosedDoor() {
+            return DoorClosed;
+        }
+        public static Tile GetOpenDoor() {
+            return DoorOpen;
         }
     }
 }
