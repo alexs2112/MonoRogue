@@ -38,8 +38,8 @@ namespace MonoRogue {
         }
 
         protected override void Initialize() {
-            creatureFactory = new CreatureFactory(Content);
             equipmentFactory = new EquipmentFactory(Content);
+            creatureFactory = new CreatureFactory(Content, equipmentFactory);
             Tile.LoadTiles(Content);
             Food.LoadFood(Content);
             PlayerGlyph.LoadGlyphs(Content);
@@ -259,6 +259,8 @@ namespace MonoRogue {
             }
 
             Constants.WriteMessagesToConsole = !cmd.Contains("--no-messages");
+            Constants.Invincible = cmd.Contains("--invincible");
+            if (Constants.Invincible) { System.Console.WriteLine("Player Invincibility Enabled"); }
         }
     }
 }

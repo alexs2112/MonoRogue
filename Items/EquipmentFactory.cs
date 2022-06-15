@@ -58,20 +58,20 @@ namespace MonoRogue {
             }
         }
 
-        private Weapon WeakWeapon(System.Random random) {
+        public Weapon WeakWeapon(System.Random random) {
             switch (random.Next(1)) {
                 case 0: return NewDagger();
                 default: return null;
             }
         }
-        private Weapon MediumWeapon(System.Random random) {
+        public Weapon MediumWeapon(System.Random random) {
             switch (random.Next(2)) {
                 case 0: return NewSword();
                 case 1: return NewShortbow();
                 default: return null;
             }
         }
-        private Weapon StrongWeapon(System.Random random) {
+        public Weapon StrongWeapon(System.Random random) {
             switch (random.Next(2)) {
                 case 0: return NewSword();
                 case 1: return NewShortbow();
@@ -79,27 +79,27 @@ namespace MonoRogue {
             }
         }
 
-        private Armor WeakArmor(System.Random random) {
+        public Armor WeakArmor(System.Random random) {
             switch (random.Next(1)) {
                 case 0: return NewClothArmor();
                 default: return null;
             }
         }
-        private Armor MediumArmor(System.Random random) {
+        public Armor MediumArmor(System.Random random) {
             switch (random.Next(2)) {
                 case 0: return NewClothArmor();
                 case 1: return NewLeatherArmor();
                 default: return null;
             }
         }
-        private Armor StrongArmor(System.Random random) {
+        public Armor StrongArmor(System.Random random) {
             switch (random.Next(1)) {
                 case 0: return NewLeatherArmor();
                 default: return null;
             }
         }
 
-        private Weapon NewDagger() {
+        public Weapon NewDagger() {
             Weapon w = new Weapon("Dagger", Glyphs["Dagger"], Color.LightSteelBlue);
             w.SetWeaponStats((1, 1));
             w.SetType(Item.Type.Dagger);
@@ -107,7 +107,7 @@ namespace MonoRogue {
             w.SetAttackText("stab");
             return w;
         }
-        private Weapon NewSword() {
+        public Weapon NewSword() {
             Weapon w = new Weapon("Sword", Glyphs["Sword"], Color.AliceBlue);
             w.SetWeaponStats((2, 2), 4);
             w.SetType(Item.Type.Sword);
@@ -115,7 +115,7 @@ namespace MonoRogue {
             w.SetAttackText("slash");
             return w;
         }
-        private Weapon NewShortbow() {
+        public Weapon NewShortbow() {
             Weapon w = new Weapon("Shortbow", Glyphs["Shortbow"], Color.SandyBrown);
             w.SetWeaponStats((0, 1), 5);
             w.SetRange(5);
@@ -125,14 +125,14 @@ namespace MonoRogue {
             return w;
         }
 
-        private Armor NewClothArmor() {
+        public Armor NewClothArmor() {
             Armor a = new Armor("Cloth Armor", Glyphs["Cloth Armor"], Color.LightBlue);
             a.SetArmorStats(4, 4);
             a.SetType(Item.Type.LightArmor);
             a.SetDescription("TEMP: A large, loose-fitting, wide-sleeved outer garment made of light cloth. It offers little protection against physical harm but does not hinder your movement.");
             return a;
         }
-        private Armor NewLeatherArmor() {
+        public Armor NewLeatherArmor() {
             Armor a = new Armor("Leather Armor", Glyphs["Leather Armor"], Color.SaddleBrown);
             a.SetArmorStats(8, 6, 4);
             a.SetType(Item.Type.LightArmor);

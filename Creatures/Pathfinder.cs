@@ -9,8 +9,10 @@ namespace MonoRogue {
         private List<Point> Closed;
         private Dictionary<Point, Point> Parents;
         private Dictionary<Point, int> TotalCost;
+        private Creature Creature;
 
-        public Pathfinder() {
+        public Pathfinder(Creature creature) {
+            Creature = creature;
             Open = new List<Point>();
             Closed = new List<Point>();
             Parents = new Dictionary<Point, Point>();
@@ -22,7 +24,13 @@ namespace MonoRogue {
         }
 
         private int CostToGetTo(Point source) {
-            if (Parents.ContainsKey(source)) { return 1 + CostToGetTo(Parents[source]); }
+            if (Parents.ContainsKey(source)) {
+                if (Creature.World.GetCreatureAt(source) != null) {
+                    return 2 + CostToGetTo(Parents[source]); 
+                } else {
+                    return 1 + CostToGetTo(Parents[source]); 
+                }
+            }
             else { return 0; }
         }
 
@@ -82,11 +90,11 @@ namespace MonoRogue {
             return res;
         }
 
-        private void CheckNeighbours(Creature creature, Point end, Point closest) {
+        private void CheckNeighbours(Point end, Point closest) {
             foreach (Point neighbour in GetNeighbours(closest)) {
                 if (
                     Closed.Contains(neighbour)
-                 || !creature.CanEnter(neighbour)
+                 || !Creature.CanEnter(neighbour)
                  && !neighbour.Equals(end)) {
                      continue;
                     }
@@ -108,7 +116,7 @@ namespace MonoRogue {
             return path;
         }
 
-        public List<Point> FindPath(Creature creature, Point start, Point end, int maxTries) {
+        public List<Point> FindPath(Point start, Point end, int maxTries) {
             Open.Clear();
             Closed.Clear();
             Parents.Clear();
@@ -122,15 +130,15 @@ namespace MonoRogue {
                 Closed.Add(closest);
 
                 if (closest.Equals(end)) { return CreatePath(start, closest); }
-                else { CheckNeighbours(creature, end, closest); }
+                else { CheckNeighbours(end, closest); }
             }
             System.Console.WriteLine(Open.ToArray());
             return null;
         }
 
         public static List<Point> FindPath(Creature c, int x, int y) { 
-            Pathfinder pf = new Pathfinder();
-            return pf.FindPath(c, new Point(c.X, c.Y), new Point(x, y), 300);
+            Pathfinder pf = new Pathfinder(c);
+            return pf.FindPath(new Point(c.X, c.Y), new Point(x, y), 300);
         }
     }
 }

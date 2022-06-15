@@ -2,10 +2,12 @@
 A work in progress simple turn based roguelike written in monogame to learn how to use C#
 
 ## Run Instructions:
- - `dotnet run program.cs` in the terminal will compile and run the game for testing.
+ - `dotnet run Program.cs` in the terminal will compile and run the game for testing.
  - Optional Parameters:
     - `--debug` option to enter debug mode
     - `--seed <seed>` to input a seed to use for world generation
+    - `--no-messages` to stop printing player notifications to the terminal
+    - `--invincible` to stop the player from modifying their health
 
 ## Algorithms in use:
  - Dungeon generation uses a combination of Binary Space Partitioning, Cellular Automata, Depth First Search, and Kruskal's Algorithm to create world of Caves and Rooms connected by hallways. [DungeonGeneration.cs](World/DungeonGeneration.cs)

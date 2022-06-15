@@ -5,19 +5,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRogue {
     public class CreatureFactory {
+        private EquipmentFactory Equipment;
         private Dictionary<string, Texture2D> Glyphs;
 
         // Keep track of who the player is after they are created to give them to enemy AIs
         private Creature Player;
         public void SetPlayer(Creature player) { Player = player; }
 
-        public CreatureFactory(ContentManager content) {
+        public CreatureFactory(ContentManager content, EquipmentFactory equipment) {
             Glyphs = new Dictionary<string, Texture2D>();
             
             // Store all loaded sprites in a dictionary so we don't need to store a ton of variables
             Glyphs.Add("Rat", content.Load<Texture2D>("Creatures/Rat"));
             Glyphs.Add("Pig", content.Load<Texture2D>("Creatures/Pig"));
             Glyphs.Add("Farmer", content.Load<Texture2D>("Creatures/Farmer"));
+
+            Equipment = equipment;
         }
 
         public Creature NewPlayer(World world, int x, int y) {

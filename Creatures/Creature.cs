@@ -50,6 +50,7 @@ namespace MonoRogue {
 
         // Private setters to avoid accidentally changing important attributes
         public void SetColor(Color color) { Color = color; }
+        public void SetName(string name) { Name = name; }
         public void SetDescription(string s) { Description = s; }
         public void ModifyDamage(int amount) { ModifyDamage(amount, amount); }
         public void ModifyDamage(int min, int max) { Damage = (Damage.Min + min, Damage.Max + max); }
@@ -65,10 +66,12 @@ namespace MonoRogue {
             return (Armor.Defense, Armor.MaxDefense);
         }
 
+        public void ModifyMovementDelay(int x) { MovementDelay += x; }
         public int GetMovementDelay() {
             if (Armor != null) { return MovementDelay + Armor.MovementPenalty; }
             else { return MovementDelay; }
         }
+        public void ModifyAttackDelay(int x) { AttackDelay += x; }
         public int GetAttackDelay() {
             if (Weapon != null) { return AttackDelay + Weapon.AttackDelay; }
             else { return AttackDelay; }
@@ -76,6 +79,7 @@ namespace MonoRogue {
         public int GetRange() { return Weapon == null ? 1 : Weapon.Range; }
         
         public void ModifyHP(int value) {
+            if (IsPlayer && Constants.Invincible) { return; }
             HP += value;
             if (HP <= 0) {
                 NotifyOthers($"{Name} dies!");
@@ -121,10 +125,10 @@ namespace MonoRogue {
             if (c != null) {
                 if (!IsPlayer && !c.IsPlayer) {
                     c.NotifyOthers($"The {Name} bumps into the {c.Name}.");
+                    TurnTimer = GetAttackDelay();
                 } else {
                     Attack(c);
                 }
-                TurnTimer = GetAttackDelay();
             } else {
                 X = x; 
                 Y = y;
@@ -151,9 +155,13 @@ namespace MonoRogue {
             return true;
         }
 
-        public List<Point> GetLineToPoint(int x, int y) { return GetLineToPoint(new Point(x, y)); }
-        public List<Point> GetLineToPoint(Point p) {
-            List<Point> line = World.GetLine(X, Y, p.X, p.Y);
+        public List<Point> GetLineToPoint(int x, int y) { return GetLineToPoint(X, Y, x, y); }
+        public List<Point> GetLineToPoint(Point p) { return GetLineToPoint(X, Y, p.X, p.Y); }
+        public static List<Point> GetLineToPoint(Point source, Point dest) {
+            return GetLineToPoint(source.X, source.Y, dest.X, dest.Y);
+        }
+        public static List<Point> GetLineToPoint(int sx, int sy, int dx, int dy) {
+            List<Point> line = World.GetLine(sx, sy, dx, dy);
             if (line.Count > 0) { line.RemoveAt(0); }
             return line;
         }
@@ -176,6 +184,7 @@ namespace MonoRogue {
             NotifyOthers($"{Name} {action}s {target.Name} for {damage} damage!");
             target.TakeDamage(damage);
             target.GetAttacked(this);
+            TurnTimer = GetAttackDelay();
         }
 
         public void GetAttacked(Creature attacker) {
@@ -190,12 +199,13 @@ namespace MonoRogue {
             }
             return null;
         }
-        public Creature GetCreatureInRange(Creature target) {
+        public Creature GetCreatureInRange(Creature target) { return GetCreatureInRange(X, Y, target); }
+        public Creature GetCreatureInRange(int sx, int sy, Creature target) {
             // Return the first creature in a line to the target that is in range
             if (target == null) { return null; }
-            Creature c = GetCreatureFromLine(GetLineToPoint(target.X, target.Y));
+            Creature c = GetCreatureFromLine(GetLineToPoint(sx, sy, target.X, target.Y));
             if (c == null) { return null; }
-            if (GetLineToPoint(c.X, c.Y).Count > GetRange()) { c = null; }
+            if (GetLineToPoint(sx, sy, c.X, c.Y).Count > GetRange()) { c = null; }
             return c;
         }
 
@@ -223,27 +233,34 @@ namespace MonoRogue {
 
             if (i.IsFood) { World.EatFoodAt(this, p); }
             else if (i.IsArmor) {
-                Armor armor = (Armor)i;
-                Armor temp = Armor;
-                Armor = armor;
-
                 World.Items.Remove(p);
-                if (temp != null) { World.Items.Add(p, temp); }
+                Equip(i);
 
                 Glyph = PlayerGlyph.GetUpdatedGlyph(this);
-                Notify($"You equip the {i.Name}.");
             } else if (i.IsWeapon) {
-                Weapon weapon = (Weapon)i;
+                World.Items.Remove(p);
+                Equip(i);
+
+                Glyph = PlayerGlyph.GetUpdatedGlyph(this);
+            }
+            TurnTimer = 10;
+        }
+        public void Equip(Item item) {
+            if (item.IsArmor) {
+                Armor armor = (Armor)item;
+                Armor temp = Armor;
+                Armor = armor;
+                Notify($"You equip the {item.Name}.");
+
+                if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
+            } else if (item.IsWeapon) {
+                Weapon weapon = (Weapon)item;
                 Weapon temp = Weapon;
                 Weapon = weapon;
 
-                World.Items.Remove(p);
-                if (temp != null) { World.Items.Add(p, temp); }
-
-                Glyph = PlayerGlyph.GetUpdatedGlyph(this);
-                Notify($"You equip the {i.Name}.");
+                Notify($"You equip the {item.Name}.");
+                if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
             }
-            TurnTimer = 10;
         }
     }
 }

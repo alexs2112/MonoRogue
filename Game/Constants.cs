@@ -1,6 +1,7 @@
 namespace MonoRogue {
     public struct Constants {
         public static bool Debug;                   // If debug mode is enabled
+        public static bool Invincible = false;      // If the player is invincible
         public static bool WriteMessagesToConsole = true;   // Default to writing messages to the console, turn this off if it is annoying
 
         public static int ScreenWidth = 800;        // Size of the screen in pixels, default for monogame is 800 x 480 

@@ -23,6 +23,7 @@ namespace MonoRogue {
 
         // Some movement methods
         protected void MoveTowards(Creature target) { MoveTowards(target.X, target.Y); }
+        protected void MoveTowards(Point p) { MoveTowards(p.X, p.Y); }
         protected void MoveTowards(int x, int y) {
             List<Point> path = Pathfinder.FindPath(Host, x, y);
             if (path.Count > 0) { Host.MoveTo(path[0]); }
@@ -47,60 +48,69 @@ namespace MonoRogue {
         }
     }
 
-    public class PlayerAI : CreatureAI {
-        private List<string> Messages;
-        public List<Point> Path {get; private set; }
+    public class BasicAI : CreatureAI {
+        protected Creature Player;
 
-        public PlayerAI(Creature creature) : base(creature) {
-            Messages = new List<string>();
-        }
+        // If the creature has seen the player but the player is out of sight, move towards
+        // where the player was last seen
+        protected Point TargetTile;
 
-        public void FollowPath(World world) {
-            // If the player has a path to follow, move to the next one if there are no enemies in sight
-            if (Path == null) { return; }
-            if (Path.Count == 0) { Path = null; return; }
-            Creature c = CreatureInView(world);
-            if (c != null) {
-                Host.Notify($"A {c.Name} comes into view.");
-                Path = null;
-                return;
-            }
-            ClearMessages();
-            Host.MoveTo(Path[0]);
-            Path.RemoveAt(0);
-        }
-
-        public void SetPath(List<Point> path) { Path = path; }
-        public void ClearPath() { Path = null; }
-
-        public bool PathNullOrEmpty() {
-            return Path == null || Path.Count == 0;
-        }
-
-        public override void AddMessage(string message) {
-            if (message.Contains(Host.Name)) {
-                message = message.Replace(Host.Name, "you");
-            }
-            Messages.Add(message);
-            if (Constants.WriteMessagesToConsole) { System.Console.WriteLine(message); }
-        }
-        public override List<string> GetMessages() { return Messages; }
-        public override void ClearMessages() { Messages.Clear(); }
-
-        public override void OnDeath(World world) { Host.Notify("Press ESC to quit."); }
-    }
-
-    public class PigAI : CreatureAI {
-        private bool Hostile;
-        private Creature Player;
-
-        public PigAI(Creature creature, Creature player) : base(creature) { 
+        public BasicAI(Creature creature, Creature player) : base(creature) {
             Player = player;
+            TargetTile = new Point(-1);
         }
 
         public override void TakeTurn(World world) {
-            if (Hostile && Host.CanSee(Player.X, Player.Y)) {
-                MoveTowards(Player);
+            if (Host.CanSee(Player.X, Player.Y)) {
+                TargetTile = new Point(Player.X, Player.Y);
+                TryToAttack(Player);
+            } else if (TargetTile.X != -1) {
+                MoveTowards(TargetTile);
+                if (TargetTile.X == Host.X && TargetTile.Y == Host.Y) {
+                    TargetTile = new Point(-1);
+                }
+            } else {
+                Wander();
+            }
+        }
+
+        protected void TryToAttack(Creature target) {
+            // If we are in range of the target, try to attack it
+            if (Host.GetLineToPoint(target.X, target.Y).Count <= Host.GetRange()) {
+                if (Host.GetCreatureInRange(target) == target) {
+                    Host.Attack(target);
+                } else if (Host.GetRange() > 1) {
+                    // If our range > 1 and we can't hit the target from here, there must be another enemy in the way
+                    for (int mx = -1; mx <= 1; mx++) {
+                        for (int my = -1; my <= 1; my++) {
+                            if (!Host.CanEnter(Host.X + mx, Host.Y + my) || 
+                                Host.World.GetCreatureAt(Host.X + mx, Host.Y + my) != null) { 
+                                continue; 
+                            }
+                            if (Host.GetCreatureInRange(Host.X + mx, Host.Y + my, target) == target) {
+                                Host.MoveRelative(mx, my);
+                                return;
+                            }
+                        }
+                    }
+                    MoveTowards(target);
+                }
+
+            // Otherwise, move towards being in range
+            } else {
+                MoveTowards(target);
+            }
+        }
+    }
+
+    public class PigAI : BasicAI {
+        private bool Hostile;
+
+        public PigAI(Creature creature, Creature player) : base(creature, player) { }
+
+        public override void TakeTurn(World world) {
+            if (Hostile) {
+                base.TakeTurn(world);
             } else {
                 Wander();
             }
@@ -113,6 +123,9 @@ namespace MonoRogue {
                 Host.SetColor(Color.HotPink);
                 Host.NotifyOthers($"The {Host.Name} flies into a rage!");
                 Host.ModifyDamage(1);
+                Host.ModifyMovementDelay(-3);
+                Host.ModifyAttackDelay(-2);
+                Host.SetName($"Angry {Host.Name}");
             }
         }
 
@@ -120,21 +133,6 @@ namespace MonoRogue {
             System.Random random = new System.Random();
             if (random.NextDouble() < 0.5) {
                 world.Items[new Point(Host.X, Host.Y)] = Food.PigMeat;
-            }
-        }
-    }
-
-    public class BasicAI : CreatureAI {
-        private Creature Player;
-        public BasicAI(Creature creature, Creature player) : base(creature) {
-            Player = player;
-        }
-
-        public override void TakeTurn(World world) {
-            if (Host.CanSee(Player.X, Player.Y)) {
-                MoveTowards(Player);
-            } else {
-                Wander();
             }
         }
     }
