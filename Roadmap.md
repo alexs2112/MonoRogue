@@ -1,12 +1,6 @@
 ### **Roadmap:**
  * Dungeon balance overhaul
     * Reflavour the dungeon as an actual dungeon, guards trying to keep you in, you win when you escape
-    * We can probably estimate damage by depth and spawn food at points where it will be needed
-
- * Refine dungeon generation
-    * Locked doors that require keys to open
-    * You should never get stuck without any keys but with more locked doors
-    * Coloured keys, need to get 3 keys in order to leave essentially, each key is held by a tougher guard
 
  * Music and sound effects
 

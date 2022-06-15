@@ -27,7 +27,9 @@ namespace MonoRogue {
             World w = new World(Width, Height, IntToTiles(tiles, dungeonTiles, generator.Doors));
 
             SpawnPlayer(w, creatureFactory, start);
-            SpawnObjects(w, creatureFactory, equipmentFactory);
+
+            Populator populator = new Populator(Random, w, creatureFactory, equipmentFactory);
+            populator.Populate(w.Player, start, end, regions);
 
             return w;
         }
@@ -35,41 +37,6 @@ namespace MonoRogue {
         public Creature SpawnPlayer(World world, CreatureFactory creatureFactory, Region start) {
             Point startTile = start.GetEmptyTile(Random, world);
             return creatureFactory.NewPlayer(world, startTile.X, startTile.Y);
-        }
-
-        public void SpawnObjects(World world, CreatureFactory creatureFactory, EquipmentFactory equipmentFactory) {
-            // Spawn Enemies
-            for (int i = 0; i < 6; i++) {
-                Point tile = world.GetRandomFloor(Random);
-                creatureFactory.NewRat(world, tile.X, tile.Y);
-            }
-            for (int i = 0; i < 8; i++) {
-                Point tile = world.GetRandomFloor(Random);
-                creatureFactory.NewPig(world, tile.X, tile.Y);
-            }
-            for (int i = 0; i < 5; i++) {
-                Point tile = world.GetRandomFloor(Random);
-                creatureFactory.NewFarmer(world, tile.X, tile.Y);
-            }
-
-            // Spawn Items
-            for (int i = 0; i < 5; i++) {
-                Point tile = world.GetRandomFloor(Random);
-                Item item = equipmentFactory.RandomWeapon(Random);
-                world.Items.Add(tile, item);
-            }
-
-            for (int i = 0; i < 4; i++) {
-                Point tile = world.GetRandomFloor(Random);
-                Item item = equipmentFactory.RandomArmor(Random);
-                world.Items.Add(tile, item);
-            }
-
-            for (int i = 0; i < 6; i++) {
-                Point tile = world.GetRandomFloor(Random);
-                Food food = Food.RandomFood(Random);
-                world.Items.Add(tile, food);
-            }
         }
 
         private Tile[,] IntToTiles(int[,] old, bool[,] dungeonTiles, List<Point> doors) {

@@ -34,19 +34,7 @@ namespace MonoRogue {
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            List<string> cmd = new List<string>(args);
-            Constants.Debug = cmd.Contains("--debug");
-            if (Constants.Debug) { System.Console.WriteLine("Debug Mode Enabled"); }
-
-            int seedIndex = cmd.IndexOf("--seed");
-            if (seedIndex > -1) {
-                try {
-                    Constants.Seed = System.Int32.Parse(cmd[seedIndex + 1]);
-                } catch {
-                    System.Console.WriteLine("The --seed argument requires an integer parameter to follow it.");
-                    System.Console.WriteLine("Using random seed instead.");
-                }
-            }
+            ParseParameters(args);
         }
 
         protected override void Initialize() {
@@ -253,6 +241,24 @@ namespace MonoRogue {
                 }
             }
             return null;
+        }
+
+        private static void ParseParameters(string[] args) {
+            List<string> cmd = new List<string>(args);
+            Constants.Debug = cmd.Contains("--debug");
+            if (Constants.Debug) { System.Console.WriteLine("Debug Mode Enabled"); }
+
+            int seedIndex = cmd.IndexOf("--seed");
+            if (seedIndex > -1) {
+                try {
+                    Constants.Seed = System.Int32.Parse(cmd[seedIndex + 1]);
+                } catch {
+                    System.Console.WriteLine("The --seed argument requires an integer parameter to follow it.");
+                    System.Console.WriteLine("Using random seed instead.");
+                }
+            }
+
+            Constants.WriteMessagesToConsole = !cmd.Contains("--no-messages");
         }
     }
 }

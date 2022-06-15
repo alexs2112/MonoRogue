@@ -420,10 +420,12 @@ namespace MonoRogue {
 
         public Point GetEmptyTile(System.Random random, World world) {
             while (Tiles.Count > 0) {
-                Point p = Tiles[random.Next(Tiles.Count)];
+                int i = random.Next(Tiles.Count);
+                Point p = Tiles[i];
                 if (world.IsFloor(p) && world.GetCreatureAt(p) == null && world.GetItemAt(p) == null)  {
                     return p;
                 }
+                Tiles.RemoveAt(i);
             }
             if (Constants.Debug) { System.Console.WriteLine($"Could not find an empty tile in region {ID}"); }
             return new Point(-1, -1);

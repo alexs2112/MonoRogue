@@ -18,7 +18,6 @@ namespace MonoRogue {
         public int HP { get; set; }
         public int MaxHP { get; set; }
         public int Vision { get; private set; }
-        public string Faction { get; set; }
 
         private (int Min, int Max) Damage { get; set; }
 
@@ -26,6 +25,9 @@ namespace MonoRogue {
         public int TurnTimer { get; set; }
         private int MovementDelay { get; set; }
         private int AttackDelay { get; set; }
+
+        // Used for world generation and populating the dungeon
+        public int Difficulty { get; set; }
 
         public Armor Armor { get; set; }
         public Weapon Weapon { get; set; }
@@ -57,6 +59,10 @@ namespace MonoRogue {
             } else {
                 return Damage;
             }
+        }
+        public (int Current, int Max) GetDefense() {
+            if (Armor == null) { return (0,0); }
+            return (Armor.Defense, Armor.MaxDefense);
         }
 
         public int GetMovementDelay() {
@@ -113,7 +119,7 @@ namespace MonoRogue {
 
             Creature c = World.GetCreatureAt(x, y);
             if (c != null) {
-                if (Faction != null && Faction == c.Faction) {
+                if (!IsPlayer && !c.IsPlayer) {
                     c.NotifyOthers($"The {Name} bumps into the {c.Name}.");
                 } else {
                     Attack(c);

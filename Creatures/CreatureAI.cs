@@ -113,7 +113,6 @@ namespace MonoRogue {
                 Host.SetColor(Color.HotPink);
                 Host.NotifyOthers($"The {Host.Name} flies into a rage!");
                 Host.ModifyDamage(1);
-                Host.Faction = null;
             }
         }
 
