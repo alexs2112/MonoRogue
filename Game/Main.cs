@@ -122,8 +122,9 @@ namespace MonoRogue {
                     else if (keyTrack.MovementSEPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(1, 1); }
                     else if (keyTrack.MovementNWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, -1); }
                     else if (keyTrack.MovementSWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, 1); }
-                    else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(true); }
                     else if (keyTrack.WaitPressed()) { player.PickUp(false); }
+                    else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(true); }
+                    else if (keyTrack.KeyJustPressed(Keys.R)) { ((PlayerAI)player.AI).StartResting(); }
                     else if (mouse.RightClicked()) {
                         Point tile = mouse.GetTile(worldView);
                         Creature mouseCreature = GetMouseCreature(tile);

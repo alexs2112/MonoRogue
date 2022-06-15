@@ -17,6 +17,7 @@ namespace MonoRogue {
                 " - Spacebar or click yourself to interact with items on the ground",
                 " - Right click creatures or items to see their stats",
                 " - [s] to see your own stats",
+                " - [r] to rest and repair armor",
                 " - [.] to wait one turn",
                 " - [esc] to quit the game or exit subscreens",
                 " - [/] or [?] to show this menu"

@@ -20,6 +20,8 @@
     * A fire key of some sort ([f]?) to let you select an enemy from available enemies in sight to shoot at, default to pointing at the one you last attacked, or the nearest one with the lowest health
     * Right side of the fire screen should just show a list of enemies in sight with their health. You can cycle through them with direction input (or just a click)
 
+ * Music and sound effects
+
  * Screenshots, Itch page
 
  * Release prep:

@@ -7,10 +7,10 @@ namespace MonoRogue {
         public static int ScreenWidth = 800;        // Size of the screen in pixels, default for monogame is 800 x 480 
         public static int ScreenHeight = 480;
 
-        public static int WorldWidth = 40;          // World dimensions when generated
-        public static int WorldHeight = 25;         // Default: 40x25
+        public static int WorldWidth = 60;          // World dimensions when generated
+        public static int WorldHeight = 35;         // Default: 60x35, Small: 40x25
 
-        public static int DungeonIterations = 4;    // How many times we partition the dungeon, will result in up to 2^var rooms, default: 4
+        public static int DungeonIterations = 6;    // How many times we partition the dungeon, will result in up to 2^var rooms, default: 4
         public static int RoomMinSize = 4;          // Minimum Width and Height of a room
 
         public static int WorldViewWidth = 15;      // How many tiles are displayed from the world at once

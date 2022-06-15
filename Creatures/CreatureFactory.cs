@@ -77,7 +77,7 @@ namespace MonoRogue {
         private Creature NewPig(World world, int x, int y) {
             Creature c = new Creature("Pig", Glyphs["Pig"], Color.Pink);
             c.SetStats(6, (1, 2));
-            c.SetDescription("TEMP: A stout-bodied, short-legged, omnivorous mammal.");
+            c.SetDescription("A stout-bodied, short-legged, omnivorous mammal. It is easily provoked.");
             c.AI = new PigAI(c, Player);
             c.World = world;
             c.Difficulty = 1;

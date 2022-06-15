@@ -5,9 +5,40 @@ namespace MonoRogue {
     public class PlayerAI : CreatureAI {
         private List<string> Messages;
         public List<Point> Path {get; private set; }
+        public bool Resting { get; private set; }
 
         public PlayerAI(Creature creature) : base(creature) {
             Messages = new List<string>();
+        }
+
+        public override void TakeTurn(World world) {
+            if (Resting) { 
+                Creature c = CreatureInView(world);
+                if (c != null) {
+                    Host.Notify($"A {c.Name} comes into view.");
+                    Resting = false;
+                    return;
+                } else if (Host.Armor.Defense >= Host.Armor.MaxDefense) {
+                    Host.Notify("Armor repaired!");
+                    Resting = false;
+                    return;
+                }
+                Host.TurnTimer = 10; 
+            }
+        }
+
+        public void StartResting() {
+            Creature c = CreatureInView(Host.World);
+            if (c != null) {
+                Host.Notify("Cannot rest, enemies in view.");
+            } else if (Host.Armor == null) {
+                Host.Notify("You do not have armor to repair.");
+            } else if (Host.Armor.Defense >= Host.Armor.MaxDefense) {
+                Host.Notify("Your armor is already repaired.");
+            } else {
+                Resting = true;
+                Host.TurnTimer = 10;
+            }
         }
 
         public void FollowPath(World world) {
