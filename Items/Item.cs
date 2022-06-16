@@ -13,6 +13,9 @@ namespace MonoRogue {
             Dagger,
             Sword,
             Bow,
+            Mace,
+            Spear,
+            Axe,
             
             LightArmor
         }

@@ -23,21 +23,26 @@ namespace MonoRogue {
         public static void LoadGlyphs(ContentManager content) {
             glyphs = new Dictionary<Item.Type, Dictionary<Item.Type, Texture2D>>();
 
-            // No weapon
             glyphs.Add(Item.Type.Null, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Null].Add(Item.Type.Null, content.Load<Texture2D>("Player/Null-Null"));
 
-            // Dagger is equipped
             glyphs.Add(Item.Type.Dagger, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Dagger].Add(Item.Type.Null, content.Load<Texture2D>("Player/Dagger-Null"));
 
-            // Sword is equipped
             glyphs.Add(Item.Type.Sword, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Sword].Add(Item.Type.Null, content.Load<Texture2D>("Player/Sword-Null"));
 
-            // Bow is equipped
             glyphs.Add(Item.Type.Bow, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Bow].Add(Item.Type.Null, content.Load<Texture2D>("Player/Bow-Null"));
+
+            glyphs.Add(Item.Type.Axe, new Dictionary<Item.Type, Texture2D>());
+            glyphs[Item.Type.Axe].Add(Item.Type.Null, content.Load<Texture2D>("Player/Axe-Null"));
+
+            glyphs.Add(Item.Type.Mace, new Dictionary<Item.Type, Texture2D>());
+            glyphs[Item.Type.Mace].Add(Item.Type.Null, content.Load<Texture2D>("Player/Mace-Null"));
+
+            glyphs.Add(Item.Type.Spear, new Dictionary<Item.Type, Texture2D>());
+            glyphs[Item.Type.Spear].Add(Item.Type.Null, content.Load<Texture2D>("Player/Spear-Null"));
         }
 
         public static Texture2D GetDefaultGlyph() {

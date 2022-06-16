@@ -15,11 +15,15 @@ namespace MonoRogue {
         public int X { get; set; }
         public int Y { get; set; }
 
+        // Basic Stats
         public int HP { get; set; }
         public int MaxHP { get; set; }
         public int Vision { get; private set; }
 
+        // Attack Stats
         private (int Min, int Max) Damage { get; set; }
+        private int BaseRange { get; set; }
+        private string BaseAttackText { get; set; }
 
         // How many game ticks it takes to recover after taking an action, default 10
         public int TurnTimer { get; set; }
@@ -46,17 +50,21 @@ namespace MonoRogue {
             Vision = 7;
             MovementDelay = movementDelay;
             AttackDelay = attackDelay;
+            BaseAttackText = "attack";
+            BaseRange = 1;
         }
 
-        // Private setters to avoid accidentally changing important attributes
+        // Setters for private attributes
         public void SetColor(Color color) { Color = color; }
         public void SetName(string name) { Name = name; }
         public void SetDescription(string s) { Description = s; }
+        public void SetBaseRange(int r) { BaseRange = r; }
+        public void SetAttackText(string t) { BaseAttackText = t; }
         public void ModifyDamage(int amount) { ModifyDamage(amount, amount); }
         public void ModifyDamage(int min, int max) { Damage = (Damage.Min + min, Damage.Max + max); }
         public (int Min, int Max) GetDamage() {
             if (Weapon != null) {
-                return (Damage.Min + Weapon.Damage.Min, Damage.Max + Weapon.Damage.Max);
+                return (Weapon.Damage.Min, Weapon.Damage.Max);
             } else {
                 return Damage;
             }
@@ -73,10 +81,14 @@ namespace MonoRogue {
         }
         public void ModifyAttackDelay(int x) { AttackDelay += x; }
         public int GetAttackDelay() {
-            if (Weapon != null) { return AttackDelay + Weapon.AttackDelay; }
+            if (Weapon != null) { return Weapon.AttackDelay; }
             else { return AttackDelay; }
         }
-        public int GetRange() { return Weapon == null ? 1 : Weapon.Range; }
+        public int GetRange() { return Weapon == null ? BaseRange : Weapon.Range; }
+        public Item.Type GetWeaponType() { 
+            if (Weapon == null) { return Item.Type.Null; }
+            else { return Weapon.ItemType; }
+        }
         
         public void ModifyHP(int value) {
             if (IsPlayer && Constants.Invincible) { return; }
@@ -87,6 +99,8 @@ namespace MonoRogue {
                 AI.OnDeath(World);
                 World.Creatures.Remove(this);
                 World.ColorOverlay[X, Y] = Color.DarkRed;
+                if (Armor != null) { World.Items[new Point(X,Y)] = Armor; }
+                else if (Weapon != null) { World.Items[new Point(X,Y)] = Weapon; }
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }
@@ -177,7 +191,7 @@ namespace MonoRogue {
             if (Weapon != null && Weapon.AttackText != null) {
                 action = Weapon.AttackText;
             } else {
-                action = "attack";
+                action = BaseAttackText;
             }
 
             Notify($"You {action} {target.Name} for {damage} damage!");

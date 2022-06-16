@@ -47,7 +47,7 @@ namespace MonoRogue {
             Range = 1;
         }
 
-        public void SetWeaponStats((int, int) damage) { SetWeaponStats(damage, 0); }
+        public void SetWeaponStats((int, int) damage) { SetWeaponStats(damage, 10); }
         public void SetWeaponStats((int, int) damage, int attackDelay) {
             Damage = damage;
             AttackDelay = attackDelay;

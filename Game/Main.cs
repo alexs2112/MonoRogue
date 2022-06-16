@@ -162,6 +162,7 @@ namespace MonoRogue {
 
                     // If input has been given, update the world
                     if (inputGiven && !player.IsDead()) {
+                        worldView.Update(world, player);
                         while (player.TurnTimer > 0) {
                             // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
                             currentIndex = (currentIndex + 1) % world.Creatures.Count;
@@ -169,11 +170,11 @@ namespace MonoRogue {
                             c.TurnTimer--;
                             if (c.TurnTimer <= 0) { 
                                 c.TakeTurn(world);
-                                worldView.Update(world, player);
 
                                 if (player.IsDead()) { break; }
                             }
                         }
+                        worldView.Update(world, player);
                         mainInterface.UpdateMessages(player.AI.GetMessages());
                     }
                 }

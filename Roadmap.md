@@ -1,6 +1,16 @@
 ### **Roadmap:**
  * Dungeon balance overhaul
-    * Reflavour the dungeon as an actual dungeon, guards trying to keep you in, you win when you escape
+    * Have weapon types affect gameplay
+      * Swords deal higher damage than other weapons of its level
+      * Spears have a range of 2, When you move towards something that is 3 tiles away (so you end up 2 tiles away) you "lunge" and get a free attack
+      * Axes hit all enemies adjacent to you whenever you attack
+      * Daggers lower your attack delay and can critically hit
+      * Maces deal additional damage to armor
+    * Enchanted weapons? Give bonus damage and are a different colour
+    * Armor types hinder movement and attack speed the heavier they get
+      * Set armor to display as something that isn't blue hearts, to make it a little more dynamic
+    * Include a heart crystal (bloodstone?) that gives you an additional 4 HP when you pick it up. These should spawn at the last depth of the early dungeon and the last depth of the mid game dungeon
+    * Make items dropped on the ground try not to overwrite the tile they land on, attempt to place it on any adjacent tile first
 
  * Music and sound effects
 
@@ -22,7 +32,7 @@
 
  * Music and sound effects
 
- * Screenshots, Itch page
+ * Screenshots, GameJolt page, Itch page, Itch+GJ profile
 
  * Release prep:
    * It looks like monogame keeps the actual window size independent of Constants.ScreenWidth/ScreenHeight. See if we can scale the window in settings.
@@ -31,5 +41,6 @@
    * Test persistent settings
    * Look into mac and linux deploys
    * Make sure each item and creature have non-temp description text
+   * Make sure the user manual is up to date and has corresponding pages that can be viewed from the help menu in game. Probably compile it into a pdf when distributing.
 
  * **Release!**

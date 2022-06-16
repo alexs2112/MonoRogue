@@ -16,4 +16,6 @@ A work in progress simple turn based roguelike written in monogame to learn how 
  - A* pathfinding algorithm for hostile enemies.
 
 ## Current Roadmap:
-[Roadmap](Roadmap.md)
+ - [Roadmap](Roadmap.md)
+
+## [User Manual](UserManual.md)
