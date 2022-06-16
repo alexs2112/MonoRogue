@@ -165,9 +165,10 @@ namespace MonoRogue {
         public Weapon NewStaff() {
             Weapon w = new Weapon("Staff", Glyphs["Staff"], Color.BurlyWood);
             w.SetWeaponStats((2, 4), 12);
-            w.SetType(Item.Type.spear);
+            w.SetType(Item.Type.Spear);
             w.SetDescription("A simple polearm composed of hardened and sturdy wood.");
             w.SetAttackText("jab");
+            w.SetRange(2);
             return w;
         }
         public Weapon NewShortbow() {
@@ -193,6 +194,7 @@ namespace MonoRogue {
             w.SetWeaponStats((3, 6));
             w.SetType(Item.Type.Mace);
             w.SetDescription("A large hammer, blunt and heavy that can strike with maximum impact.");
+            w.SetAttackText("crush");
             return w;
         }
         public Weapon NewFalchion() {
@@ -243,6 +245,7 @@ namespace MonoRogue {
             w.SetWeaponStats((4, 8));
             w.SetType(Item.Type.Mace);
             w.SetDescription("A large mace with the head covered in protruding spikes.");
+            w.SetAttackText("crush");
             return w;
         }
         public Weapon NewGreatsword() {

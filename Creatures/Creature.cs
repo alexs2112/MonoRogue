@@ -141,12 +141,37 @@ namespace MonoRogue {
                     c.NotifyOthers($"The {Name} bumps into the {c.Name}.");
                     TurnTimer = GetAttackDelay();
                 } else {
-                    Attack(c);
+                    if (GetWeaponType() == Item.Type.Axe && IsPlayer) {
+                        // Axes hit all enemies adjacent to you
+                        for (int mx = -1; mx <= 1; mx++) {
+                            for (int my = -1; my <= 1; my++) {
+                                if (mx == 0 && my == 0) { continue; }
+                                Creature adj = World.GetCreatureAt(X + mx, Y + my);
+                                if (adj == null) { continue; }
+                                Attack(adj);
+                            }
+                        }
+                    } else {
+                        Attack(c);
+                    }
                 }
             } else {
+                int oldX = X;
+                int oldY = Y;
                 X = x; 
                 Y = y;
                 TurnTimer = GetMovementDelay();
+
+                // Spears get a free attack if you move towards an enemy and end up in range
+                if (GetWeaponType() == Item.Type.Spear) {
+                    int dx = X - oldX;
+                    int dy = Y - oldY;
+                    for (int r = 1; r <= GetRange(); r++) {
+                        Creature poke = World.GetCreatureAt(X + dx * r, Y + dy * r);
+                        if (poke == null) { continue; }
+                        else { Attack(poke); break; }
+                    }
+                }
 
                 Item i = World.GetItemAt(X, Y);
                 if (i != null) { Notify($"You see here a {i.Name}."); }
@@ -194,8 +219,25 @@ namespace MonoRogue {
                 action = BaseAttackText;
             }
 
-            Notify($"You {action} {target.Name} for {damage} damage!");
-            NotifyOthers($"{Name} {action}s {target.Name} for {damage} damage!");
+            string critString = "";
+            if (GetWeaponType() == Item.Type.Dagger) {
+                // Daggers can critically hit, dealing double damage
+                int chance = new System.Random().Next(10);
+
+                // 10% chance to crit
+                if (chance < 1) { damage = damage * 2; critString = " CRIT!"; }
+            } else if (GetWeaponType() == Item.Type.Mace) {
+                // Maces deal additional damage to armor, scaled by difficulty
+                if (target.GetDefense().Current > 0) {
+                    int bonus = System.Math.Min(target.GetDefense().Current, IsPlayer ? target.Difficulty : Difficulty);
+                    damage += bonus;
+                }
+            }
+
+            Notify($"You {action} {target.Name} for {damage} damage!{critString}");
+
+            if (action.EndsWith('h')) { action += 'e'; } // To turn slash and crush into slashes and crushes, instead of slashs and crushs
+            NotifyOthers($"{Name} {action}s {target.Name} for {damage} damage!{critString}");
             target.TakeDamage(damage);
             target.GetAttacked(this);
             TurnTimer = GetAttackDelay();

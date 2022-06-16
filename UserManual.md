@@ -19,7 +19,7 @@ WIP
 WIP
 
 ## Weapons:
-There are 5 different weapon types that you can equip. Each functions slightly differently to add some variety to gameplay.
+There are 6 different weapon types that you can equip. Each functions slightly differently to add some variety to gameplay.
 * Swords deal higher damage than other weapons of its level
 * Spears have increased range. Moving towards an enemy lets you "lunge" and get a free attack
 * Axes hit all enemies adjacent to you whenever you attack

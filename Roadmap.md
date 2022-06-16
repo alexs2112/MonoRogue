@@ -1,16 +1,10 @@
 ### **Roadmap:**
  * Dungeon balance overhaul
-    * Have weapon types affect gameplay
-      * Swords deal higher damage than other weapons of its level
-      * Spears have a range of 2, When you move towards something that is 3 tiles away (so you end up 2 tiles away) you "lunge" and get a free attack
-      * Axes hit all enemies adjacent to you whenever you attack
-      * Daggers lower your attack delay and can critically hit
-      * Maces deal additional damage to armor
-    * Enchanted weapons? Give bonus damage and are a different colour
     * Armor types hinder movement and attack speed the heavier they get
-      * Set armor to display as something that isn't blue hearts, to make it a little more dynamic
+      * Set armor to display as something that isn't blue hearts, to make it a little more dynamic. Blue hearts plus bonus ticks or something?
     * Include a heart crystal (bloodstone?) that gives you an additional 4 HP when you pick it up. These should spawn at the last depth of the early dungeon and the last depth of the mid game dungeon
     * Make items dropped on the ground try not to overwrite the tile they land on, attempt to place it on any adjacent tile first
+    * Enchanted weapons? Give bonus damage and are a different colour, to bridge the gap between depths if that feels unbalanced
 
  * Music and sound effects
 
