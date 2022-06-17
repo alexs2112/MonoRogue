@@ -57,6 +57,16 @@ namespace MonoRogue {
                 }
             }
 
+            // Spawn bloodstone at the end of each dungeon "tier"
+            for (int i = 0; i < 2; i++) {
+                int d;
+                if (i == 0) { d = lowDepth; }
+                else { d = medDepth; } // i == 1
+                Region r = depths[d][Random.Next(depths[d].Count)];
+                Point tile = r.GetEmptyTile(Random, World);
+                World.Items.Add(tile, Heartstone.GetHeartstone());
+            }
+
             // Spawn items by depth as a function of difficulty
             int mod = 0;
             for (int i = 0; i <= highDepth; i++) {
@@ -95,9 +105,9 @@ namespace MonoRogue {
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= lowDepth) { divisor = 3; }
+                if (i <= lowDepth) { divisor = 4; }
                 else if (i <= medDepth) { divisor = 6; }
-                else { divisor = 10; }
+                else { divisor = 9; }
                 
                 int num = current / divisor;
                 mod = current % divisor;

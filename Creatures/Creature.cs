@@ -301,6 +301,9 @@ namespace MonoRogue {
                 Equip(i);
 
                 Glyph = PlayerGlyph.GetUpdatedGlyph(this);
+            } else if (i.IsHeartstone) {
+                ((Heartstone)i).Consume(this);
+                World.Items.Remove(p);
             }
             TurnTimer = 10;
         }

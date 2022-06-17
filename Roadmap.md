@@ -1,9 +1,11 @@
 ### **Roadmap:**
  * Dungeon balance overhaul
     * When standing over an item, write that item under your player stats so you can compare
-    * Include a heart crystal (bloodstone?) that gives you an additional 4 Max HP when you pick it up. These should spawn at the last depth of the early dungeon and the last depth of the mid game dungeon
     * Make items dropped on the ground try not to overwrite the tile they land on, attempt to place it on any adjacent tile first
     * Enchanted weapons? Give bonus damage and are a different colour, to bridge the gap between depths if that feels unbalanced
+    * Add a win condition, standing on the exit in the last room and pressing space will win you the game
+      * Make a boss enemy that also spawns in the end room that holds a key, you cant leave without the key
+      * The most hearts that will fit on the main interface is 9... The player should have 5 by the end of the game
 
  * Music and sound effects
 

@@ -42,6 +42,7 @@ namespace MonoRogue {
             creatureFactory = new CreatureFactory(Content, equipmentFactory);
             Tile.LoadTiles(Content);
             Food.LoadFood(Content);
+            Heartstone.LoadHeartstone(Content);
             PlayerGlyph.LoadGlyphs(Content);
             keyTrack = new KeyboardTrack();
             mouse = new MouseHandler();
