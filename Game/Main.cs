@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace MonoRogue {
     public class Main : Game {
         private System.Random rng;
-        private int seed;
+        public int seed;
         private World world;
         private Creature player;
         private Subscreen subscreen;
@@ -101,9 +101,9 @@ namespace MonoRogue {
                     player.AI.ClearMessages();
                 }
 
-                if (keyTrack.KeyJustPressed(Keys.Escape)) { Exit(); }
-                
-                if (!player.IsDead()) {
+                if (keyTrack.KeyJustPressed(Keys.Escape)) { 
+                    subscreen = new EscapeScreen(this, Content);
+                } else if (!player.IsDead()) {
                     if (!((PlayerAI)player.AI).PathNullOrEmpty()) {
                         // If the player is automatically following a path, follow it
                         if (keyTrack.KeyJustPressed() || mouse.ButtonClicked()) {
