@@ -105,10 +105,8 @@ namespace MonoRogue {
             spriteBatch.DrawString(Font14, $"Damage: {w.Damage.Min}-{w.Damage.Max}", new Vector2(x, y), Color.White);
             y += 32;
             spriteBatch.DrawString(Font14, $"Range: {w.Range}", new Vector2(x, y), Color.White);
-            if (w.AttackDelay != 0) {
-                y += 32;
-                spriteBatch.DrawString(Font14, $"Attack Delay: {w.AttackDelay}", new Vector2(x, y), Color.White);
-            }
+            y += 32;
+            spriteBatch.DrawString(Font14, $"Attack Delay: {w.Delay}", new Vector2(x, y), Color.White);
             return y + 48;
         }
         private int DrawArmor(SpriteBatch spriteBatch, int x, int y, Armor a) {
@@ -116,12 +114,7 @@ namespace MonoRogue {
             y += 32;
             spriteBatch.DrawString(Font14, $"Defense: {a.Defense}/{a.MaxDefense}", new Vector2(x, y), Color.White);
             y += 32;
-            spriteBatch.DrawString(Font14, $"Refresh: {a.Refresh}", new Vector2(x, y), Color.White);
-
-            if (a.MovementPenalty != 0) {
-                y += 32;
-                spriteBatch.DrawString(Font14, $"Move Delay: {a.MovementPenalty}", new Vector2(x, y), Color.White);
-            }
+            spriteBatch.DrawString(Font14, $"Weight: {a.Weight}", new Vector2(x, y), Color.White);
             return y + 48;
         }
 

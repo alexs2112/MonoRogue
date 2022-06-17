@@ -1,8 +1,7 @@
 ### **Roadmap:**
  * Dungeon balance overhaul
-    * Armor types hinder movement and attack speed the heavier they get
-      * Set armor to display as something that isn't blue hearts, to make it a little more dynamic. Blue hearts plus bonus ticks or something?
-    * Include a heart crystal (bloodstone?) that gives you an additional 4 HP when you pick it up. These should spawn at the last depth of the early dungeon and the last depth of the mid game dungeon
+    * When standing over an item, write that item under your player stats so you can compare
+    * Include a heart crystal (bloodstone?) that gives you an additional 4 Max HP when you pick it up. These should spawn at the last depth of the early dungeon and the last depth of the mid game dungeon
     * Make items dropped on the ground try not to overwrite the tile they land on, attempt to place it on any adjacent tile first
     * Enchanted weapons? Give bonus damage and are a different colour, to bridge the gap between depths if that feels unbalanced
 
@@ -23,8 +22,6 @@
  * Tab to auto attack nearest enemy in range, to avoid having to repeatedly use the mouse when ranged
     * A fire key of some sort ([f]?) to let you select an enemy from available enemies in sight to shoot at, default to pointing at the one you last attacked, or the nearest one with the lowest health
     * Right side of the fire screen should just show a list of enemies in sight with their health. You can cycle through them with direction input (or just a click)
-
- * Music and sound effects
 
  * Screenshots, GameJolt page, Itch page, Itch+GJ profile
 

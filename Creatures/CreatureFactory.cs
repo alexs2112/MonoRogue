@@ -67,7 +67,7 @@ namespace MonoRogue {
 
         private Creature NewRat(World world, int x, int y) {
             Creature c = new Creature("Rat", Glyphs["Rat"], Color.SaddleBrown);
-            c.SetStats(6, (1,2), 6, 6);
+            c.SetStats(4, (1,2), 6, 6);
             c.SetDescription("A large, aggressive, and very dirty rodent. It moves and attacks quite quickly.");
             c.SetAttackText("bite");
             c.AI = new BasicAI(c, Player);
@@ -80,7 +80,7 @@ namespace MonoRogue {
 
         private Creature NewPig(World world, int x, int y) {
             Creature c = new Creature("Pig", Glyphs["Pig"], Color.Pink);
-            c.SetStats(8, (1, 2));
+            c.SetStats(6, (1, 2));
             c.SetDescription("A stout-bodied, short-legged, omnivorous mammal. It is easily provoked.");
             c.AI = new PigAI(c, Player);
             c.World = world;

@@ -28,11 +28,17 @@ There are 6 different weapon types that you can equip. Each functions slightly d
 * Bows have extended range but deal a little less damage
 
 ## Armor:
-WIP
+Armor has two stats: Defense and Weight. 
+
+Defense serves to increase player survivability in the form of Blue Hearts. Blue hearts function similarly to regular hearts, but they regenerate outside of combat. 
+
+Armor weight slows your movement and attack speed by increasing your move delay and attack delay. Heavier armor has higher defense, but also tends to have higher weight.
 
 ## Credits:
-Development by myself, Urist2112. https://urist2112.itch.io
+Developed by myself, Urist2112. https://urist2112.itch.io
 
-A large portion of the tileset is from https://www.kenney.nl. A great source for free game sprites.
+Written using the C# MonoGame framework. https://www.monogame.net/
 
-WIP (will need audio once we get that far)
+A large portion of the tileset is from https://www.kenney.nl
+
+Music composed by Elephant Toothpaste. https://soundcloud.com/user-385599278

@@ -76,13 +76,15 @@ namespace MonoRogue {
 
         public void ModifyMovementDelay(int x) { MovementDelay += x; }
         public int GetMovementDelay() {
-            if (Armor != null) { return MovementDelay + Armor.MovementPenalty; }
+            if (Armor != null) { return MovementDelay + Armor.Weight; }
             else { return MovementDelay; }
         }
         public void ModifyAttackDelay(int x) { AttackDelay += x; }
         public int GetAttackDelay() {
-            if (Weapon != null) { return Weapon.AttackDelay; }
-            else { return AttackDelay; }
+            int v = AttackDelay;
+            if (Weapon != null) { v = Weapon.Delay; }
+            if (Armor != null) { v += Armor.Weight; }
+            return v;
         }
         public int GetRange() { return Weapon == null ? BaseRange : Weapon.Range; }
         public Item.Type GetWeaponType() { 
@@ -244,6 +246,7 @@ namespace MonoRogue {
         }
 
         public void GetAttacked(Creature attacker) {
+            if (Armor != null) { Armor.ResetTimer(); }
             AI.OnHit(World, attacker);
         }
         

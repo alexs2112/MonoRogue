@@ -17,7 +17,9 @@ namespace MonoRogue {
             Spear,
             Axe,
             
-            LightArmor
+            LightArmor,
+            MediumArmor,
+            HeavyArmor
         }
 
         public string Name { get; private set; }
