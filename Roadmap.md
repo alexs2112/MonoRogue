@@ -1,7 +1,4 @@
 ### **Roadmap:**
- * Dungeon balance overhaul
-    * Add a win condition, standing on the exit in the last room and pressing space will win you the game
-
  * General gameplay things
     * When standing over an item, write that item under your player stats so you can compare
     * Make items dropped on the ground try not to overwrite the tile they land on, attempt to place it on any adjacent tile first

@@ -41,6 +41,10 @@ namespace MonoRogue {
             int x = StartX + 24;
             int y = 8;
             spriteBatch.DrawString(Font14, creature.Name, new Vector2(x, y), Color.White);
+            if (creature.IsPlayer && creature.HasKey) {
+                spriteBatch.Draw(GoldenKey.KeyGlyph, new Vector2(x, Constants.ScreenWidth - 48), Color.Yellow);
+            }
+
             y += 24;
             DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
             if (creature.GetDefense().Max == 0) {

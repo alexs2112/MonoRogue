@@ -26,6 +26,9 @@ namespace MonoRogue {
 
             World w = new World(Width, Height, IntToTiles(tiles, dungeonTiles, generator.Doors));
 
+            Point p = end.GetEmptyTile(Random, w);
+            w.Exit = p;
+
             SpawnPlayer(w, creatureFactory, start);
 
             Populator populator = new Populator(Random, w, creatureFactory, equipmentFactory);

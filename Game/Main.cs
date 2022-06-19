@@ -43,6 +43,7 @@ namespace MonoRogue {
             Tile.LoadTiles(Content);
             Food.LoadFood(Content);
             Heartstone.LoadHeartstone(Content);
+            GoldenKey.LoadKey(Content);
             PlayerGlyph.LoadGlyphs(Content);
             keyTrack = new KeyboardTrack();
             mouse = new MouseHandler();
@@ -75,8 +76,7 @@ namespace MonoRogue {
         protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             MainInterface.LoadTextures(Content);
-
-            worldView.LoadContent(Content);
+            WorldView.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime) {
@@ -125,9 +125,15 @@ namespace MonoRogue {
                     else if (keyTrack.MovementNWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, -1); }
                     else if (keyTrack.MovementSWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, 1); }
                     else if (keyTrack.WaitPressed()) { player.TurnTimer = player.GetMovementDelay(); }
-                    else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(true); }
                     else if (keyTrack.KeyJustPressed(Keys.R)) { ((PlayerAI)player.AI).StartResting(); }
-                    else if (mouse.RightClicked()) {
+                    else if (keyTrack.KeyJustPressed(Keys.Space)) { 
+                        if (player.X == world.Exit.X && player.Y == world.Exit.Y) {
+                            inputGiven = false;
+                            TryToWinGame();
+                        } else {
+                            player.PickUp(true); 
+                        }
+                    } else if (mouse.RightClicked()) {
                         Point tile = mouse.GetTile(worldView);
                         Creature mouseCreature = GetMouseCreature(tile);
                         Item mouseItem = GetMouseItem(tile);
@@ -143,7 +149,12 @@ namespace MonoRogue {
                             subscreen = new CreatureScreen(Content, player);
                             inputGiven = false;
                         } else if (mouseCreature == player) {
-                            player.PickUp(false);
+                            if (player.X == world.Exit.X && player.Y == world.Exit.Y) {
+                                inputGiven = false;
+                                TryToWinGame();
+                            } else {
+                                player.PickUp(false);
+                            }
                         } else if (target != null) {
                             player.Attack(target);
                             player.TurnTimer = player.GetAttackDelay();
@@ -245,6 +256,14 @@ namespace MonoRogue {
                 }
             }
             return null;
+        }
+
+        private void TryToWinGame() {
+            if (player.HasKey) {
+                subscreen = new WinScreen(this, Content);
+            } else {
+                player.Notify("You need the Golden Key to unlock the exit to the dungeon!");
+            }
         }
 
         private static void ParseParameters(string[] args) {

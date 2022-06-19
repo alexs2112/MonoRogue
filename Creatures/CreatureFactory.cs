@@ -147,7 +147,7 @@ namespace MonoRogue {
         public Creature NewImp(World world, int x, int y, Color color) {
             // Set as public so the cultist can summon one
             Creature c = new Creature("Imp", Glyphs["Imp"], color);
-            c.SetStats(2, 6, (1, 2), 10, 15);
+            c.SetStats(2, 6, (1, 2), 10, 16);
             c.SetBaseRange(4);
             c.SetDescription("A mystical creature that can hover in the air. It casts spells that can inflict pain from a distance.");
             c.AI = new BasicAI(c, Player);

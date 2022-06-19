@@ -36,6 +36,9 @@ namespace MonoRogue {
         // Used for world generation and populating the dungeon
         public int Difficulty { get; set; }
 
+        // If this creature holds the key to the exit of the game or not
+        public bool HasKey { get; set; }
+
         public Armor Armor { get; set; }
         public Weapon Weapon { get; set; }
 
@@ -106,14 +109,8 @@ namespace MonoRogue {
                 AI.OnDeath(World);
                 World.Creatures.Remove(this);
                 World.ColorOverlay[X, Y] = Color.DarkRed;
-                if (Armor != null && Weapon != null) {
-                    if (new System.Random().Next(2) < 1) {
-                        World.Items[new Point(X,Y)] = Armor;
-                    } else {
-                        World.Items[new Point(X,Y)] = Weapon;
-                    }
-                } else if (Armor != null) { World.Items[new Point(X,Y)] = Armor; }
-                else if (Weapon != null) { World.Items[new Point(X,Y)] = Weapon; }
+                if (Armor != null) { DropItem(Armor); }
+                if (Weapon != null) { DropItem(Weapon); }
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }
@@ -336,6 +333,10 @@ namespace MonoRogue {
             } else if (i.IsHeartstone) {
                 ((Heartstone)i).Consume(this);
                 World.Items.Remove(p);
+            } else if (i.IsKey) {
+                World.Items.Remove(p);
+                HasKey = true;
+                Notify("You pick up the Golden Key!");
             }
             TurnTimer = 10;
         }
@@ -354,6 +355,27 @@ namespace MonoRogue {
                 Notify($"You equip the {item.Name}.");
                 if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
             }
+        }
+        public void DropItem(Item item) {
+            if (World.GetItemAt(X, Y) == null) { World.Items[new Point(X, Y)] = item; }
+            else {
+                List<Point> valid = new List<Point>();
+                for (int mx = -1; mx <= 1; mx++) {
+                    for (int my = -1; my <= 1; my++) {
+                        if (World.IsFloor(X + mx, Y + my) && World.GetItemAt(X + mx, Y + my) == null) {
+                            valid.Add(new Point(X + mx, Y + my));
+                        }
+                    }
+                }
+
+                // If the tile and all surrounding tiles are full, the item vanishes into the void
+                if (valid.Count == 0) { return; }
+                Point p = valid[new System.Random().Next(valid.Count)];
+                World.Items[p] = item;
+            }
+
+            // Failsafe, if the key can't drop the game becomes unwinnable
+            if (item.IsKey) { World.Items[new Point(X, Y)] = item; }
         }
     }
 }

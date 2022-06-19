@@ -12,6 +12,8 @@ namespace MonoRogue {
         public Creature Player;
         public List<Creature> Creatures;
 
+        public Point Exit;
+
         public World(int width, int height,Tile[,] tiles) {
             Width = width;
             Height = height;

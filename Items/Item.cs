@@ -22,7 +22,8 @@ namespace MonoRogue {
             MediumArmor,
             HeavyArmor,
 
-            Heartstone
+            Heartstone,
+            Key
         }
 
         public string Name { get; private set; }
@@ -34,6 +35,7 @@ namespace MonoRogue {
         public bool IsWeapon { get; protected set; }
         public bool IsFood { get; protected set; }
         public bool IsHeartstone { get; protected set; }
+        public bool IsKey { get; protected set; }
         public Type ItemType { get; protected set; }
         public void SetType(Type itemType) { ItemType = itemType; }
         public void SetDescription(string s) { Description = s; }
@@ -66,5 +68,22 @@ namespace MonoRogue {
             player.Notify("You consume the bloodstone.");
             player.Notify("Max health increased!");
         }
+    }
+
+    // You need this key to win the game
+    public class GoldenKey : Item {
+        private GoldenKey(Texture2D glyph) : base("Golden Key", glyph, Color.Yellow) {
+            SetType(Type.Key);
+            IsKey = true;
+        }
+
+        public static Texture2D KeyGlyph;
+        private static GoldenKey Key;
+        public static void LoadKey(ContentManager content) {
+            KeyGlyph = content.Load<Texture2D>("Misc/Key");
+            Key = new GoldenKey(KeyGlyph);
+            Key.SetDescription("A large key made of solid gold. It is the key to victory and escape of the dungeon.");
+        }
+        public static GoldenKey GetKey() { return Key; }
     }
 }

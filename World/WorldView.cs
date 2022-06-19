@@ -13,11 +13,11 @@ namespace MonoRogue {
         public int OffsetX;
         public int OffsetY;
 
-        private Texture2D WallTexture;
-        private Texture2D FloorTexture;
-
         // Keep track of all the tiles the player has seen
         public bool[,] HasSeen;
+
+        private static Texture2D ExitLocked;
+        private static Texture2D ExitOpen;
 
         // A way to cache the glyphs to not have to recalculate everything between key presses
         public WorldView(int widthInTiles, int heightInTiles) {
@@ -29,9 +29,9 @@ namespace MonoRogue {
             HasSeen = new bool[Constants.WorldWidth, Constants.WorldHeight];
         }
 
-        public void LoadContent(ContentManager content) {
-            WallTexture = content.Load<Texture2D>("Tiles/Wall");
-            FloorTexture = content.Load<Texture2D>("Tiles/Floor");
+        public static void LoadContent(ContentManager content) {
+            ExitLocked = content.Load<Texture2D>("Misc/ExitLocked");
+            ExitOpen = content.Load<Texture2D>("Misc/ExitOpen");
         }
 
         public void Update(World world, Creature player) {
@@ -70,6 +70,13 @@ namespace MonoRogue {
                     Glyphs[x,y] = tile;
                     Colors[x,y] = color;
                 }
+            }
+
+            // If the player is in range of the exit, draw it
+            if (HasSeen[world.Exit.X, world.Exit.Y] && 
+                world.Exit.X >= OffsetX && world.Exit.X < Width + OffsetX && world.Exit.Y >= OffsetY && world.Exit.Y < Height + OffsetY) {
+                    Glyphs[world.Exit.X - OffsetX, world.Exit.Y - OffsetY] = player.HasKey ? ExitOpen : ExitLocked;
+                    Colors[world.Exit.X - OffsetX, world.Exit.Y - OffsetY] = player.HasKey ? Color.SkyBlue : Color.Gold;
             }
 
             // Overwrite the tiles that a creature is standing on

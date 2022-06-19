@@ -145,7 +145,7 @@ namespace MonoRogue {
         public override void OnDeath(World world) {
             System.Random random = new System.Random();
             if (random.NextDouble() < 0.5) {
-                world.Items[new Point(Host.X, Host.Y)] = Food.PigMeat;
+                Host.DropItem(Food.PigMeat);
             }
         }
 
@@ -332,7 +332,7 @@ namespace MonoRogue {
         }
 
         public override void OnDeath(World world) {
-            // Drop golden key
+            Host.DropItem(GoldenKey.GetKey());
         }
     }
 }
