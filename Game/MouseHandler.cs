@@ -42,7 +42,7 @@ namespace MonoRogue {
 
         // Return the tile relative to the worldview
         public Point GetViewTile(WorldView world) {
-            if (State.X < 0 || State.Y < 0 || State.X > world.Width * 32 || State.Y > world.Height * 32) {
+            if (State.X < 0 || State.Y < 0 || State.X >= world.Width * 32 || State.Y >= world.Height * 32) {
                 return new Point(-1, -1);
             }
             int x = State.X / 32;

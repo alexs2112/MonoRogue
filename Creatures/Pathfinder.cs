@@ -26,7 +26,7 @@ namespace MonoRogue {
         private int CostToGetTo(Point source) {
             if (Parents.ContainsKey(source)) {
                 if (Creature.World.GetCreatureAt(source) != null) {
-                    return 2 + CostToGetTo(Parents[source]); 
+                    return 3 + CostToGetTo(Parents[source]); 
                 } else {
                     return 1 + CostToGetTo(Parents[source]); 
                 }
@@ -132,7 +132,6 @@ namespace MonoRogue {
                 if (closest.Equals(end)) { return CreatePath(start, closest); }
                 else { CheckNeighbours(end, closest); }
             }
-            System.Console.WriteLine(Open.ToArray());
             return null;
         }
 

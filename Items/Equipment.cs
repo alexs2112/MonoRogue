@@ -6,21 +6,18 @@ namespace MonoRogue {
         public int Defense { get; set; }
         public int MaxDefense { get; private set; }
         private int Timer;
-        public int Refresh { get; private set; }    // How many turns out of combat it takes to regenerate
-
-        public int MovementPenalty { get; private set; }
+        public int Weight { get; private set; }
 
         public Armor(string name, Texture2D glyph, Color color) : base(name, glyph, color) {
             IsArmor = true;
             IsWeapon = false;
         }
 
-        public void SetArmorStats(int defense, int refresh) { SetArmorStats(defense, refresh, 0); }
-        public void SetArmorStats(int defense, int refresh, int movementPenalty) {
+        public void SetArmorStats(int defense) { SetArmorStats(defense, 0); }
+        public void SetArmorStats(int defense, int weight) {
             MaxDefense = defense;
             Defense = defense;
-            Refresh = refresh;
-            MovementPenalty = movementPenalty;
+            Weight = weight;
         }
 
         // Updates the armor for it to regenerate
@@ -28,16 +25,21 @@ namespace MonoRogue {
             if (Defense == MaxDefense) { Timer = 0; return; }
 
             Timer++;
-            if (Timer >= Refresh) {
+            if (Timer >= 5) {
                 Timer = 0;
                 Defense++;
             }
+        }
+
+        // Whenever the owner is hit, reset, should not regen in combat
+        public void ResetTimer() {
+            Timer = 0;
         }
     }
 
     public class Weapon : Item {
         public (int Min, int Max) Damage { get; private set; }
-        public int AttackDelay { get; private set; }
+        public int Delay { get; private set; }
         public int Range { get; private set; }
         public string AttackText { get; private set; }
 
@@ -47,10 +49,10 @@ namespace MonoRogue {
             Range = 1;
         }
 
-        public void SetWeaponStats((int, int) damage) { SetWeaponStats(damage, 0); }
+        public void SetWeaponStats((int, int) damage) { SetWeaponStats(damage, 10); }
         public void SetWeaponStats((int, int) damage, int attackDelay) {
             Damage = damage;
-            AttackDelay = attackDelay;
+            Delay = attackDelay;
         }
 
         public void SetRange(int range) { Range = range; }

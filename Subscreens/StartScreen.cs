@@ -16,6 +16,7 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             switch (key) {
+                case Keys.Escape: Main.Exit(); break;
                 case Keys.Enter:  
                     if (Seed.Length > 0) {
                         try {

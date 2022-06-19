@@ -37,20 +37,14 @@ namespace MonoRogue {
                 Armor armor = (Armor)Item;
                 spriteBatch.DrawString(Font14, $"Defense: {armor.Defense}/{armor.MaxDefense}", new Vector2(x, y), Color.White);
                 y += 32;
-                spriteBatch.DrawString(Font14, $"Refresh: {armor.Refresh}", new Vector2(x, y), Color.White);
-                if (armor.MovementPenalty != 0) {
-                    y += 32;
-                    spriteBatch.DrawString(Font14, $"Movement Delay: {armor.MovementPenalty}", new Vector2(x, y), Color.White);
-                }
+                spriteBatch.DrawString(Font14, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
             } else if (Item.IsWeapon) {
                 Weapon weapon = (Weapon)Item;
-                spriteBatch.DrawString(Font14, $"Damage Increase: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font14, $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
                 y += 32;
                 spriteBatch.DrawString(Font14, $"Range: {weapon.Range}", new Vector2(x, y), Color.White);
-                if (weapon.AttackDelay != 0) {
-                    y += 32;
-                    spriteBatch.DrawString(Font14, $"Attack Delay: {weapon.AttackDelay}", new Vector2(x, y), Color.White);
-                }
+                y += 32;
+                spriteBatch.DrawString(Font14, $"Attack Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
             }
             y += 48;
             DrawDescription(spriteBatch, 32, y);

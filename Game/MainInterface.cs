@@ -38,17 +38,17 @@ namespace MonoRogue {
 
         public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature) { DrawCreatureStats(spriteBatch, creature, null); }
         public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature, Creature player) {
-            int x = StartX + 32;
+            int x = StartX + 24;
             int y = 8;
             spriteBatch.DrawString(Font14, creature.Name, new Vector2(x, y), Color.White);
             y += 24;
             DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
-            if (creature.Armor == null) {
+            if (creature.GetDefense().Max == 0) {
                 y += 32;
                 spriteBatch.DrawString(Font14, "No armor", new Vector2(x, y), Color.Gray);
             } else {
                 y += 32;
-                DrawHearts(spriteBatch, creature.Armor.MaxDefense, creature.Armor.Defense, x, y, Color.LightSkyBlue);
+                DrawHearts(spriteBatch, creature.GetDefense().Max, creature.GetDefense().Current, x, y, Color.LightSkyBlue);
             }
 
             if (player != null) {
@@ -59,8 +59,8 @@ namespace MonoRogue {
                 y += 24;
                 DrawHearts(spriteBatch, player.MaxHP, player.HP, playerX - 32 * ((player.MaxHP + 3) / 4), y, Color.Red);
                 y += 32;
-                if (player.Armor != null) {
-                    DrawHearts(spriteBatch, player.Armor.MaxDefense, player.Armor.Defense, playerX - 32 * ((player.Armor.MaxDefense + 3) / 4), y, Color.LightSkyBlue);
+                if (player.GetDefense().Max > 0) {
+                    DrawHearts(spriteBatch, player.GetDefense().Max, player.GetDefense().Current, playerX - 32 * ((player.GetDefense().Max + 3) / 4), y, Color.LightSkyBlue);
                 }
             }
 
@@ -71,9 +71,9 @@ namespace MonoRogue {
 
             string s;
             Color c;
-            if (creature.Weapon == null) { s = "None"; c = Color.Gray; }
+            if (creature.Weapon == null) { s = "Unarmed"; c = Color.Gray; }
             else { s = creature.Weapon.Name; c = Color.White; }
-            spriteBatch.DrawString(Font14, $"Weapon: {s}", new Vector2(x, y), c);
+            spriteBatch.DrawString(Font14, s, new Vector2(x, y), c);
         }
 
         private static Rectangle HeartEmpty = new Rectangle(0, 0, 32, 32);
@@ -81,11 +81,17 @@ namespace MonoRogue {
         private static Rectangle HeartHalf = new Rectangle(64, 0, 32, 32);
         private static Rectangle HeartThree = new Rectangle(96, 0, 32, 32);
         private static Rectangle HeartFull = new Rectangle(128, 0, 32, 32);
+        private static Rectangle HalfHeartEmpty = new Rectangle(0, 0, 16, 32);
+        private static Rectangle HalfHeartHalf = new Rectangle(32, 0, 16, 32);
+        private static Rectangle HalfHeartFull = new Rectangle(128, 0, 16, 32);
         public static void DrawHearts(SpriteBatch spriteBatch, int max, int health, int x, int y, Color color) {
             // Each heart counts as 4 HP
             int fullHearts = health / 4;
             int partialHearts = health % 4;
             int emptyHearts = (max + 3) / 4 - fullHearts;
+
+            // If the last heart to draw is only half a heart, ie max HP is divisible by 2 but not 4
+            bool lastIsHalf = max % 4 == 2;
 
             // Draw each undamaged heart
             for (int i = 0; i < fullHearts; i++) {
@@ -98,20 +104,36 @@ namespace MonoRogue {
                 emptyHearts -= 1;   // Reduce the number of empty hearts you need to draw to accomodate the partial one
                 Vector2 partialVector = new Vector2(x, y);
                 Rectangle partialSource;
-                if (partialHearts == 1) {
-                    partialSource = HeartQuarter;
-                } else if (partialHearts == 2) {
-                    partialSource = HeartHalf;
+
+                if (lastIsHalf && health > max - 2) {
+                    if (health == max) {
+                        partialSource = HalfHeartFull;
+                    } else {
+                        partialSource = HalfHeartHalf;
+                    }
                 } else {
-                    partialSource = HeartThree;
+                    if (partialHearts == 1) {
+                        partialSource = HeartQuarter;
+                    } else if (partialHearts == 2) {
+                        partialSource = HeartHalf;
+                    } else {
+                        partialSource = HeartThree;
+                    }
                 }
                 spriteBatch.Draw(HeartsFull, partialVector, partialSource, color);
                 x += 32;
             }
 
             // Then draw the empty hearts to show capacity
-            for (int i = 0; i < emptyHearts; i++) {
+            for (int i = 0; i < emptyHearts - 1; i++) {
                 spriteBatch.Draw(HeartsFull, new Vector2(i * 32 + x, y), HeartEmpty, Color.DarkGray);
+            }
+            if (emptyHearts > 0){
+                if (lastIsHalf) {
+                    spriteBatch.Draw(HeartsFull, new Vector2((emptyHearts - 1) * 32 + x, y), HalfHeartEmpty, Color.DarkGray);
+                } else {
+                    spriteBatch.Draw(HeartsFull, new Vector2((emptyHearts - 1) * 32 + x, y), HeartEmpty, Color.DarkGray);
+                }
             }
         }
 
@@ -127,17 +149,13 @@ namespace MonoRogue {
             } else if (item.IsArmor) {
                 Armor armor = (Armor)item;
                 spriteBatch.DrawString(Font14, $"Defense: {armor.Defense}/{armor.MaxDefense}", new Vector2(x, y), Color.White);
-                if (armor.MovementPenalty != 0) {
-                    y += 32;
-                    spriteBatch.DrawString(Font14, $"Delay: {armor.MovementPenalty}", new Vector2(x, y), Color.White);
-                }
+                y += 32;
+                spriteBatch.DrawString(Font14, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
             } else if (item.IsWeapon) {
                 Weapon weapon = (Weapon)item;
                 spriteBatch.DrawString(Font14, $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
-                if (weapon.AttackDelay != 0) {
-                    y += 32;
-                    spriteBatch.DrawString(Font14, $"Delay: {weapon.AttackDelay}", new Vector2(x, y), Color.White);
-                }
+                y += 32;
+                spriteBatch.DrawString(Font14, $"Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
             }
         }
 

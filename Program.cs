@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace MonoRogue {
+﻿namespace MonoRogue {
     public static class Program {
-        [STAThread]
+        [System.STAThread]
         static void Main(string[] args) {
             using (var game = new Main(args))
                 game.Run();

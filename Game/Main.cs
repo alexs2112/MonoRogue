@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace MonoRogue {
     public class Main : Game {
         private System.Random rng;
-        private int seed;
+        public int seed;
         private World world;
         private Creature player;
         private Subscreen subscreen;
@@ -42,6 +42,7 @@ namespace MonoRogue {
             creatureFactory = new CreatureFactory(Content, equipmentFactory);
             Tile.LoadTiles(Content);
             Food.LoadFood(Content);
+            Heartstone.LoadHeartstone(Content);
             PlayerGlyph.LoadGlyphs(Content);
             keyTrack = new KeyboardTrack();
             mouse = new MouseHandler();
@@ -100,9 +101,10 @@ namespace MonoRogue {
                     player.AI.ClearMessages();
                 }
 
-                if (keyTrack.KeyJustPressed(Keys.Escape)) { Exit(); }
-                
-                if (!player.IsDead()) {
+                if (keyTrack.KeyJustPressed(Keys.Escape)) {
+                    if (player.IsDead()) { Exit(); }
+                    subscreen = new EscapeScreen(this, Content);
+                } else if (!player.IsDead()) {
                     if (!((PlayerAI)player.AI).PathNullOrEmpty()) {
                         // If the player is automatically following a path, follow it
                         if (keyTrack.KeyJustPressed() || mouse.ButtonClicked()) {
@@ -122,7 +124,7 @@ namespace MonoRogue {
                     else if (keyTrack.MovementSEPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(1, 1); }
                     else if (keyTrack.MovementNWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, -1); }
                     else if (keyTrack.MovementSWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, 1); }
-                    else if (keyTrack.WaitPressed()) { player.PickUp(false); }
+                    else if (keyTrack.WaitPressed()) { player.TurnTimer = player.GetMovementDelay(); }
                     else if (keyTrack.KeyJustPressed(Keys.Space)) { player.PickUp(true); }
                     else if (keyTrack.KeyJustPressed(Keys.R)) { ((PlayerAI)player.AI).StartResting(); }
                     else if (mouse.RightClicked()) {
@@ -162,6 +164,7 @@ namespace MonoRogue {
 
                     // If input has been given, update the world
                     if (inputGiven && !player.IsDead()) {
+                        worldView.Update(world, player);
                         while (player.TurnTimer > 0) {
                             // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
                             currentIndex = (currentIndex + 1) % world.Creatures.Count;
@@ -169,11 +172,11 @@ namespace MonoRogue {
                             c.TurnTimer--;
                             if (c.TurnTimer <= 0) { 
                                 c.TakeTurn(world);
-                                worldView.Update(world, player);
 
                                 if (player.IsDead()) { break; }
                             }
                         }
+                        worldView.Update(world, player);
                         mainInterface.UpdateMessages(player.AI.GetMessages());
                     }
                 }

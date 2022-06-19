@@ -51,11 +51,11 @@ namespace MonoRogue {
             MainInterface.DrawHearts(spriteBatch, Creature.MaxHP, Creature.HP, x + 142, y - 8, Color.Red);
 
             y += 32;
-            spriteBatch.DrawString(Font14, "Armor: ", new Vector2(x, y), Color.White);
-            if (Creature.Armor == null) {
-                spriteBatch.DrawString(Font14, "No armor", new Vector2(x + 128, y), Color.Gray);
+            spriteBatch.DrawString(Font14, "Defense: ", new Vector2(x, y), Color.White);
+            if (Creature.GetDefense().Max == 0) {
+                spriteBatch.DrawString(Font14, "None", new Vector2(x + 160, y), Color.Gray);
             } else {
-                MainInterface.DrawHearts(spriteBatch, Creature.Armor.MaxDefense, Creature.Armor.Defense, x + 128, y - 8, Color.LightSkyBlue);
+                MainInterface.DrawHearts(spriteBatch, Creature.GetDefense().Max, Creature.GetDefense().Current, x + 160, y - 8, Color.LightSkyBlue);
             }
             return y + 48;
         }
@@ -105,10 +105,8 @@ namespace MonoRogue {
             spriteBatch.DrawString(Font14, $"Damage: {w.Damage.Min}-{w.Damage.Max}", new Vector2(x, y), Color.White);
             y += 32;
             spriteBatch.DrawString(Font14, $"Range: {w.Range}", new Vector2(x, y), Color.White);
-            if (w.AttackDelay != 0) {
-                y += 32;
-                spriteBatch.DrawString(Font14, $"Attack Delay: {w.AttackDelay}", new Vector2(x, y), Color.White);
-            }
+            y += 32;
+            spriteBatch.DrawString(Font14, $"Attack Delay: {w.Delay}", new Vector2(x, y), Color.White);
             return y + 48;
         }
         private int DrawArmor(SpriteBatch spriteBatch, int x, int y, Armor a) {
@@ -116,12 +114,7 @@ namespace MonoRogue {
             y += 32;
             spriteBatch.DrawString(Font14, $"Defense: {a.Defense}/{a.MaxDefense}", new Vector2(x, y), Color.White);
             y += 32;
-            spriteBatch.DrawString(Font14, $"Refresh: {a.Refresh}", new Vector2(x, y), Color.White);
-
-            if (a.MovementPenalty != 0) {
-                y += 32;
-                spriteBatch.DrawString(Font14, $"Move Delay: {a.MovementPenalty}", new Vector2(x, y), Color.White);
-            }
+            spriteBatch.DrawString(Font14, $"Weight: {a.Weight}", new Vector2(x, y), Color.White);
             return y + 48;
         }
 

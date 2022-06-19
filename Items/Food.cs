@@ -30,25 +30,40 @@ namespace MonoRogue {
         public static Food Apple;
         public static Food Cheese;
         public static Food Meat;
+        public static Food Fish;
         public static Food PigMeat; // Dropped by pigs when they die
 
         public static void LoadFood(ContentManager content) {
-            Apple = new Food("Apple", 2, content.Load<Texture2D>("Food/Apple"), Color.Green);
-            Apple.SetDescription("TEMP: A delicious, firm green-skinned fruit, tart to the tongue.");
-            Cheese = new Food("Cheese", 4, content.Load<Texture2D>("Food/Cheese"), Color.Yellow);
+            Apple = new Food("Apple", 4, content.Load<Texture2D>("Food/Apple"), Color.Green);
+            Apple.SetDescription("A delicious, firm green-skinned fruit, tart to the tongue.");
+            Cheese = new Food("Cheese", 8, content.Load<Texture2D>("Food/Cheese"), Color.Yellow);
             Cheese.SetDescription("A lump of cheese. Nobody knows how it made its way into the dungeon.");
-            Meat = new Food("Meat", 8, content.Load<Texture2D>("Food/Meat"), Color.IndianRed);
-            Meat.SetDescription("TEMP: A hearty chunk of cooked meat from an unknown creature. Best not think too hard about where it came from.");
+            Fish = new Food("Fish", 12, content.Load<Texture2D>("Food/Fish"), Color.Pink);
+            Fish.SetDescription("Somehow this full cooked fish meal has arrived in this rather land-locked dungeon.");
+            Meat = new Food("Meat", 16, content.Load<Texture2D>("Food/Meat"), Color.IndianRed);
+            Meat.SetDescription("A hearty chunk of cooked meat from an unknown creature. Best not think too hard about where it came from.");
             PigMeat = new Food("Pig Meat", 6, content.Load<Texture2D>("Food/PigMeat"), Color.IndianRed);
             PigMeat.SetDescription("Meat doesn't get much fresher than this!");
         }
 
-        public static Food RandomFood(System.Random random) {
-            int i = random.Next(10);
-            if (i < 4) { return Apple; }
-            else if (i < 8) { return Cheese; }
-            else if (i < 10) { return Meat; }
-            else { return null; } // To stop compiler from complaining
+        public static Food RandomFood(System.Random random, int level) {
+            if (level == 0) {
+                int i = random.Next(10);
+                if (i < 3) { return Apple; }
+                else if (i < 8) { return Cheese; }
+                else { return Fish; }
+            } else if (level == 1) {
+                int i = random.Next(10);
+                if (i < 2) { return Apple; }
+                else if (i < 5) { return Cheese; }
+                else if (i < 8) { return Fish; }
+                else { return Meat; }
+            } else {
+                int i = random.Next(10);
+                if (i < 3) { return Cheese; }
+                else if (i < 7) { return Fish; }
+                else { return Meat; }
+            }
         }
     }
 }

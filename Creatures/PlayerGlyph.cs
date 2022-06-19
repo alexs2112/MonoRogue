@@ -23,21 +23,47 @@ namespace MonoRogue {
         public static void LoadGlyphs(ContentManager content) {
             glyphs = new Dictionary<Item.Type, Dictionary<Item.Type, Texture2D>>();
 
-            // No weapon
             glyphs.Add(Item.Type.Null, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Null].Add(Item.Type.Null, content.Load<Texture2D>("Player/Null-Null"));
+            glyphs[Item.Type.Null].Add(Item.Type.LightArmor, content.Load<Texture2D>("Player/Null-Light"));
+            glyphs[Item.Type.Null].Add(Item.Type.MediumArmor, content.Load<Texture2D>("Player/Null-Med"));
+            glyphs[Item.Type.Null].Add(Item.Type.HeavyArmor, content.Load<Texture2D>("Player/Null-Heavy"));
 
-            // Dagger is equipped
             glyphs.Add(Item.Type.Dagger, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Dagger].Add(Item.Type.Null, content.Load<Texture2D>("Player/Dagger-Null"));
+            glyphs[Item.Type.Dagger].Add(Item.Type.LightArmor, content.Load<Texture2D>("Player/Dagger-Light"));
+            glyphs[Item.Type.Dagger].Add(Item.Type.MediumArmor, content.Load<Texture2D>("Player/Dagger-Med"));
+            glyphs[Item.Type.Dagger].Add(Item.Type.HeavyArmor, content.Load<Texture2D>("Player/Dagger-Heavy"));
 
-            // Sword is equipped
             glyphs.Add(Item.Type.Sword, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Sword].Add(Item.Type.Null, content.Load<Texture2D>("Player/Sword-Null"));
+            glyphs[Item.Type.Sword].Add(Item.Type.LightArmor, content.Load<Texture2D>("Player/Sword-Light"));
+            glyphs[Item.Type.Sword].Add(Item.Type.MediumArmor, content.Load<Texture2D>("Player/Sword-Med"));
+            glyphs[Item.Type.Sword].Add(Item.Type.HeavyArmor, content.Load<Texture2D>("Player/Sword-Heavy"));
 
-            // Bow is equipped
             glyphs.Add(Item.Type.Bow, new Dictionary<Item.Type, Texture2D>());
             glyphs[Item.Type.Bow].Add(Item.Type.Null, content.Load<Texture2D>("Player/Bow-Null"));
+            glyphs[Item.Type.Bow].Add(Item.Type.LightArmor, content.Load<Texture2D>("Player/Bow-Light"));
+            glyphs[Item.Type.Bow].Add(Item.Type.MediumArmor, content.Load<Texture2D>("Player/Bow-Med"));
+            glyphs[Item.Type.Bow].Add(Item.Type.HeavyArmor, content.Load<Texture2D>("Player/Bow-Heavy"));
+
+            glyphs.Add(Item.Type.Axe, new Dictionary<Item.Type, Texture2D>());
+            glyphs[Item.Type.Axe].Add(Item.Type.Null, content.Load<Texture2D>("Player/Axe-Null"));
+            glyphs[Item.Type.Axe].Add(Item.Type.LightArmor, content.Load<Texture2D>("Player/Axe-Light"));
+            glyphs[Item.Type.Axe].Add(Item.Type.MediumArmor, content.Load<Texture2D>("Player/Axe-Med"));
+            glyphs[Item.Type.Axe].Add(Item.Type.HeavyArmor, content.Load<Texture2D>("Player/Axe-Heavy"));
+
+            glyphs.Add(Item.Type.Mace, new Dictionary<Item.Type, Texture2D>());
+            glyphs[Item.Type.Mace].Add(Item.Type.Null, content.Load<Texture2D>("Player/Mace-Null"));
+            glyphs[Item.Type.Mace].Add(Item.Type.LightArmor, content.Load<Texture2D>("Player/Mace-Light"));
+            glyphs[Item.Type.Mace].Add(Item.Type.MediumArmor, content.Load<Texture2D>("Player/Mace-Med"));
+            glyphs[Item.Type.Mace].Add(Item.Type.HeavyArmor, content.Load<Texture2D>("Player/Mace-Heavy"));
+
+            glyphs.Add(Item.Type.Spear, new Dictionary<Item.Type, Texture2D>());
+            glyphs[Item.Type.Spear].Add(Item.Type.Null, content.Load<Texture2D>("Player/Spear-Null"));
+            glyphs[Item.Type.Spear].Add(Item.Type.LightArmor, content.Load<Texture2D>("Player/Spear-Light"));
+            glyphs[Item.Type.Spear].Add(Item.Type.MediumArmor, content.Load<Texture2D>("Player/Spear-Med"));
+            glyphs[Item.Type.Spear].Add(Item.Type.HeavyArmor, content.Load<Texture2D>("Player/Spear-Heavy"));
         }
 
         public static Texture2D GetDefaultGlyph() {
