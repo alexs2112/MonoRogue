@@ -34,6 +34,75 @@ Defense serves to increase player survivability in the form of Blue Hearts. Blue
 
 Armor weight slows your movement and attack speed by increasing your move delay and attack delay. Heavier armor has higher defense, but also tends to have higher weight.
 
+## Enemies:
+This section will give a bit of info about each enemy. Contains spoiler material if you have not made it to the end of the game yet.
+<details>
+<summary>Rat</summary>
+Weak early game creature, moves and attacks quickly.
+</details>
+
+<details>
+<summary>Pig</summary>
+Not aggressive until it is attacked. Sometimes drops food on death.
+
+Oinks
+</details>
+
+<details>
+<summary>Spawn</summary>
+A basic early game enemy, has similar speed to the player and attacks without a weapon.
+</details>
+
+<details>
+<summary>Undead</summary>
+A mildly tanky enemy that moves and attacks very slowly.
+</details>
+
+<details>
+<summary>Grunt</summary>
+A basic enemy in the middle of the dungeon. Moves relatively quickly compared to its brethren.
+</details>
+
+<details>
+<summary>Imp</summary>
+Mystical creature. It is ranged, but deals little damage.
+</details>
+
+<details>
+<summary>Thug</summary>
+An armored enemy with a polearm. When it runs out of defense it will attempt to run away from the player.
+</details>
+
+<details>
+<summary>Brute</summary>
+An enemy covered with spines. It deals damage to you when you hit it with a melee weapon and it still has defense.
+</details>
+
+<details>
+<summary>Haunt</summary>
+A late game ranged enemy. It deals moderate damage at range, but moves and attacks very slowly.
+</details>
+
+<details>
+<summary>Gatekeeper</summary>
+Late game melee enemy that spawns with equipment. Can be looted after death.
+</details>
+
+<details>
+<summary>Tank</summary>
+A slow enemy with plenty of health and defense. It will pull you towards it if you are nearby.
+</details>
+
+<details>
+<summary>Cultist</summary>
+Late game enemy that can summon up to two imps. Killing it will kill off its summons.
+</details>
+
+<details>
+<summary>Warden</summary>
+Holds the golden key and guards the exit of the dungeon. When he sees you he can alert nearby dungeon enemies of your location, drawing them to stop your escape.
+</details>
+
 ## Credits:
 Developed by myself, Urist2112. https://urist2112.itch.io
 

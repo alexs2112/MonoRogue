@@ -44,6 +44,10 @@ namespace MonoRogue {
             Glyphs.Add("LeatherArmor", content.Load<Texture2D>("Equipment/LeatherArmor"));
             Glyphs.Add("ChainMail", content.Load<Texture2D>("Equipment/ChainMail"));
             Glyphs.Add("Dragonscale", content.Load<Texture2D>("Equipment/DragonScale"));
+
+            Glyphs.Add("Bident", content.Load<Texture2D>("Equipment/Bident"));
+            Glyphs.Add("Sawtooth", content.Load<Texture2D>("Equipment/Sawtooth"));
+            Glyphs.Add("CultistStaff", content.Load<Texture2D>("Equipment/CultistStaff"));
         }
 
         // Alternate between giving the player armor and weapons
@@ -361,6 +365,34 @@ namespace MonoRogue {
             a.SetType(Item.Type.HeavyArmor);
             a.SetDescription("A full set of armor made from thick, heavy, but nearly impenetrable dragon scales. Not sure how it ended up here.");
             return a;
+        }
+
+        // Enemy specific items
+        public Weapon NewBident() {
+            Weapon w = new Weapon("Bident", Glyphs["Bident"], Color.Brown);
+            w.SetWeaponStats((2, 5), 12);
+            w.SetType(Item.Type.Spear);
+            w.SetDescription("A  two pronged spear. It is warm to the touch.");
+            w.SetAttackText("jab");
+            w.SetRange(2);
+            return w;
+        }
+        public Weapon NewSawtooth() {
+            Weapon w = new Weapon("Sawtooth", Glyphs["Sawtooth"], Color.MediumBlue);
+            w.SetWeaponStats((4, 7), 12);
+            w.SetType(Item.Type.Sword);
+            w.SetDescription("A long and nasty blade. Serrated on one side to rip and tear through flesh.");
+            w.SetAttackText("slash");
+            return w;
+        }
+        public Weapon NewCultistStaff() {
+            Weapon w = new Weapon("Cultist Staff", Glyphs["CultistStaff"], Color.DarkOrchid);
+            w.SetWeaponStats((4, 7), 12);
+            w.SetType(Item.Type.Spear);
+            w.SetDescription("A staff once held by a cultist. You aren't sure how to use it for its full potential, but hitting people with it seems like a good start.");
+            w.SetAttackText("smack");
+            w.SetRange(2);
+            return w;
         }
     }
 }

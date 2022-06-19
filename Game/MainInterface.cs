@@ -38,17 +38,17 @@ namespace MonoRogue {
 
         public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature) { DrawCreatureStats(spriteBatch, creature, null); }
         public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature, Creature player) {
-            int x = StartX + 32;
+            int x = StartX + 24;
             int y = 8;
             spriteBatch.DrawString(Font14, creature.Name, new Vector2(x, y), Color.White);
             y += 24;
             DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
-            if (creature.Armor == null) {
+            if (creature.GetDefense().Max == 0) {
                 y += 32;
                 spriteBatch.DrawString(Font14, "No armor", new Vector2(x, y), Color.Gray);
             } else {
                 y += 32;
-                DrawHearts(spriteBatch, creature.Armor.MaxDefense, creature.Armor.Defense, x, y, Color.LightSkyBlue);
+                DrawHearts(spriteBatch, creature.GetDefense().Max, creature.GetDefense().Current, x, y, Color.LightSkyBlue);
             }
 
             if (player != null) {
@@ -59,8 +59,8 @@ namespace MonoRogue {
                 y += 24;
                 DrawHearts(spriteBatch, player.MaxHP, player.HP, playerX - 32 * ((player.MaxHP + 3) / 4), y, Color.Red);
                 y += 32;
-                if (player.Armor != null) {
-                    DrawHearts(spriteBatch, player.Armor.MaxDefense, player.Armor.Defense, playerX - 32 * ((player.Armor.MaxDefense + 3) / 4), y, Color.LightSkyBlue);
+                if (player.GetDefense().Max > 0) {
+                    DrawHearts(spriteBatch, player.GetDefense().Max, player.GetDefense().Current, playerX - 32 * ((player.GetDefense().Max + 3) / 4), y, Color.LightSkyBlue);
                 }
             }
 

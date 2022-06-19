@@ -74,5 +74,10 @@ namespace MonoRogue {
         public override void ClearMessages() { Messages.Clear(); }
 
         public override void OnDeath(World world) { Host.Notify("Press ESC to quit."); }
+
+        public override void GiveTargetTile(Point p) {
+            Host.Notify("You feel a magical alarm on your location.");
+            Host.Notify("The dungeon knows where you are!");
+        }
     }
 }

@@ -101,7 +101,8 @@ namespace MonoRogue {
                     player.AI.ClearMessages();
                 }
 
-                if (keyTrack.KeyJustPressed(Keys.Escape)) { 
+                if (keyTrack.KeyJustPressed(Keys.Escape)) {
+                    if (player.IsDead()) { Exit(); }
                     subscreen = new EscapeScreen(this, Content);
                 } else if (!player.IsDead()) {
                     if (!((PlayerAI)player.AI).PathNullOrEmpty()) {

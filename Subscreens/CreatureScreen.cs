@@ -51,11 +51,11 @@ namespace MonoRogue {
             MainInterface.DrawHearts(spriteBatch, Creature.MaxHP, Creature.HP, x + 142, y - 8, Color.Red);
 
             y += 32;
-            spriteBatch.DrawString(Font14, "Armor: ", new Vector2(x, y), Color.White);
-            if (Creature.Armor == null) {
-                spriteBatch.DrawString(Font14, "No armor", new Vector2(x + 128, y), Color.Gray);
+            spriteBatch.DrawString(Font14, "Defense: ", new Vector2(x, y), Color.White);
+            if (Creature.GetDefense().Max == 0) {
+                spriteBatch.DrawString(Font14, "None", new Vector2(x + 160, y), Color.Gray);
             } else {
-                MainInterface.DrawHearts(spriteBatch, Creature.Armor.MaxDefense, Creature.Armor.Defense, x + 128, y - 8, Color.LightSkyBlue);
+                MainInterface.DrawHearts(spriteBatch, Creature.GetDefense().Max, Creature.GetDefense().Current, x + 160, y - 8, Color.LightSkyBlue);
             }
             return y + 48;
         }

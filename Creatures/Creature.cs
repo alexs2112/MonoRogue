@@ -19,6 +19,9 @@ namespace MonoRogue {
         public int HP { get; set; }
         public int MaxHP { get; set; }
         public int Vision { get; private set; }
+        public int Defense { get; private set; }
+        public int MaxDefense { get; private set; }
+        public int DefenseTimer { get; private set; }
 
         // Attack Stats
         private (int Min, int Max) Damage { get; set; }
@@ -42,10 +45,12 @@ namespace MonoRogue {
             Color = color;
         }
 
-        public void SetStats(int hp, (int, int) damage) { SetStats(hp, damage, 10, 10); }
-        public void SetStats(int hp, (int, int) damage, int movementDelay, int attackDelay) {
+        public void SetStats(int hp, int defense, (int, int) damage) { SetStats(hp, defense, damage, 10, 10); }
+        public void SetStats(int hp, int defense, (int, int) damage, int movementDelay, int attackDelay) {
             MaxHP = hp;
             HP = hp;
+            Defense = defense;
+            MaxDefense = defense;
             Damage = damage;
             Vision = 7;
             MovementDelay = movementDelay;
@@ -70,8 +75,8 @@ namespace MonoRogue {
             }
         }
         public (int Current, int Max) GetDefense() {
-            if (Armor == null) { return (0,0); }
-            return (Armor.Defense, Armor.MaxDefense);
+            if (Armor == null) { return (Defense, MaxDefense); }
+            return (Armor.Defense + Defense, Armor.MaxDefense + MaxDefense);
         }
 
         public void ModifyMovementDelay(int x) { MovementDelay += x; }
@@ -101,7 +106,13 @@ namespace MonoRogue {
                 AI.OnDeath(World);
                 World.Creatures.Remove(this);
                 World.ColorOverlay[X, Y] = Color.DarkRed;
-                if (Armor != null) { World.Items[new Point(X,Y)] = Armor; }
+                if (Armor != null && Weapon != null) {
+                    if (new System.Random().Next(2) < 1) {
+                        World.Items[new Point(X,Y)] = Armor;
+                    } else {
+                        World.Items[new Point(X,Y)] = Weapon;
+                    }
+                } else if (Armor != null) { World.Items[new Point(X,Y)] = Armor; }
                 else if (Weapon != null) { World.Items[new Point(X,Y)] = Weapon; }
             } else if (HP > MaxHP) {
                 HP = MaxHP;
@@ -118,6 +129,16 @@ namespace MonoRogue {
                     Armor.Defense = 0;
                 }
             }
+            if (Defense > 0) {
+                if (Defense > value) {
+                    Defense -= value;
+                    value = 0;
+                    return;
+                } else {
+                    value -= Defense;
+                    Defense = 0;
+                }
+            }
             ModifyHP(-value);
         }
         public bool IsDead() { return HP <= 0; }
@@ -129,7 +150,6 @@ namespace MonoRogue {
         public bool MoveTo(int x, int y) { 
             if (!CanEnter(x, y)) { return false; }
             if (World.IsDoor(x, y)) {
-                if (!IsPlayer) { return false; }
                 World.OpenDoor(x, y);
                 Notify("You break down the door.");
                 NotifyOthers($"The {Name} breaks down the door.");
@@ -140,7 +160,6 @@ namespace MonoRogue {
             Creature c = World.GetCreatureAt(x, y);
             if (c != null) {
                 if (!IsPlayer && !c.IsPlayer) {
-                    c.NotifyOthers($"The {Name} bumps into the {c.Name}.");
                     TurnTimer = GetAttackDelay();
                 } else {
                     if (GetWeaponType() == Item.Type.Axe && IsPlayer) {
@@ -208,7 +227,14 @@ namespace MonoRogue {
         }
 
         public void TakeTurn(World world) {
-            if (Armor != null) { Armor.Tick(); }
+            if (Defense < MaxDefense) {
+                DefenseTimer++;
+                if (DefenseTimer >= 5) {
+                    Defense++;
+                    DefenseTimer = 0;
+                }
+            } else if (Armor != null) { Armor.Tick(); }
+
             if (AI != null) { AI.TakeTurn(world); }
         }
 
@@ -247,6 +273,7 @@ namespace MonoRogue {
 
         public void GetAttacked(Creature attacker) {
             if (Armor != null) { Armor.ResetTimer(); }
+            DefenseTimer = 0;
             AI.OnHit(World, attacker);
         }
         
@@ -258,17 +285,22 @@ namespace MonoRogue {
             }
             return null;
         }
-        public Creature GetCreatureInRange(Creature target) { return GetCreatureInRange(X, Y, target); }
-        public Creature GetCreatureInRange(int sx, int sy, Creature target) {
+        public Creature GetCreatureInRange(Creature target) { return GetCreatureInRange(X, Y, target, GetRange()); }
+        public Creature GetCreatureInRange(Creature target, int range) { return GetCreatureInRange(X, Y, target, range); }
+        public Creature GetCreatureInRange(int sx, int sy, Creature target) { return GetCreatureInRange(sx, sy, target, GetRange()); }
+        public Creature GetCreatureInRange(int sx, int sy, Creature target, int range) {
             // Return the first creature in a line to the target that is in range
             if (target == null) { return null; }
             Creature c = GetCreatureFromLine(GetLineToPoint(sx, sy, target.X, target.Y));
             if (c == null) { return null; }
-            if (GetLineToPoint(sx, sy, c.X, c.Y).Count > GetRange()) { c = null; }
+            if (GetLineToPoint(sx, sy, c.X, c.Y).Count > range) { c = null; }
             return c;
         }
 
-        public void Notify(string message) { AI.AddMessage(message); }
+        public void Notify(string message) { 
+            if (AI == null) { return; }
+            AI.AddMessage(message); 
+        }
         public void NotifyOthers(string message) {
             // Notify each creature that can see this one
             foreach (Creature c in World.Creatures) {
@@ -308,17 +340,16 @@ namespace MonoRogue {
             TurnTimer = 10;
         }
         public void Equip(Item item) {
+            if (item == null) { return; }
             if (item.IsArmor) {
-                Armor armor = (Armor)item;
                 Armor temp = Armor;
-                Armor = armor;
+                Armor = (Armor)item;
                 Notify($"You equip the {item.Name}.");
 
                 if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
             } else if (item.IsWeapon) {
-                Weapon weapon = (Weapon)item;
                 Weapon temp = Weapon;
-                Weapon = weapon;
+                Weapon = (Weapon)item;
 
                 Notify($"You equip the {item.Name}.");
                 if (temp != null) { World.Items.Add(new Point(X, Y), temp); }

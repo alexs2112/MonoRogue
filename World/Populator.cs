@@ -36,7 +36,18 @@ namespace MonoRogue {
                     depths[r.Depth] = new List<Region>();
                 }
                 depths[r.Depth].Add(r);
+
+                // The first region contains no enemies
                 if (r.Depth == 0) { continue; }
+
+                // The last region contains only the Warden
+                if (r == end) {
+                    Point tile = r.GetEmptyTile(Random, World);
+                    if (tile.X == -1) { break; }
+                    Creature c = Creature.NewWarden(World, tile.X, tile.Y);
+                    difficulty[r.Depth] += c.Difficulty;
+                    continue;
+                }
 
                 int enemies = r.Size() / (Constants.RoomMinSize * Constants.RoomMinSize / 2);
                 if (enemies > 3) { enemies--; }
@@ -74,9 +85,9 @@ namespace MonoRogue {
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= lowDepth) { divisor = 3; }
-                else if (i <= medDepth) { divisor = 5; }
-                else { divisor = 8; }
+                if (i <= lowDepth) { divisor = 4; }
+                else if (i <= medDepth) { divisor = 9; }
+                else { divisor = 14; }
                 
                 int num = current / divisor;
                 mod = current % divisor;
@@ -105,9 +116,9 @@ namespace MonoRogue {
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= lowDepth) { divisor = 4; }
-                else if (i <= medDepth) { divisor = 6; }
-                else { divisor = 9; }
+                if (i <= lowDepth) { divisor = 5; }
+                else if (i <= medDepth) { divisor = 11; }
+                else { divisor = 17; }
                 
                 int num = current / divisor;
                 mod = current % divisor;
@@ -117,7 +128,7 @@ namespace MonoRogue {
                     Region r = depths[i][Random.Next(depths[i].Count)];
 
                     Point tile = r.GetEmptyTile(Random, World);
-                    Food f = Food.RandomFood(Random);
+                    Food f = Food.RandomFood(Random, r.Depth <= lowDepth ? 0 : (r.Depth <= medDepth ? 1 : 2));
                     World.Items.Add(tile, f);
                 }
             }

@@ -1,12 +1,17 @@
 ### **Roadmap:**
  * Dungeon balance overhaul
+    * Add a win condition, standing on the exit in the last room and pressing space will win you the game
+
+ * General gameplay things
     * When standing over an item, write that item under your player stats so you can compare
     * Make items dropped on the ground try not to overwrite the tile they land on, attempt to place it on any adjacent tile first
     * Enchanted weapons? Give bonus damage and are a different colour, to bridge the gap between depths if that feels unbalanced
-    * Add more creatures, I think 4 for each dungeon tier will be fine
-    * Add a win condition, standing on the exit in the last room and pressing space will win you the game
-      * Make a boss enemy that also spawns in the end room that holds a key, you cant leave without the key
-      * The most hearts that will fit on the main interface is 9... The player should have 5 by the end of the game
+    * Add an extra bool to creatures so that undead ones don't bleed when they die
+    * Fix messages so that enemies will be prefixed with "the" when needed, basically always
+    * Have creatures be able to "talk" and taunt the player on their turns. Particularly the imps
+    * Add a visual cue when you enter different difficulty levels of the dungeon. Perhaps different dungeon tiles and colours?
+    * You can get attacked at range out of your own sight. Give a notification when this happens
+      * Redo notifications as a class that can be handled and parsed in world
 
  * Music and sound effects
 
@@ -35,5 +40,6 @@
    * Look into mac and linux deploys
    * Make sure each item and creature have non-temp description text
    * Make sure the user manual is up to date and has corresponding pages that can be viewed from the help menu in game. Probably compile it into a pdf when distributing.
+   * Make sure all in game terminology is correct
 
  * **Release!**

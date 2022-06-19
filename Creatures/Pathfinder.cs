@@ -132,7 +132,6 @@ namespace MonoRogue {
                 if (closest.Equals(end)) { return CreatePath(start, closest); }
                 else { CheckNeighbours(end, closest); }
             }
-            System.Console.WriteLine(Open.ToArray());
             return null;
         }
 
