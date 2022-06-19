@@ -68,7 +68,7 @@ namespace MonoRogue {
                 }
             }
 
-            // Spawn bloodstone at the end of each dungeon "tier"
+            // Spawn heartstones at the end of each dungeon "tier"
             for (int i = 0; i < 2; i++) {
                 int d;
                 if (i == 0) { d = lowDepth; }

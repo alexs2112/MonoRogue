@@ -42,7 +42,7 @@ namespace MonoRogue {
             Fish.SetDescription("Somehow this full cooked fish meal has arrived in this rather land-locked dungeon.");
             Meat = new Food("Meat", 16, content.Load<Texture2D>("Food/Meat"), Color.IndianRed);
             Meat.SetDescription("A hearty chunk of cooked meat from an unknown creature. Best not think too hard about where it came from.");
-            PigMeat = new Food("Pig Meat", 6, content.Load<Texture2D>("Food/PigMeat"), Color.IndianRed);
+            PigMeat = new Food("Pig Meat", 8, content.Load<Texture2D>("Food/PigMeat"), Color.IndianRed);
             PigMeat.SetDescription("Meat doesn't get much fresher than this!");
         }
 

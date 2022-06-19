@@ -13,27 +13,33 @@ namespace MonoRogue {
         // How many characters fit per message line
         private static int MessageLineLength = 20;
 
+        private static Texture2D InterfaceDivider;
         private static Texture2D InterfaceLine;
         private static Texture2D HeartsFull;
         private static Texture2D TileHighlight;
+        private static Texture2D MousePointer;
         private static SpriteFont Font14;
         private static SpriteFont Font12;
+        private static SpriteFont Font10;
 
         // Cache messages so we aren't formatting all of the strings hundreds of times per second for no reason
         private List<string> Messages;
 
         public static void LoadTextures(ContentManager content) {
-            InterfaceLine = content.Load<Texture2D>("Interface/InterfaceDivider");
+            InterfaceDivider = content.Load<Texture2D>("Interface/InterfaceDivider");
+            InterfaceLine = content.Load<Texture2D>("Interface/InterfaceLine");
             HeartsFull = content.Load<Texture2D>("Interface/Hearts");
             TileHighlight = content.Load<Texture2D>("Interface/TileHighlight");
+            MousePointer = content.Load<Texture2D>("Interface/MousePointer");
 
             Font14 = content.Load<SpriteFont>("Interface/sds14");
             Font12 = content.Load<SpriteFont>("Interface/sds12");
+            Font10 = content.Load<SpriteFont>("Interface/sds10");
         }
 
 
         public void DrawInterface(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(InterfaceLine, new Vector2(StartX, 0), Color.Gray);
+            spriteBatch.Draw(InterfaceDivider, new Vector2(StartX, 0), Color.Gray);
         }
 
         public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature) { DrawCreatureStats(spriteBatch, creature, null); }
@@ -47,11 +53,10 @@ namespace MonoRogue {
 
             y += 24;
             DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
+            y += 32;
             if (creature.GetDefense().Max == 0) {
-                y += 32;
-                spriteBatch.DrawString(Font14, "No armor", new Vector2(x, y), Color.Gray);
+                spriteBatch.DrawString(Font14, "No armor", new Vector2(x, y + 8), Color.Gray);
             } else {
-                y += 32;
                 DrawHearts(spriteBatch, creature.GetDefense().Max, creature.GetDefense().Current, x, y, Color.LightSkyBlue);
             }
 
@@ -141,26 +146,69 @@ namespace MonoRogue {
             }
         }
 
-        public void DrawItemInfo(SpriteBatch spriteBatch, Item item) {
-            int y = 8;
-            int x = StartX + 32;
-            spriteBatch.DrawString(Font14, item.Name, new Vector2(x, y), Color.White);
-            y += 32;
+        public void DrawItems(SpriteBatch spriteBatch, Item floorItem, Item mouseItem) {
+            int x = StartX + 24;
+            int y = 184;
+
+            if (floorItem == mouseItem) { mouseItem = null; }
+            if (floorItem != null && mouseItem == null) {
+                // Draw the full floor item
+                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y - 16), Color.Gray);
+                y = DrawItemInfo(spriteBatch, floorItem, x, y);
+                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
+            } else if (floorItem != null) {
+                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y - 16), Color.Gray);
+                y = DrawItemHeader(spriteBatch, floorItem, x, y, false);
+                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
+                y += 16;
+            }
+            if (mouseItem != null) {
+                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y - 16), Color.Gray);
+                y = DrawItemInfo(spriteBatch, mouseItem, x, y, true);
+                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
+            }
+        }
+
+        public int DrawItemInfo(SpriteBatch spriteBatch, Item item, int x, int y) { return DrawItemInfo(spriteBatch, item, x, y, false); }
+        private int DrawItemInfo(SpriteBatch spriteBatch, Item item, int x, int y, bool mousePointer) {
+            y = DrawItemHeader(spriteBatch, item, x, y, mousePointer);
 
             if (item.IsFood) {
                 Food food = (Food)item;
-                spriteBatch.DrawString(Font14, $"Food: {food.Value}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font12, $"Food:", new Vector2(x, y), Color.White);
+                DrawHearts(spriteBatch, food.Value, food.Value, x + 96, y - 8, Color.Yellow);
             } else if (item.IsArmor) {
                 Armor armor = (Armor)item;
-                spriteBatch.DrawString(Font14, $"Defense: {armor.Defense}/{armor.MaxDefense}", new Vector2(x, y), Color.White);
-                y += 32;
-                spriteBatch.DrawString(Font14, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font12, $"Defense:", new Vector2(x, y), Color.White);
+                DrawHearts(spriteBatch, armor.Defense, armor.MaxDefense, x + 144, y - 8, Color.LightSkyBlue);
+                y += 24;
+                spriteBatch.DrawString(Font12, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
             } else if (item.IsWeapon) {
                 Weapon weapon = (Weapon)item;
-                spriteBatch.DrawString(Font14, $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
-                y += 32;
-                spriteBatch.DrawString(Font14, $"Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font12, $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
+                y += 24;
+                spriteBatch.DrawString(Font12, $"Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
             }
+            if (item.ItemInfo != null) {
+                y -= 24;
+                foreach(string s in item.ItemInfo) {
+                    y += 24;
+                    spriteBatch.DrawString(Font12, s, new Vector2(x, y), Color.White);
+                }
+            }
+            return y + 24;
+        }
+        private int DrawItemHeader(SpriteBatch spriteBatch, Item item, int x, int y, bool mousePointer) {
+            int iconX = x + (int)Font14.MeasureString(item.Name).X + 16;
+            if (mousePointer) {
+                spriteBatch.Draw(MousePointer, new Vector2(x - 4, y - 4), Color.White);
+                spriteBatch.DrawString(Font14, item.Name, new Vector2(x + 16, y), Color.White);
+                iconX += 16;
+            } else {
+                spriteBatch.DrawString(Font14, item.Name, new Vector2(x, y), Color.White);
+            }
+            spriteBatch.Draw(item.Glyph, new Vector2(iconX, y - 8), item.Color);
+            return y + 32;
         }
 
         public void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Color color) {
@@ -187,7 +235,7 @@ namespace MonoRogue {
             int lineHeight = 18;
             int y = Constants.ScreenHeight - Messages.Count * lineHeight;
             foreach (string m in Messages) {
-                spriteBatch.DrawString(Font12, m, new Vector2(StartX + 32, y), Color.LightGray);
+                spriteBatch.DrawString(Font10, m, new Vector2(StartX + 32, y), Color.LightGray);
                 y += lineHeight;
             }
         }
@@ -196,18 +244,17 @@ namespace MonoRogue {
             Messages = new List<string>();
             foreach (string m in messages) {
                 if (m.Length > MessageLineLength) {
-                    string[] words = m.Split(' ');
-                    Messages.AddRange(SplitMessage(words, MessageLineLength));
+                    Messages.AddRange(SplitMessage(m, MessageLineLength));
                 } else {
                     Messages.Add(m);
                 }
             }
         }
 
-        public static List<string> SplitMessage(string[] words, int maxChars) {
+        public static List<string> SplitMessage(string message, int maxChars) {
             List<string> output = new List<string>();
             string current = "";
-            foreach (string s in words) {
+            foreach (string s in message.Split(' ')) {
                 if (current.Length + s.Length > maxChars) {
                     output.Add(current);
                     current = s + " ";

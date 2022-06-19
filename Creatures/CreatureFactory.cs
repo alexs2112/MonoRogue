@@ -126,6 +126,7 @@ namespace MonoRogue {
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Difficulty = 2;
+            c.BloodColor = Color.Black;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
             return c;
@@ -153,6 +154,7 @@ namespace MonoRogue {
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Difficulty = 3;
+            c.BloodColor = Color.Black;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
             return c;
@@ -192,6 +194,7 @@ namespace MonoRogue {
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Difficulty = 5;
+            c.BloodColor = Color.Black;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
             return c;

@@ -12,7 +12,7 @@ namespace MonoRogue {
         public ItemScreen(ContentManager content, Item item) : base(content) {
             Item = item;
             if (item.Description != null) {
-                Description = MainInterface.SplitMessage(Item.Description.Split(' '), MaxScreenChars);
+                Description = MainInterface.SplitMessage(Item.Description, MaxScreenChars);
             }
         }
 

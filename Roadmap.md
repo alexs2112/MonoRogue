@@ -1,14 +1,11 @@
 ### **Roadmap:**
  * General gameplay things
-    * When standing over an item, write that item under your player stats so you can compare
-    * Make items dropped on the ground try not to overwrite the tile they land on, attempt to place it on any adjacent tile first
-    * Enchanted weapons? Give bonus damage and are a different colour, to bridge the gap between depths if that feels unbalanced
-    * Add an extra bool to creatures so that undead ones don't bleed when they die
-    * Fix messages so that enemies will be prefixed with "the" when needed, basically always
-    * Have creatures be able to "talk" and taunt the player on their turns. Particularly the imps
     * Add a visual cue when you enter different difficulty levels of the dungeon. Perhaps different dungeon tiles and colours?
     * You can get attacked at range out of your own sight. Give a notification when this happens
       * Redo notifications as a class that can be handled and parsed in world
+      * Fix messages so that enemies will be prefixed with "the" when needed, basically always
+      * Have creatures be able to "talk" and taunt the player on their turns. Particularly the imps
+    * Difficulty settings, should affect the rate at which food and enemies spawn
 
  * Music and sound effects
 

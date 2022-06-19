@@ -223,16 +223,19 @@ namespace MonoRogue {
                 mainInterface.DrawMessages(spriteBatch);
                 mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.White);
 
-                if (mouseCreature == null && mouseItem == null) {
+                if (mouseCreature == null) {
                     mainInterface.DrawCreatureStats(spriteBatch, player);
-                } else if (mouseCreature != null) {
+                } else {
                     mainInterface.DrawCreatureStats(spriteBatch, mouseCreature, player);
 
                     Creature target = player.GetCreatureInRange(mouseCreature);
                     if (target != null) { mainInterface.DrawLineToCreature(spriteBatch, mouse, worldView, player, target, Color.Red); }
                     else { mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
-                } else {
-                    mainInterface.DrawItemInfo(spriteBatch, mouseItem);
+                }
+
+                if (!player.IsDead()) {
+                    Item floorItem = world.GetItemAt(player.X, player.Y);
+                    mainInterface.DrawItems(spriteBatch, floorItem, mouseItem);
                 }
 
                 spriteBatch.End();

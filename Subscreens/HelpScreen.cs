@@ -29,7 +29,7 @@ namespace MonoRogue {
         private List<string> SplitText(string[] text, int maxChars) {
             List<string> output = new List<string>();
             foreach (string line in text) {
-                output.AddRange(MainInterface.SplitMessage(line.Split(' '), maxChars));
+                output.AddRange(MainInterface.SplitMessage(line, maxChars));
             }
             return output;
         }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -40,6 +41,8 @@ namespace MonoRogue {
         public void SetType(Type itemType) { ItemType = itemType; }
         public void SetDescription(string s) { Description = s; }
 
+        public List<string> ItemInfo { get; protected set; }
+
         public Item(string name, Texture2D glyph, Color color) {
             Name = name;
             Glyph = glyph;
@@ -52,6 +55,7 @@ namespace MonoRogue {
         private Heartstone(Texture2D glyph) : base("Heartstone", glyph, Color.Red) {
             SetType(Type.Heartstone);
             IsHeartstone = true;
+            ItemInfo = MainInterface.SplitMessage("Consuming this grants you another health heart!", 18);
         }
 
         private static Heartstone Stone;
@@ -74,6 +78,7 @@ namespace MonoRogue {
     public class GoldenKey : Item {
         private GoldenKey(Texture2D glyph) : base("Golden Key", glyph, Color.Yellow) {
             SetType(Type.Key);
+            ItemInfo = MainInterface.SplitMessage("You need this to unlock the exit to the dungeon.", 16);
             IsKey = true;
         }
 

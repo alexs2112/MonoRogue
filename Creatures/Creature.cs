@@ -39,6 +39,9 @@ namespace MonoRogue {
         // If this creature holds the key to the exit of the game or not
         public bool HasKey { get; set; }
 
+        // Some visual flavour
+        public Color BloodColor { get; set; }
+
         public Armor Armor { get; set; }
         public Weapon Weapon { get; set; }
 
@@ -51,7 +54,7 @@ namespace MonoRogue {
         public void SetStats(int hp, int defense, (int, int) damage) { SetStats(hp, defense, damage, 10, 10); }
         public void SetStats(int hp, int defense, (int, int) damage, int movementDelay, int attackDelay) {
             MaxHP = hp;
-            HP = hp;
+            HP = hp; 
             Defense = defense;
             MaxDefense = defense;
             Damage = damage;
@@ -60,6 +63,7 @@ namespace MonoRogue {
             AttackDelay = attackDelay;
             BaseAttackText = "attack";
             BaseRange = 1;
+            BloodColor = Color.DarkRed;
         }
 
         // Setters for private attributes
@@ -108,7 +112,8 @@ namespace MonoRogue {
                 Notify("You die.");
                 AI.OnDeath(World);
                 World.Creatures.Remove(this);
-                World.ColorOverlay[X, Y] = Color.DarkRed;
+
+                if (BloodColor != Color.Black) { World.ColorOverlay[X, Y] = Color.DarkRed; }
                 if (Armor != null) { DropItem(Armor); }
                 if (Weapon != null) { DropItem(Weapon); }
             } else if (HP > MaxHP) {

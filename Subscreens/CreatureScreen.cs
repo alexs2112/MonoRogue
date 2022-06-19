@@ -12,7 +12,7 @@ namespace MonoRogue {
         public CreatureScreen(ContentManager content, Creature creature) : base(content) {
             Creature = creature;
             if (Creature.Description != null) {
-                Description = MainInterface.SplitMessage(Creature.Description.Split(' '), MaxScreenChars);
+                Description = MainInterface.SplitMessage(Creature.Description, MaxScreenChars);
             }
         }
 
