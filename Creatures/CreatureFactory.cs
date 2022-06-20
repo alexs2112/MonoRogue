@@ -42,6 +42,7 @@ namespace MonoRogue {
             Creature c = new Creature("Player", glyph, Color.SkyBlue);
             c.SetStats(12, 0, (2, 3));
             c.SetDescription("A hapless adventurer.");
+            if (Constants.Difficulty == 1) { c.ModifyDefense(4); } // @todo: It is possible this will overflow the screen
             c.AI = new PlayerAI(c);
             c.IsPlayer = true;
             c.World = world;

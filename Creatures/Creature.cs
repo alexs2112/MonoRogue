@@ -81,6 +81,7 @@ namespace MonoRogue {
                 return Damage;
             }
         }
+        public void ModifyDefense(int value) { MaxDefense += value; Defense += value; }
         public (int Current, int Max) GetDefense() {
             if (Armor == null) { return (Defense, MaxDefense); }
             return (Armor.Defense + Defense, Armor.MaxDefense + MaxDefense);

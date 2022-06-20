@@ -9,6 +9,7 @@
  - [s] to see your own stats
  - [r] to rest and repair armor
  - [.] to wait one turn
+ - [f] to fire your weapon at visible enemies
  - [/] or [?] to show the help menu
  - [esc] to quit the game or exit subscreens
 

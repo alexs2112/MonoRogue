@@ -32,6 +32,12 @@ namespace MonoRogue {
             Item item = Equipment.WeakItem(Random);
             World.Items.Add(p, item); 
 
+            if (Constants.Difficulty < 3) {
+                p = start.GetEmptyTile(Random, World);
+                item = Equipment.WeakItem(Random);
+                World.Items.Add(p, item); 
+            }
+
             // Keep track of difficulty for each depth level so we can award items to the player the more they fight
             int[] difficulty = new int[HighDepth + 1];
             List<Region>[] depths = new List<Region>[HighDepth + 1];
@@ -55,9 +61,15 @@ namespace MonoRogue {
                     continue;
                 }
 
-                int enemies = r.Size() / (Constants.RoomMinSize * Constants.RoomMinSize / 2);
+                int increment; 
+                if (Constants.Difficulty == 1) { increment = Constants.RoomMinSize * Constants.RoomMinSize; }
+                else if (Constants.Difficulty == 2) { increment = (int)(Constants.RoomMinSize * Constants.RoomMinSize / 1.5); }
+                else {increment = Constants.RoomMinSize * Constants.RoomMinSize / 2; }
+
+                int enemies = r.Size() / increment;
                 if (enemies > 3) { enemies--; }
                 if (enemies > 5) { enemies--; }
+                if (enemies > 7) { enemies--; }
                 for (int i = 0; i < enemies; i++) {
                     Point tile = r.GetEmptyTile(Random, World);
                     if (tile.X == -1) { break; }
@@ -91,9 +103,9 @@ namespace MonoRogue {
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= LowDepth) { divisor = 4; }
-                else if (i <= MedDepth) { divisor = 9; }
-                else { divisor = 14; }
+                if (i <= LowDepth) { divisor = 4 - (Constants.Difficulty - 3); }
+                else if (i <= MedDepth) { divisor = 9 - 2 * (Constants.Difficulty - 3); }
+                else { divisor = 14 - 3 * (Constants.Difficulty - 3); }
                 
                 int num = current / divisor;
                 mod = current % divisor;
@@ -122,9 +134,9 @@ namespace MonoRogue {
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= LowDepth) { divisor = 5; }
-                else if (i <= MedDepth) { divisor = 11; }
-                else { divisor = 17; }
+                if (i <= LowDepth) { divisor = 5 - (Constants.Difficulty - 3); }
+                else if (i <= MedDepth) { divisor = 11 - 2 * (Constants.Difficulty - 3); }
+                else { divisor = 17 - 3 * (Constants.Difficulty - 3); }
                 
                 int num = current / divisor;
                 mod = current % divisor;

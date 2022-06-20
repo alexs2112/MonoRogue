@@ -1,7 +1,4 @@
 ### **Roadmap:**
- * General gameplay things
-    * Difficulty settings, should affect the rate at which food and enemies spawn. Move populating the dungeon to last, otherwise it will affect the rest of the dungeon generation
-
  * Redo how notifications are handled
     * A new class that are sent to the world and parsed by the player if the player is in sight of it.
     * Subclasses of Notification to handle different things. Thinking "Door" "Attack" "Speech"
@@ -25,6 +22,7 @@
  * Screenshots, GameJolt page, Itch page, Itch+GJ profile
 
  * Release prep:
+   * Fix all @todo tags
    * It looks like monogame keeps the actual window size independent of Constants.ScreenWidth/ScreenHeight. See if we can scale the window in settings.
    * Rename the game as "Escape of the Blue Man" or something. See if you can change the player colour in settings to rename the window and main menu.
    * See if we can clean up app builds to include no unnecessary dlls

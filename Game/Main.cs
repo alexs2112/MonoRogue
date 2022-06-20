@@ -274,7 +274,20 @@ namespace MonoRogue {
                 }
             }
 
-            Constants.WriteMessagesToConsole = !cmd.Contains("--no-messages");
+            int difficultyIndex = cmd.IndexOf("--difficulty");
+            if (difficultyIndex > -1) {
+                try {
+                    int d = System.Int32.Parse(cmd[difficultyIndex + 1]);
+                    if (d > 3 || d < 1) { throw new System.Exception(); }
+                    Constants.Difficulty = d;
+                    System.Console.WriteLine($"Setting difficulty to {Constants.Difficulty}.");
+                } catch {
+                    System.Console.WriteLine("The --difficulty argument requires either 1, 2 or 3 to follow it.");
+                    System.Console.WriteLine("Setting difficulty to default (3).");
+                }
+            }
+
+            Constants.WriteMessagesToConsole = cmd.Contains("--messages");
             Constants.Invincible = cmd.Contains("--invincible");
             if (Constants.Invincible) { System.Console.WriteLine("Player Invincibility Enabled"); }
         }
