@@ -192,7 +192,10 @@ namespace MonoRogue {
                     for (int r = 1; r <= GetRange(); r++) {
                         Creature poke = World.GetCreatureAt(X + dx * r, Y + dy * r);
                         if (poke == null) { continue; }
-                        else { Attack(poke); break; }
+                        else if (poke.IsPlayer != IsPlayer) { 
+                            Attack(poke); 
+                            break;
+                        }
                     }
                 }
 

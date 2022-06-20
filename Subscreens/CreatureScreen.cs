@@ -112,7 +112,8 @@ namespace MonoRogue {
         private int DrawArmor(SpriteBatch spriteBatch, int x, int y, Armor a) {
             spriteBatch.DrawString(Font16, a.Name, new Vector2(x - 8, y), Color.White);
             y += 32;
-            spriteBatch.DrawString(Font14, $"Defense: {a.Defense}/{a.MaxDefense}", new Vector2(x, y), Color.White);
+            spriteBatch.DrawString(Font14, $"Defense:", new Vector2(x, y), Color.White);
+            MainInterface.DrawHearts(spriteBatch, a.MaxDefense, a.Defense, x + 160, y - 8, Color.LightSkyBlue);
             y += 32;
             spriteBatch.DrawString(Font14, $"Weight: {a.Weight}", new Vector2(x, y), Color.White);
             return y + 48;

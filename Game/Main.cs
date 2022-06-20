@@ -207,6 +207,7 @@ namespace MonoRogue {
                 // Some mouse handling in draw so we can keep it as a local variable
                 Point tile = mouse.GetTile(worldView);
                 Item mouseItem = GetMouseItem(tile);
+                Item floorItem = player.IsDead() ? null : world.GetItemAt(player.X, player.Y);
                 Creature mouseCreature = GetMouseCreature(tile);
                 if (mouseCreature == player) { mouseCreature = null; }
 
@@ -218,26 +219,15 @@ namespace MonoRogue {
                         spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
                     }
                 }
-
-                mainInterface.DrawInterface(spriteBatch);
-                mainInterface.DrawMessages(spriteBatch);
+                
                 mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.White);
-
-                if (mouseCreature == null) {
-                    mainInterface.DrawCreatureStats(spriteBatch, player);
-                } else {
-                    mainInterface.DrawCreatureStats(spriteBatch, mouseCreature, player);
-
+                if (mouseCreature != null) {
                     Creature target = player.GetCreatureInRange(mouseCreature);
                     if (target != null) { mainInterface.DrawLineToCreature(spriteBatch, mouse, worldView, player, target, Color.Red); }
                     else { mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
                 }
 
-                if (!player.IsDead()) {
-                    Item floorItem = world.GetItemAt(player.X, player.Y);
-                    mainInterface.DrawItems(spriteBatch, floorItem, mouseItem);
-                }
-
+                mainInterface.DrawInterface(spriteBatch, player, mouseCreature, floorItem, mouseItem);
                 spriteBatch.End();
             }
 

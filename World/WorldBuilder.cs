@@ -19,19 +19,28 @@ namespace MonoRogue {
             DungeonGeneration generator = new DungeonGeneration(Random, Width, Height, Tiles);
             int[,] tiles = generator.Generate(iterations);
             bool[,] dungeonTiles = generator.DungeonTiles;
-            
+
+            // Finalize dungeon regions            
             List<Region> regions = generator.Regions;
             (Region start, Region end) = SetRegionsCostMap(regions);
             SetRegionsDepth(regions, start.ID);
 
+            // The three dungeon tiers based on depth, inclusive
+            int lowDepth = end.Depth / 3;
+            int medDepth = lowDepth * 2;
+            int highDepth = end.Depth;
+
+            // Create the world
             World w = new World(Width, Height, IntToTiles(tiles, dungeonTiles, generator.Doors));
 
+            // Set up start and end regions
             Point p = end.GetEmptyTile(Random, w);
             w.Exit = p;
-
             SpawnPlayer(w, creatureFactory, start);
 
+            // Populate the dungeon with items and creatures
             Populator populator = new Populator(Random, w, creatureFactory, equipmentFactory);
+            populator.SetDepth(lowDepth, medDepth, highDepth);
             populator.Populate(w.Player, start, end, regions);
 
             return w;

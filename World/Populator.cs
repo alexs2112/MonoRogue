@@ -8,6 +8,10 @@ namespace MonoRogue {
         private CreatureFactory Creature;
         private EquipmentFactory Equipment;
 
+        private int LowDepth;
+        private int MedDepth;
+        private int HighDepth;
+
         // A way to iterate over each dungeon region, keeping track of expected stats to spawn items and creatures to keep a certain level of difficulty
         public Populator(System.Random random, World world, CreatureFactory creatureFactory, EquipmentFactory equipmentFactory) {
             Random = random;
@@ -16,19 +20,21 @@ namespace MonoRogue {
             Equipment = equipmentFactory;
         }
 
-        public void Populate(Creature player, Region start, Region end, List<Region> regions) {
-            int lowDepth = end.Depth / 3;
-            int medDepth = lowDepth * 2;
-            int highDepth = end.Depth;
+        public void SetDepth(int low, int med, int high) {
+            LowDepth = low;
+            MedDepth = med;
+            HighDepth = high;
+        }
 
+        public void Populate(Creature player, Region start, Region end, List<Region> regions) {
             // The starting room should contain a weak item and no enemies
             Point p = start.GetEmptyTile(Random, World);
             Item item = Equipment.WeakItem(Random);
             World.Items.Add(p, item); 
 
             // Keep track of difficulty for each depth level so we can award items to the player the more they fight
-            int[] difficulty = new int[highDepth + 1];
-            List<Region>[] depths = new List<Region>[highDepth + 1];
+            int[] difficulty = new int[HighDepth + 1];
+            List<Region>[] depths = new List<Region>[HighDepth + 1];
 
             // Spawn enemies in each region as a function of the region size
             foreach (Region r in regions) {
@@ -57,9 +63,9 @@ namespace MonoRogue {
                     if (tile.X == -1) { break; }
 
                     Creature c;
-                    if (r.Depth <= lowDepth) {
+                    if (r.Depth <= LowDepth) {
                         c = Creature.NewWeakCreature(Random, World, tile.X, tile.Y);
-                    } else if (r.Depth <= medDepth) {
+                    } else if (r.Depth <= MedDepth) {
                         c = Creature.NewMediumCreature(Random, World, tile.X, tile.Y);
                     } else {
                         c = Creature.NewStrongCreature(Random, World, tile.X, tile.Y);
@@ -71,8 +77,8 @@ namespace MonoRogue {
             // Spawn heartstones at the end of each dungeon "tier"
             for (int i = 0; i < 2; i++) {
                 int d;
-                if (i == 0) { d = lowDepth; }
-                else { d = medDepth; } // i == 1
+                if (i == 0) { d = LowDepth; }
+                else { d = MedDepth; } // i == 1
                 Region r = depths[d][Random.Next(depths[d].Count)];
                 Point tile = r.GetEmptyTile(Random, World);
                 World.Items.Add(tile, Heartstone.GetHeartstone());
@@ -80,13 +86,13 @@ namespace MonoRogue {
 
             // Spawn items by depth as a function of difficulty
             int mod = 0;
-            for (int i = 0; i <= highDepth; i++) {
+            for (int i = 0; i <= HighDepth; i++) {
                 int current = difficulty[i] + mod;
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= lowDepth) { divisor = 4; }
-                else if (i <= medDepth) { divisor = 9; }
+                if (i <= LowDepth) { divisor = 4; }
+                else if (i <= MedDepth) { divisor = 9; }
                 else { divisor = 14; }
                 
                 int num = current / divisor;
@@ -98,9 +104,9 @@ namespace MonoRogue {
 
                     Point tile = r.GetEmptyTile(Random, World);
                     Item e;
-                    if (r.Depth <= lowDepth) {
+                    if (r.Depth <= LowDepth) {
                         e = Equipment.WeakItem(Random);
-                    } else if (r.Depth <= medDepth) {
+                    } else if (r.Depth <= MedDepth) {
                         e = Equipment.MediumItem(Random);
                     } else {
                         e = Equipment.StrongItem(Random);
@@ -111,13 +117,13 @@ namespace MonoRogue {
 
             // Do the same with food
             mod = 0;
-            for (int i = 0; i <= highDepth; i++) {
+            for (int i = 0; i <= HighDepth; i++) {
                 int current = difficulty[i] + mod;
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= lowDepth) { divisor = 5; }
-                else if (i <= medDepth) { divisor = 11; }
+                if (i <= LowDepth) { divisor = 5; }
+                else if (i <= MedDepth) { divisor = 11; }
                 else { divisor = 17; }
                 
                 int num = current / divisor;
@@ -128,7 +134,7 @@ namespace MonoRogue {
                     Region r = depths[i][Random.Next(depths[i].Count)];
 
                     Point tile = r.GetEmptyTile(Random, World);
-                    Food f = Food.RandomFood(Random, r.Depth <= lowDepth ? 0 : (r.Depth <= medDepth ? 1 : 2));
+                    Food f = Food.RandomFood(Random, r.Depth <= LowDepth ? 0 : (r.Depth <= MedDepth ? 1 : 2));
                     World.Items.Add(tile, f);
                 }
             }

@@ -17,10 +17,15 @@ namespace MonoRogue {
         private static Texture2D InterfaceLine;
         private static Texture2D HeartsFull;
         private static Texture2D TileHighlight;
-        private static Texture2D MousePointer;
         private static SpriteFont Font14;
         private static SpriteFont Font12;
         private static SpriteFont Font10;
+
+        // A bunch of creature specific textures
+        private static Texture2D FlameGlyph;
+        private static Texture2D AttackDelayGlyph;
+        private static Texture2D MoveDelayGlyph;
+        private static Texture2D UnarmedGlyph;
 
         // Cache messages so we aren't formatting all of the strings hundreds of times per second for no reason
         private List<string> Messages;
@@ -30,7 +35,10 @@ namespace MonoRogue {
             InterfaceLine = content.Load<Texture2D>("Interface/InterfaceLine");
             HeartsFull = content.Load<Texture2D>("Interface/Hearts");
             TileHighlight = content.Load<Texture2D>("Interface/TileHighlight");
-            MousePointer = content.Load<Texture2D>("Interface/MousePointer");
+            FlameGlyph = content.Load<Texture2D>("Interface/Flame");
+            AttackDelayGlyph = content.Load<Texture2D>("Interface/AttackDelay");
+            MoveDelayGlyph = content.Load<Texture2D>("Interface/MoveDelay");
+            UnarmedGlyph = content.Load<Texture2D>("Interface/Unarmed");
 
             Font14 = content.Load<SpriteFont>("Interface/sds14");
             Font12 = content.Load<SpriteFont>("Interface/sds12");
@@ -38,51 +46,67 @@ namespace MonoRogue {
         }
 
 
-        public void DrawInterface(SpriteBatch spriteBatch) {
+        public void DrawInterface(SpriteBatch spriteBatch, Creature player, Creature mouseCreature, Item floorItem, Item mouseItem) {
             spriteBatch.Draw(InterfaceDivider, new Vector2(StartX, 0), Color.Gray);
+
+            int y = DrawCreatures(spriteBatch, player, mouseCreature);
+            y = DrawItems(spriteBatch, floorItem, mouseItem, y);
+            DrawMessages(spriteBatch);
         }
 
-        public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature) { DrawCreatureStats(spriteBatch, creature, null); }
-        public void DrawCreatureStats(SpriteBatch spriteBatch, Creature creature, Creature player) {
+        public int DrawCreatures(SpriteBatch spriteBatch, Creature player, Creature mouseCreature) {
             int x = StartX + 24;
-            int y = 8;
-            spriteBatch.DrawString(Font14, creature.Name, new Vector2(x, y), Color.White);
-            if (creature.IsPlayer && creature.HasKey) {
-                spriteBatch.Draw(GoldenKey.KeyGlyph, new Vector2(x, Constants.ScreenWidth - 48), Color.Yellow);
-            }
+            int y = 0;
+            y = DrawCreatureStats(spriteBatch, player, x, y);
 
-            y += 24;
-            DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
-            y += 32;
-            if (creature.GetDefense().Max == 0) {
-                spriteBatch.DrawString(Font14, "No armor", new Vector2(x, y + 8), Color.Gray);
-            } else {
-                DrawHearts(spriteBatch, creature.GetDefense().Max, creature.GetDefense().Current, x, y, Color.LightSkyBlue);
+            if (mouseCreature != null && mouseCreature != player) {
+                y = DrawCreatureStats(spriteBatch, mouseCreature, x, y);
             }
-
-            if (player != null) {
-                y = 8;
-                int width = (int)Font14.MeasureString(player.Name).X;
-                int playerX = Constants.ScreenWidth - 16;
-                spriteBatch.DrawString(Font14, player.Name, new Vector2(playerX - width, y), Color.White);
-                y += 24;
-                DrawHearts(spriteBatch, player.MaxHP, player.HP, playerX - 32 * ((player.MaxHP + 3) / 4), y, Color.Red);
-                y += 32;
-                if (player.GetDefense().Max > 0) {
-                    DrawHearts(spriteBatch, player.GetDefense().Max, player.GetDefense().Current, playerX - 32 * ((player.GetDefense().Max + 3) / 4), y, Color.LightSkyBlue);
+            return y;
+        }
+        public int DrawCreatureStats(SpriteBatch spriteBatch, Creature creature, int x, int y) {
+            // Draw creature header, Icon, Name, Difficulty
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
+            y += 16;
+            spriteBatch.Draw(creature.Glyph, new Vector2(x, y - 8), creature.Color);
+            spriteBatch.DrawString(Font14, creature.Name, new Vector2(x + 36, y), Color.White);
+            if (!creature.IsPlayer) {
+                int skullX = x + 48 + (int)Font14.MeasureString(creature.Name).X;
+                for (int i = 0; i < creature.Difficulty; i += 2) {
+                    spriteBatch.Draw(FlameGlyph, new Vector2(skullX + i * 32, y - 8), Color.Orange);
                 }
+            } else if (creature.HasKey) {
+                int keyX = x + 48 + (int)Font14.MeasureString(creature.Name).X;
+                spriteBatch.Draw(GoldenKey.KeyGlyph, new Vector2(keyX, y - 8), Color.Yellow);
             }
-
-            y += 40;
-            (int Min, int Max) damage = creature.GetDamage();
-            spriteBatch.DrawString(Font14, $"Damage: {damage.Min}-{damage.Max}", new Vector2(x, y), Color.White);
             y += 32;
 
-            string s;
-            Color c;
-            if (creature.Weapon == null) { s = "Unarmed"; c = Color.Gray; }
-            else { s = creature.Weapon.Name; c = Color.White; }
-            spriteBatch.DrawString(Font14, s, new Vector2(x, y), c);
+            // Draw creature health and defense
+            DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
+            DrawHearts(spriteBatch, creature.GetDefense().Max, creature.GetDefense().Current, x + 32 * ((creature.MaxHP + 3) / 4), y, Color.LightSkyBlue);
+            y += 32;
+
+            // Draw creature damage, attack delay, movement delay
+            Texture2D weaponGlyph = creature.Weapon != null ? creature.Weapon.Glyph : UnarmedGlyph;
+            spriteBatch.Draw(weaponGlyph, new Vector2(x, y), Color.White);
+            spriteBatch.DrawString(Font12, $"{creature.GetDamage().Min}-{creature.GetDamage().Max}", new Vector2(x + 36, y + 8), Color.White);
+
+            int nx = x + 112;
+            int delay = creature.GetAttackDelay();
+            Color color = delay < 8 ? Color.LightSeaGreen : delay <= 12 ? Color.White : Color.LightSalmon;
+            spriteBatch.Draw(AttackDelayGlyph, new Vector2(nx, y), Color.White);
+            spriteBatch.DrawString(Font12, $"{delay}", new Vector2(nx + 36, y + 8), color);
+
+            nx += 96;
+            delay = creature.GetMovementDelay();
+            color = delay < 8 ? Color.LightSeaGreen : delay <= 12 ? Color.White : Color.LightSalmon;
+            spriteBatch.Draw(MoveDelayGlyph, new Vector2(nx, y), Color.White);
+            spriteBatch.DrawString(Font12, $"{delay}", new Vector2(nx + 36, y + 8), color);
+
+            // Draw the final line at the bottom
+            y += 36;
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
+            return y;
         }
 
         private static Rectangle HeartEmpty = new Rectangle(0, 0, 32, 32);
@@ -94,6 +118,8 @@ namespace MonoRogue {
         private static Rectangle HalfHeartHalf = new Rectangle(32, 0, 16, 32);
         private static Rectangle HalfHeartFull = new Rectangle(128, 0, 16, 32);
         public static void DrawHearts(SpriteBatch spriteBatch, int max, int health, int x, int y, Color color) {
+            if (max == 0) { return; }
+
             // Each heart counts as 4 HP
             int fullHearts = health / 4;
             int partialHearts = health % 4;
@@ -146,69 +172,61 @@ namespace MonoRogue {
             }
         }
 
-        public void DrawItems(SpriteBatch spriteBatch, Item floorItem, Item mouseItem) {
+        public int DrawItems(SpriteBatch spriteBatch, Item floorItem, Item mouseItem, int y) {
             int x = StartX + 24;
-            int y = 184;
-
             if (floorItem == mouseItem) { mouseItem = null; }
+            // Don't need to draw the top bar as there will always be one there from a creature
             if (floorItem != null && mouseItem == null) {
                 // Draw the full floor item
-                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y - 16), Color.Gray);
-                y = DrawItemInfo(spriteBatch, floorItem, x, y);
+                y = DrawItemInfo(spriteBatch, floorItem, x, y + 12);
                 spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
             } else if (floorItem != null) {
-                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y - 16), Color.Gray);
-                y = DrawItemHeader(spriteBatch, floorItem, x, y, false);
+                y = DrawItemHeader(spriteBatch, floorItem, x, y + 12);
                 spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
-                y += 16;
             }
             if (mouseItem != null) {
-                spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y - 16), Color.Gray);
-                y = DrawItemInfo(spriteBatch, mouseItem, x, y, true);
+                y = DrawItemInfo(spriteBatch, mouseItem, x, y + 12);
                 spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y), Color.Gray);
             }
+            return y;
         }
 
-        public int DrawItemInfo(SpriteBatch spriteBatch, Item item, int x, int y) { return DrawItemInfo(spriteBatch, item, x, y, false); }
-        private int DrawItemInfo(SpriteBatch spriteBatch, Item item, int x, int y, bool mousePointer) {
-            y = DrawItemHeader(spriteBatch, item, x, y, mousePointer);
+        private int DrawItemInfo(SpriteBatch spriteBatch, Item item, int x, int y) {
+            y = DrawItemHeader(spriteBatch, item, x, y);
+            x += 8;
 
             if (item.IsFood) {
                 Food food = (Food)item;
-                spriteBatch.DrawString(Font12, $"Food:", new Vector2(x, y), Color.White);
-                DrawHearts(spriteBatch, food.Value, food.Value, x + 96, y - 8, Color.Yellow);
+                spriteBatch.DrawString(Font12, $"Food:", new Vector2(x, y + 8), Color.White);
+                DrawHearts(spriteBatch, food.Value, food.Value, x + 96, y, Color.Yellow);
+                y += 32;
             } else if (item.IsArmor) {
                 Armor armor = (Armor)item;
-                spriteBatch.DrawString(Font12, $"Defense:", new Vector2(x, y), Color.White);
-                DrawHearts(spriteBatch, armor.Defense, armor.MaxDefense, x + 144, y - 8, Color.LightSkyBlue);
-                y += 24;
+                spriteBatch.DrawString(Font12, $"Defense:", new Vector2(x, y + 8), Color.White);
+                DrawHearts(spriteBatch, armor.Defense, armor.MaxDefense, x + 144, y, Color.LightSkyBlue);
+                y += 32;
                 spriteBatch.DrawString(Font12, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
+                y += 24;
             } else if (item.IsWeapon) {
                 Weapon weapon = (Weapon)item;
                 spriteBatch.DrawString(Font12, $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
                 y += 24;
                 spriteBatch.DrawString(Font12, $"Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
+                y += 24;
             }
             if (item.ItemInfo != null) {
-                y -= 24;
                 foreach(string s in item.ItemInfo) {
-                    y += 24;
                     spriteBatch.DrawString(Font12, s, new Vector2(x, y), Color.White);
+                    y += 24;
                 }
             }
-            return y + 24;
+            return y;
         }
-        private int DrawItemHeader(SpriteBatch spriteBatch, Item item, int x, int y, bool mousePointer) {
-            int iconX = x + (int)Font14.MeasureString(item.Name).X + 16;
-            if (mousePointer) {
-                spriteBatch.Draw(MousePointer, new Vector2(x - 4, y - 4), Color.White);
-                spriteBatch.DrawString(Font14, item.Name, new Vector2(x + 16, y), Color.White);
-                iconX += 16;
-            } else {
-                spriteBatch.DrawString(Font14, item.Name, new Vector2(x, y), Color.White);
-            }
-            spriteBatch.Draw(item.Glyph, new Vector2(iconX, y - 8), item.Color);
-            return y + 32;
+        private int DrawItemHeader(SpriteBatch spriteBatch, Item item, int x, int y) {
+            int iconX = x + (int)Font14.MeasureString(item.Name).X + 24;
+            spriteBatch.DrawString(Font14, item.Name, new Vector2(x, y + 8), Color.White);
+            spriteBatch.Draw(item.Glyph, new Vector2(iconX, y), item.Color);
+            return y + 36;
         }
 
         public void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Color color) {
@@ -233,7 +251,7 @@ namespace MonoRogue {
             if (Messages == null || Messages.Count == 0) { return; }
 
             int lineHeight = 18;
-            int y = Constants.ScreenHeight - Messages.Count * lineHeight;
+            int y = Constants.ScreenHeight - Messages.Count * lineHeight - 8;
             foreach (string m in Messages) {
                 spriteBatch.DrawString(Font10, m, new Vector2(StartX + 32, y), Color.LightGray);
                 y += lineHeight;

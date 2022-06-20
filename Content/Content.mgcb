@@ -745,6 +745,18 @@
 /processorParam:TextureFormat=Color
 /build:Food/PigMeat.png
 
+#begin Interface/AttackDelay.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Interface/AttackDelay.png
+
 #begin Interface/BorderCorners.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -768,6 +780,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Interface/BorderSides.png
+
+#begin Interface/Flame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Interface/Flame.png
 
 #begin Interface/Hearts.png
 /importer:TextureImporter
@@ -805,7 +829,7 @@
 /processorParam:TextureFormat=Color
 /build:Interface/InterfaceLine.png
 
-#begin Interface/MousePointer.png
+#begin Interface/MoveDelay.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -815,7 +839,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Interface/MousePointer.png
+/build:Interface/MoveDelay.png
 
 #begin Interface/sds10.spritefont
 /importer:FontDescriptionImporter
@@ -863,6 +887,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Interface/TileHighlight.png
+
+#begin Interface/Unarmed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Interface/Unarmed.png
 
 #begin Misc/ExitLocked.png
 /importer:TextureImporter

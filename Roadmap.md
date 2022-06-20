@@ -1,24 +1,26 @@
 ### **Roadmap:**
  * General gameplay things
-    * Add a visual cue when you enter different difficulty levels of the dungeon. Perhaps different dungeon tiles and colours?
-    * You can get attacked at range out of your own sight. Give a notification when this happens
-      * Redo notifications as a class that can be handled and parsed in world
-      * Fix messages so that enemies will be prefixed with "the" when needed, basically always
-      * Have creatures be able to "talk" and taunt the player on their turns. Particularly the imps
-    * Difficulty settings, should affect the rate at which food and enemies spawn
+    * Difficulty settings, should affect the rate at which food and enemies spawn. Move populating the dungeon to last, otherwise it will affect the rest of the dungeon generation
+
+ * Redo how notifications are handled
+    * A new class that are sent to the world and parsed by the player if the player is in sight of it.
+    * Subclasses of Notification to handle different things. Thinking "Door" "Attack" "Speech"
+    * Have to handle things happening just outside of your sight. Such as "something opens the door" "something shoots you" etc. Where you can see the action but cant see the source
+    * Cancel movement and resting when a notification happens
+    * Fix messages so that enemies will be prefixed with "the" when needed, basically always
+    * Have creatures be able to "talk" and taunt the player on their turns. Particularly the imps
 
  * Music and sound effects
 
  * Other subscreens:
-    * Game Loss and Victory
     * Settings screen, volume settings and player character colour. Settings should persist in a text file somewhere
     * Keybindings screen in settings
     * Screen to inspect tiles on right click
     * Map screen to show a much larger portion of explored tiles that you can scroll around. Center it on what we can see without giving hints as to what region of the full world you are in.
+      * Highlight regions by difficulty here
 
  * Animate projectiles
     * Same as movement, could have multiple projectile sprites based on what is shooting them
-    * Might not be doable since it locks you out of input for a handful of frames, worth looking into
 
  * Tab to auto attack nearest enemy in range, to avoid having to repeatedly use the mouse when ranged
     * A fire key of some sort ([f]?) to let you select an enemy from available enemies in sight to shoot at, default to pointing at the one you last attacked, or the nearest one with the lowest health
