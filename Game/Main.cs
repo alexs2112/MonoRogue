@@ -85,16 +85,18 @@ namespace MonoRogue {
             keyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
 
             bool keyJustPressed = keyTrack.KeyJustPressed();
+            bool inputGiven = false;
 
             if (subscreen != null) {
                 if (keyJustPressed || mouse.ButtonClicked()) {
                     Keys k = Keys.None;
                     if (keyJustPressed) { k = kState.GetPressedKeys()[0]; }
                     subscreen = subscreen.RespondToInput(k, mouse);
+
+                    if (subscreen == null) { inputGiven = true; }
                 }
             } else {
-                bool inputGiven = true;
-
+                inputGiven = true;
                 if (keyJustPressed || mouse.ButtonClicked()) {
                     // Whenever the player presses a key, clear messages
                     // We can update this in the future to show old messages without being confusing
@@ -126,7 +128,10 @@ namespace MonoRogue {
                     else if (keyTrack.MovementSWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, 1); }
                     else if (keyTrack.WaitPressed()) { player.TurnTimer = player.GetMovementDelay(); }
                     else if (keyTrack.KeyJustPressed(Keys.R)) { ((PlayerAI)player.AI).StartResting(); }
-                    else if (keyTrack.KeyJustPressed(Keys.Space)) { 
+                    else if (keyTrack.KeyJustPressed(Keys.F)) {
+                        if (FireScreen.CanEnter(player)) { subscreen = new FireScreen(worldView, player); }
+                        else { player.Notify("No enemies in sight."); }
+                    } else if (keyTrack.KeyJustPressed(Keys.Space)) { 
                         if (player.X == world.Exit.X && player.Y == world.Exit.Y) {
                             inputGiven = false;
                             TryToWinGame();
@@ -172,25 +177,25 @@ namespace MonoRogue {
                         else if (keyTrack.KeyJustPressed(Keys.OemQuestion)) { subscreen = new HelpScreen(Content); }
                         inputGiven = false; 
                     }
+                }
+            }
 
-                    // If input has been given, update the world
-                    if (inputGiven && !player.IsDead()) {
-                        worldView.Update(world, player);
-                        while (player.TurnTimer > 0) {
-                            // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
-                            currentIndex = (currentIndex + 1) % world.Creatures.Count;
-                            Creature c = world.Creatures[currentIndex];
-                            c.TurnTimer--;
-                            if (c.TurnTimer <= 0) { 
-                                c.TakeTurn(world);
+            // If input has been given, update the world
+            if (inputGiven && !player.IsDead()) {
+                worldView.Update(world, player);
+                while (player.TurnTimer > 0) {
+                    // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
+                    currentIndex = (currentIndex + 1) % world.Creatures.Count;
+                    Creature c = world.Creatures[currentIndex];
+                    c.TurnTimer--;
+                    if (c.TurnTimer <= 0) { 
+                        c.TakeTurn(world);
 
-                                if (player.IsDead()) { break; }
-                            }
-                        }
-                        worldView.Update(world, player);
-                        mainInterface.UpdateMessages(player.AI.GetMessages());
+                        if (player.IsDead()) { break; }
                     }
                 }
+                worldView.Update(world, player);
+                mainInterface.UpdateMessages(player.AI.GetMessages());
             }
 
             base.Update(gameTime);
@@ -213,18 +218,13 @@ namespace MonoRogue {
 
                 spriteBatch.Begin();
 
-                for (int x = 0; x < worldView.Width; x++) {
-                    for (int y = 0; y < worldView.Height; y++) {
-                        if (worldView.Glyphs[x,y] == null) { continue; }
-                        spriteBatch.Draw(worldView.Glyphs[x,y], new Vector2(x * 32, y * 32), worldView.Colors[x,y]);
-                    }
-                }
+                worldView.Draw(spriteBatch);
                 
-                mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.White);
+                MainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.White);
                 if (mouseCreature != null) {
                     Creature target = player.GetCreatureInRange(mouseCreature);
-                    if (target != null) { mainInterface.DrawLineToCreature(spriteBatch, mouse, worldView, player, target, Color.Red); }
-                    else { mainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
+                    if (target != null) { MainInterface.DrawLineToCreature(spriteBatch, mouse, worldView, player, target, Color.Red); }
+                    else { MainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
                 }
 
                 mainInterface.DrawInterface(spriteBatch, player, mouseCreature, floorItem, mouseItem);

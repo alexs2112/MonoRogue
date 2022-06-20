@@ -19,7 +19,8 @@ namespace MonoRogue {
                 " - [s] to see your own stats",
                 " - [r] to rest and repair armor",
                 " - [.] or [5] to wait one turn",
-                " - [esc] to quit the game or exit subscreens",
+                " - [f] to fire your weapon at visible enemies",
+                " - [esc] to quit the game or exit menus",
                 " - [/] or [?] to show this menu"
             };
 

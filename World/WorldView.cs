@@ -89,5 +89,14 @@ namespace MonoRogue {
                 }
             }
         }
+
+        public void Draw(SpriteBatch spriteBatch) {
+            for (int x = 0; x < Width; x++) {
+                for (int y = 0; y < Height; y++) {
+                    if (Glyphs[x,y] == null) { continue; }
+                    spriteBatch.Draw(Glyphs[x,y], new Vector2(x * 32, y * 32), Colors[x,y]);
+                }
+            }
+        }
     }
 }
