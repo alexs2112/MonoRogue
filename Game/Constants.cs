@@ -5,8 +5,9 @@ namespace MonoRogue {
         public static bool WriteMessagesToConsole = true;   // Default to writing messages to the console, turn this off if it is annoying
         public static int Difficulty = 3;           // Hard = 3, Medium = 2, Easy = 1
 
-        public static int ScreenWidth = 800;        // Size of the screen in pixels, default for monogame is 800 x 480 
+        public static int ScreenWidth = 800;        // Size of the screen in pixels, default is 800 x 480 
         public static int ScreenHeight = 480;
+        public static bool Fullscreen = false;
 
         public static int WorldWidth = 60;          // World dimensions when generated
         public static int WorldHeight = 35;         // Default: 60x35, Small: 40x25

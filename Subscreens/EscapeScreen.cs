@@ -6,9 +6,11 @@ using Microsoft.Xna.Framework.Content;
 namespace MonoRogue {
     public class EscapeScreen : BorderedScreen {
         private Main Main;
+        private ContentManager Content;
         private int Index;
         public EscapeScreen(Main main, ContentManager content) : base(content) { 
             Main = main;
+            Content = content;
             Index = 0;
         }
 
@@ -17,15 +19,13 @@ namespace MonoRogue {
                 case Keys.Escape: return null;
                 case Keys.Enter:
                     if (Index == 0) { return null; }
-                    else if (Index == 1) { Main.Exit(); }
+                    else if (Index == 1) { return new WindowResizeScreen(Content, Main, this); }
+                    else if (Index == 2) { Main.Exit(); }
                     break;
 
                 // With only two options, it really only just toggles the index
-                case Keys.Up:
-                case Keys.Down:
-                    if (Index == 0) { Index = 1; }
-                    else if (Index == 1) { Index = 0; }
-                    break;                
+                case Keys.Up: if (Index > 0) { Index--; } break;
+                case Keys.Down: if (Index < 2) { Index++; } break;
             }
             return this;
         }
@@ -38,7 +38,9 @@ namespace MonoRogue {
             v.Y += 64;
             WriteCentered(spriteBatch, Font16, "Continue", v, Index == 0 ? Color.LawnGreen : Color.White);
             v.Y += 32;
-            WriteCentered(spriteBatch, Font16, "Quit", v, Index == 1 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font16, "Settings", v, Index == 1 ? Color.LawnGreen : Color.White);
+            v.Y += 32;
+            WriteCentered(spriteBatch, Font16, "Quit", v, Index == 2 ? Color.LawnGreen : Color.White);
 
             v.Y = Constants.ScreenHeight - 64;
             WriteCentered(spriteBatch, Font14, $"Seed: {Main.seed}", v, Color.Gray);

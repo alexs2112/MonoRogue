@@ -53,7 +53,7 @@ namespace MonoRogue {
             }
             ClearMessages();
             Host.MoveTo(Path[0]);
-            Path.RemoveAt(0);
+            if (Path != null) { Path.RemoveAt(0); }
         }
 
         public void SetPath(List<Point> path) { Path = path; }

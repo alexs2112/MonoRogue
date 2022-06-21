@@ -56,7 +56,7 @@ namespace MonoRogue {
 
             int x = Constants.ScreenWidth / 2;
             int y = Constants.ScreenHeight / 2 - 64;
-            WriteCentered(spriteBatch, Font24, "MonoRogue", new Vector2(x, y), Color.White);
+            WriteCentered(spriteBatch, Font24, "Escape of the Blue Man", new Vector2(x, y), Color.White);
             y += 48;
             WriteCentered(spriteBatch, Font14, "Press Enter to start", new Vector2(x, y), Color.White);
             y = Constants.ScreenHeight - 64;

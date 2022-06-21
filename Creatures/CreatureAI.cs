@@ -234,12 +234,15 @@ namespace MonoRogue {
         private int Cooldown;
         public override void TakeTurn(World world) {
             if (Cooldown > 0) { Cooldown--; }
-            if (Cooldown <= 0 && Host.GetLineToPoint(Player.X, Player.Y).Count == 2 && Host.GetCreatureInRange(Player, 2) == Player) {
-                List<Point> path = Pathfinder.FindPath(Host, Player.X, Player.Y);
-                Player.MoveTo(path[0]);
-                Player.AddMessage($"The {Host.Name} pulls you in.");
-                Cooldown = 3;
-                Host.TurnTimer = 8;
+            if (Host.CanSee(Player.X, Player.Y) && 
+                Cooldown <= 0 && 
+                Host.GetLineToPoint(Player.X, Player.Y).Count == 2 && 
+                Host.GetCreatureInRange(Player, 2) == Player) {
+                    List<Point> path = Pathfinder.FindPath(Host, Player.X, Player.Y);
+                    Player.MoveTo(path[0]);
+                    Player.AddMessage($"The {Host.Name} pulls you in.");
+                    Cooldown = 3;
+                    Host.TurnTimer = 8;
             } else {
                 base.TakeTurn(world);
             }

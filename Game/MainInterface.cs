@@ -27,10 +27,13 @@ namespace MonoRogue {
         private static Texture2D MoveDelayGlyph;
         private static Texture2D UnarmedGlyph;
 
+        // A rectangle used to draw the border to the side
+        private static Texture2D BorderRect;
+
         // Cache messages so we aren't formatting all of the strings hundreds of times per second for no reason
         private List<string> Messages;
 
-        public static void LoadTextures(ContentManager content) {
+        public static void LoadTextures(ContentManager content, GraphicsDevice graphics) {
             InterfaceDivider = content.Load<Texture2D>("Interface/InterfaceDivider");
             InterfaceLine = content.Load<Texture2D>("Interface/InterfaceLine");
             HeartsFull = content.Load<Texture2D>("Interface/Hearts");
@@ -43,11 +46,19 @@ namespace MonoRogue {
             Font14 = content.Load<SpriteFont>("Interface/sds14");
             Font12 = content.Load<SpriteFont>("Interface/sds12");
             Font10 = content.Load<SpriteFont>("Interface/sds10");
+
+            BorderRect = new Texture2D(graphics, 1, 1);
+            BorderRect.SetData(new[] { Color.White });
         }
 
 
         public void DrawInterface(SpriteBatch spriteBatch, Creature player, Creature mouseCreature, Item floorItem, Item mouseItem) {
-            spriteBatch.Draw(InterfaceDivider, new Vector2(StartX, 0), Color.Gray);
+            for (int i = 0; i < (Constants.ScreenHeight + 63) / 64; i++) {
+                spriteBatch.Draw(InterfaceDivider, new Vector2(StartX, i * 64), Color.Gray);
+            }
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, 0), Color.Gray);
+            spriteBatch.Draw(BorderRect, new Rectangle(Constants.ScreenWidth - 4, 0, Constants.ScreenWidth, Constants.ScreenHeight), Color.Gray);
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, Constants.ScreenHeight - 4), Color.Gray);
 
             int y = DrawCreatures(spriteBatch, player, mouseCreature);
             y = DrawItems(spriteBatch, floorItem, mouseItem, y);
@@ -107,7 +118,8 @@ namespace MonoRogue {
             if (!creature.IsPlayer) {
                 int skullX = x + 48 + (int)Font14.MeasureString(creature.Name).X;
                 for (int i = 0; i < creature.Difficulty; i += 2) {
-                    spriteBatch.Draw(FlameGlyph, new Vector2(skullX + i * 32, y), Color.Orange);
+                    spriteBatch.Draw(FlameGlyph, new Vector2(skullX, y), Color.Orange);
+                    skullX += 32;
                 }
             } else if (creature.HasKey) {
                 int keyX = x + 48 + (int)Font14.MeasureString(creature.Name).X;

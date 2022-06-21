@@ -27,9 +27,6 @@ namespace MonoRogue {
 
         public Main(string[] args) {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = Constants.ScreenWidth;
-            graphics.PreferredBackBufferHeight = Constants.ScreenHeight;
-            graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -38,6 +35,9 @@ namespace MonoRogue {
         }
 
         protected override void Initialize() {
+            Window.Title = "Escape of the Blue Man";
+            UpdateScreenSize();
+
             equipmentFactory = new EquipmentFactory(Content);
             creatureFactory = new CreatureFactory(Content, equipmentFactory);
             Tile.LoadTiles(Content);
@@ -47,7 +47,7 @@ namespace MonoRogue {
             PlayerGlyph.LoadGlyphs(Content);
             keyTrack = new KeyboardTrack();
             mouse = new MouseHandler();
-            worldView = new WorldView(Constants.WorldViewWidth, Constants.WorldViewHeight);
+            worldView = new WorldView();
             mainInterface = new MainInterface();
             
             if (!Constants.Debug) { 
@@ -75,7 +75,7 @@ namespace MonoRogue {
 
         protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            MainInterface.LoadTextures(Content);
+            MainInterface.LoadTextures(Content, GraphicsDevice);
             WorldView.LoadContent(Content);
         }
 
@@ -257,6 +257,16 @@ namespace MonoRogue {
             } else {
                 player.AddMessage("You need the Golden Key to unlock the exit to the dungeon!");
             }
+        }
+
+        public void UpdateScreenSize() {
+            graphics.PreferredBackBufferWidth = Constants.ScreenWidth;
+            graphics.PreferredBackBufferHeight = Constants.ScreenHeight;
+            graphics.IsFullScreen = Constants.Fullscreen;
+            graphics.ApplyChanges();
+
+            MainInterface.StartX = 32 * Constants.WorldViewWidth;
+            if (worldView != null) { worldView.UpdateScreenSize(); }
         }
 
         private static void ParseParameters(string[] args) {

@@ -20,11 +20,8 @@ namespace MonoRogue {
         private static Texture2D ExitOpen;
 
         // A way to cache the glyphs to not have to recalculate everything between key presses
-        public WorldView(int widthInTiles, int heightInTiles) {
-            Glyphs = new Texture2D[widthInTiles, heightInTiles];
-            Colors = new Color[widthInTiles, heightInTiles];
-            Width = widthInTiles;
-            Height = heightInTiles;
+        public WorldView() {
+            UpdateScreenSize();
 
             HasSeen = new bool[Constants.WorldWidth, Constants.WorldHeight];
         }
@@ -97,6 +94,13 @@ namespace MonoRogue {
                     spriteBatch.Draw(Glyphs[x,y], new Vector2(x * 32, y * 32), Colors[x,y]);
                 }
             }
+        }
+
+        public void UpdateScreenSize() {
+            Glyphs = new Texture2D[Constants.WorldViewWidth, Constants.WorldViewHeight];
+            Colors = new Color[Constants.WorldViewWidth, Constants.WorldViewHeight];
+            Width = Constants.WorldViewWidth;
+            Height = Constants.WorldViewHeight;
         }
     }
 }

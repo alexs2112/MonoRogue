@@ -7,10 +7,8 @@ using Microsoft.Xna.Framework.Content;
 namespace MonoRogue {
     public class HelpScreen : BorderedScreen {
         private List<string> Text;
-        private SpriteFont Font12;
 
         public HelpScreen(ContentManager content) : base(content) {
-            Font12 = content.Load<SpriteFont>("Interface/sds12");
             string[] text = new string[] {
                 "Controls:",
                 " - Arrow keys, Left Click, Numpad, or Vi Keys to move and attack",
