@@ -109,8 +109,7 @@ namespace MonoRogue {
             if (IsPlayer && Constants.Invincible) { return; }
             HP += value;
             if (HP <= 0) {
-                NotifyOthers($"{Name} dies!");
-                Notify("You die.");
+                NotifyWorld(new DeathNotification(this));
                 AI.OnDeath(World);
                 World.Creatures.Remove(this);
 
@@ -154,8 +153,7 @@ namespace MonoRogue {
             if (!CanEnter(x, y)) { return false; }
             if (World.IsDoor(x, y)) {
                 World.OpenDoor(x, y);
-                Notify("You break down the door.");
-                NotifyOthers($"The {Name} breaks down the door.");
+                NotifyWorld(new DoorNotification(this), x, y);
                 TurnTimer = GetAttackDelay();
                 return true;
             }
@@ -201,7 +199,7 @@ namespace MonoRogue {
                 }
 
                 Item i = World.GetItemAt(X, Y);
-                if (i != null) { Notify($"You see here a {i.Name}."); }
+                if (i != null) { AddMessage($"You see here a {i.Name}."); }
             }
             return true;
         }
@@ -253,13 +251,13 @@ namespace MonoRogue {
                 action = BaseAttackText;
             }
 
-            string critString = "";
+            bool isCrit = false;
             if (GetWeaponType() == Item.Type.Dagger) {
                 // Daggers can critically hit, dealing double damage
                 int chance = new System.Random().Next(10);
 
                 // 10% chance to crit
-                if (chance < 1) { damage = damage * 2; critString = " CRIT!"; }
+                if (chance < 1) { damage = damage * 2; isCrit = true; }
             } else if (GetWeaponType() == Item.Type.Mace) {
                 // Maces deal additional damage to armor, scaled by difficulty
                 if (target.GetDefense().Current > 0) {
@@ -268,10 +266,7 @@ namespace MonoRogue {
                 }
             }
 
-            Notify($"You {action} {target.Name} for {damage} damage!{critString}");
-
-            if (action.EndsWith('h')) { action += 'e'; } // To turn slash and crush into slashes and crushes, instead of slashs and crushs
-            NotifyOthers($"{Name} {action}s {target.Name} for {damage} damage!{critString}");
+            NotifyWorld(new AttackNotification(this, target, action, damage, isCrit), target.X, target.Y);
             target.TakeDamage(damage);
             target.GetAttacked(this);
             TurnTimer = GetAttackDelay();
@@ -303,15 +298,21 @@ namespace MonoRogue {
             return c;
         }
 
-        public void Notify(string message) { 
+        public void AddMessage(string message) {
             if (AI == null) { return; }
             AI.AddMessage(message); 
         }
-        public void NotifyOthers(string message) {
-            // Notify each creature that can see this one
-            foreach (Creature c in World.Creatures) {
-                if (c == this) { continue; }
-                if (c.CanSee(X, Y)) { c.Notify(message); }
+        public void Notify(Notification notification) { 
+            if (!IsPlayer) { return; }
+            string message = notification.Parse(this);
+            AI.AddMessage(message);
+        }
+        public void NotifyWorld(Notification notification) { NotifyWorld(notification, new Point(X, Y)); }
+        public void NotifyWorld(Notification notification, int x, int y) { NotifyWorld(notification, new Point(x,y)); }
+        public void NotifyWorld(Notification notification, Point p) {
+            // Notify the player if they can see the given point
+            if (World.Player.CanSee(p)) {
+                World.Player.Notify(notification);
             }
         }
 
@@ -321,7 +322,7 @@ namespace MonoRogue {
             Item i = World.GetItemAt(p);
             if (i == null) { 
                 if (OnlyPickup) {
-                    Notify("There is nothing to pick up.");
+                    AddMessage("There is nothing to pick up.");
                 } else {
                     TurnTimer = 10;
                 }
@@ -345,7 +346,7 @@ namespace MonoRogue {
             } else if (i.IsKey) {
                 World.Items.Remove(p);
                 HasKey = true;
-                Notify("You pick up the Golden Key!");
+                AddMessage("You pick up the Golden Key!");
             }
             TurnTimer = 10;
         }
@@ -354,14 +355,14 @@ namespace MonoRogue {
             if (item.IsArmor) {
                 Armor temp = Armor;
                 Armor = (Armor)item;
-                Notify($"You equip the {item.Name}.");
+                AddMessage($"You equip the {item.Name}.");
 
                 if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
             } else if (item.IsWeapon) {
                 Weapon temp = Weapon;
                 Weapon = (Weapon)item;
 
-                Notify($"You equip the {item.Name}.");
+                AddMessage($"You equip the {item.Name}.");
                 if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
             }
         }

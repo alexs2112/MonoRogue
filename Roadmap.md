@@ -1,12 +1,4 @@
 ### **Roadmap:**
- * Redo how notifications are handled
-    * A new class that are sent to the world and parsed by the player if the player is in sight of it.
-    * Subclasses of Notification to handle different things. Thinking "Door" "Attack" "Speech"
-    * Have to handle things happening just outside of your sight. Such as "something opens the door" "something shoots you" etc. Where you can see the action but cant see the source
-    * Cancel movement and resting when a notification happens
-    * Fix messages so that enemies will be prefixed with "the" when needed, basically always
-    * Have creatures be able to "talk" and taunt the player on their turns. Particularly the imps
-
  * Music and sound effects
 
  * Other subscreens:

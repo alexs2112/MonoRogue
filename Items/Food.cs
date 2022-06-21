@@ -16,12 +16,10 @@ namespace MonoRogue {
         public bool Eat(Creature creature) {
             if (creature.HP < creature.MaxHP) {
                 creature.ModifyHP(Value);
-                creature.Notify($"You eat the {Name}.");
-                creature.Notify($"You heal for {Value} HP!");
-                creature.NotifyOthers($"{creature.Name} eats the {Name}.");
+                creature.NotifyWorld(new FoodNotification(creature, this));
                 return true;
             } else {
-                creature.Notify($"You are too full to eat the {Name}.");
+                creature.AddMessage($"You are too full to eat the {Name}.");
                 return false;
             }
         }

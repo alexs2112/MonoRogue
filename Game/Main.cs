@@ -112,7 +112,7 @@ namespace MonoRogue {
                         if (keyTrack.KeyJustPressed() || mouse.ButtonClicked()) {
                             // Any input cancels the move
                             ((PlayerAI)player.AI).ClearPath();
-                            player.Notify("Input given, cancelling pathing.");
+                            player.AddMessage("Input given, cancelling pathing.");
                         } else {
                             ((PlayerAI)player.AI).FollowPath(world);
                             inputGiven = true;
@@ -130,7 +130,7 @@ namespace MonoRogue {
                     else if (keyTrack.KeyJustPressed(Keys.R)) { ((PlayerAI)player.AI).StartResting(); }
                     else if (keyTrack.KeyJustPressed(Keys.F)) {
                         if (FireScreen.CanEnter(player)) { subscreen = new FireScreen(worldView, player); }
-                        else { player.Notify("No enemies in sight."); }
+                        else { player.AddMessage("No enemies in sight."); }
                     } else if (keyTrack.KeyJustPressed(Keys.Space)) { 
                         if (player.X == world.Exit.X && player.Y == world.Exit.Y) {
                             inputGiven = false;
@@ -255,7 +255,7 @@ namespace MonoRogue {
             if (player.HasKey) {
                 subscreen = new WinScreen(this, Content);
             } else {
-                player.Notify("You need the Golden Key to unlock the exit to the dungeon!");
+                player.AddMessage("You need the Golden Key to unlock the exit to the dungeon!");
             }
         }
 

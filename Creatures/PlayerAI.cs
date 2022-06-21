@@ -15,11 +15,11 @@ namespace MonoRogue {
             if (Resting) { 
                 Creature c = CreatureInView(world);
                 if (c != null) {
-                    Host.Notify($"A {c.Name} comes into view.");
+                    AddMessage($"A {c.Name} comes into view.");
                     Resting = false;
                     return;
                 } else if (Host.Armor.Defense >= Host.Armor.MaxDefense) {
-                    Host.Notify("Armor repaired!");
+                    AddMessage("Armor repaired!");
                     Resting = false;
                     return;
                 }
@@ -30,11 +30,11 @@ namespace MonoRogue {
         public void StartResting() {
             Creature c = CreatureInView(Host.World);
             if (c != null) {
-                Host.Notify("Cannot rest, enemies in view.");
+                AddMessage("Cannot rest, enemies in view.");
             } else if (Host.Armor == null) {
-                Host.Notify("You do not have armor to repair.");
+                AddMessage("You do not have armor to repair.");
             } else if (Host.Armor.Defense >= Host.Armor.MaxDefense) {
-                Host.Notify("Your armor is already repaired.");
+                AddMessage("Your armor is already repaired.");
             } else {
                 Resting = true;
                 Host.TurnTimer = 10;
@@ -47,7 +47,7 @@ namespace MonoRogue {
             if (Path.Count == 0) { Path = null; return; }
             Creature c = CreatureInView(world);
             if (c != null) {
-                Host.Notify($"A {c.Name} comes into view.");
+                AddMessage($"A {c.Name} comes into view.");
                 Path = null;
                 return;
             }
@@ -64,20 +64,14 @@ namespace MonoRogue {
         }
 
         public override void AddMessage(string message) {
-            if (message.Contains(Host.Name)) {
-                message = message.Replace(Host.Name, "you");
-            }
+            Resting = false;
+            Path = null;
             Messages.Add(message);
             if (Constants.WriteMessagesToConsole) { System.Console.WriteLine(message); }
         }
         public override List<string> GetMessages() { return Messages; }
         public override void ClearMessages() { Messages.Clear(); }
 
-        public override void OnDeath(World world) { Host.Notify("Press ESC to quit."); }
-
-        public override void GiveTargetTile(Point p) {
-            Host.Notify("You feel a magical alarm on your location.");
-            Host.Notify("The dungeon knows where you are!");
-        }
+        public override void OnDeath(World world) { AddMessage("Press ESC to quit."); }
     }
 }

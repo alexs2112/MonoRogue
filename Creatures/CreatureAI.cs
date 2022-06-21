@@ -123,7 +123,10 @@ namespace MonoRogue {
         public PigAI(Creature creature, Creature player) : base(creature, player) { }
 
         public override void TakeTurn(World world) {
-            if (new System.Random().Next(10) < 2) { Host.NotifyOthers($"{Host.Name}: \"Oink\""); }
+            if (new System.Random().Next(10) < 2) {
+                if (Hostile) { Host.NotifyWorld(new TalkNotification(Host, "Angry oink")); } 
+                else { Host.NotifyWorld(new TalkNotification(Host, "Oink")); }
+            }
             if (Hostile) {
                 base.TakeTurn(world);
             } else {
@@ -153,7 +156,7 @@ namespace MonoRogue {
             if (Host.IsDead()) { return; }
             Hostile = true;
             Host.SetColor(Color.HotPink);
-            Host.NotifyOthers($"The {Host.Name} flies into a rage!");
+            Host.NotifyWorld(new BasicNotification($"The {Host.Name} flies into a rage!"));
             Host.ModifyDamage(1);
             Host.ModifyMovementDelay(-3);
             Host.ModifyAttackDelay(-2);
@@ -219,7 +222,7 @@ namespace MonoRogue {
         public override void OnHit(World world, Creature attacker) {
             if (Host.GetDefense().Current > 0 && attacker.GetWeaponType() != Item.Type.Bow) {
                 int damage = new System.Random().Next(1, 3);
-                attacker.Notify($"You take {damage} damage. (Spines)");
+                attacker.AddMessage($"You take {damage} damage. (Spines)");
             }
         }
     }
@@ -234,7 +237,7 @@ namespace MonoRogue {
             if (Cooldown <= 0 && Host.GetLineToPoint(Player.X, Player.Y).Count == 2 && Host.GetCreatureInRange(Player, 2) == Player) {
                 List<Point> path = Pathfinder.FindPath(Host, Player.X, Player.Y);
                 Player.MoveTo(path[0]);
-                Player.Notify($"The {Host.Name} pulls you in.");
+                Player.AddMessage($"The {Host.Name} pulls you in.");
                 Cooldown = 3;
                 Host.TurnTimer = 8;
             } else {
@@ -280,7 +283,7 @@ namespace MonoRogue {
                     summon.TurnTimer = 10;
                     Host.TurnTimer = 20;
                     SummonsLeft--;
-                    Host.NotifyOthers($"The {Host.Name} summons a new {summon.Name}.");
+                    Host.NotifyWorld(new BasicNotification($"The {Host.Name} summons a new {summon.Name}."));
                     Summons.Add(summon);
                     return;
                 }
@@ -320,7 +323,8 @@ namespace MonoRogue {
         private static int Radius = 30;
         private void Alarm(World world) {
             Host.TurnTimer = 10;
-            Host.NotifyOthers($"The {Host.Name} glows bright red.");
+            Host.NotifyWorld(new TalkNotification(Host, "Brethren, come to me."));
+            Host.NotifyWorld(new BasicNotification($"The {Host.Name} glows bright red."));
             foreach (Creature c in world.Creatures) {
                 if ((c.X - Host.X) * (c.X - Host.X) + (c.Y - Host.Y) * (c.Y - Host.Y) > Radius * Radius) { continue; }
 

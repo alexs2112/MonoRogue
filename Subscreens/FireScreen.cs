@@ -50,7 +50,7 @@ namespace MonoRogue {
                 if (target != null) {
                     Player.Attack(target);
                 } else {
-                    Player.Notify("Out of range.");
+                    Player.AddMessage("Out of range.");
                 }
                 return null;
             }
