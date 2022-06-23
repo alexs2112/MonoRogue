@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonoRogue {
     public class World {
-        public Tile[,] Tiles { get; private set; }
+        public Tile[,] Tiles { get; set; }
         public Color[,] ColorOverlay { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -31,6 +31,8 @@ namespace MonoRogue {
         public bool IsFloor(int x, int y) { return InBounds(x, y) && Tiles[x,y].Walkable; }
         public bool IsWall(Point p) { return IsWall(p.X, p.Y); }
         public bool IsWall(int x, int y) { return !InBounds(x, y) || !Tiles[x,y].Walkable; }
+        public bool BlockSight(Point p) { return BlockSight(p.X, p.Y); }
+        public bool BlockSight(int x, int y) { return !Tiles[x,y].SeeThrough; }
         public bool IsDoor(Point p) { return IsDoor(p.X, p.Y); }
         public bool IsDoor(int x, int y) { return Tiles[x,y].Breakable; }
 
@@ -44,6 +46,9 @@ namespace MonoRogue {
             } while (!IsFloor(x, y) || GetCreatureAt(x, y) != null || GetItemAt(x, y) != null);
             return new Point(x, y);
         }
+        
+        public Tile GetTile(Point p) { return GetTile(p.X, p.Y); }
+        public Tile GetTile(int x, int y) { return Tiles[x,y]; }
 
         public Creature GetCreatureAt(Point p) { return GetCreatureAt(p.X, p.Y); }
         public Creature GetCreatureAt(int x, int y) {
@@ -72,7 +77,7 @@ namespace MonoRogue {
 
         public void OpenDoor(int x, int y) {
             if (Tiles[x,y].Breakable) {
-                Tiles[x,y] = Tile.GetOpenDoor();
+                Tiles[x,y] = Feature.GetOpenDoor();
             }
         }
 

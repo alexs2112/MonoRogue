@@ -192,7 +192,7 @@ namespace MonoRogue {
         public Weapon NewShortbow() {
             Weapon w = new Weapon("Shortbow", Glyphs["Shortbow"], Color.Peru);
             w.SetWeaponStats((2, 3), 12);
-            w.SetRange(4);
+            w.SetRange(5);
             w.SetType(Item.Type.Bow);
             w.SetDescription("A short, curved piece of wood and sinew designed for firing arrows.");
             w.SetAttackText("shoot");

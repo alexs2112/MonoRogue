@@ -41,6 +41,7 @@ namespace MonoRogue {
             equipmentFactory = new EquipmentFactory(Content);
             creatureFactory = new CreatureFactory(Content, equipmentFactory);
             Tile.LoadTiles(Content);
+            Feature.LoadFeatures(Content);
             Food.LoadFood(Content);
             Heartstone.LoadHeartstone(Content);
             GoldenKey.LoadKey(Content);

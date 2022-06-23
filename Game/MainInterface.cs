@@ -53,16 +53,20 @@ namespace MonoRogue {
 
 
         public void DrawInterface(SpriteBatch spriteBatch, Creature player, Creature mouseCreature, Item floorItem, Item mouseItem) {
-            for (int i = 0; i < (Constants.ScreenHeight + 63) / 64; i++) {
-                spriteBatch.Draw(InterfaceDivider, new Vector2(StartX, i * 64), Color.Gray);
-            }
-            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, 0), Color.Gray);
-            spriteBatch.Draw(BorderRect, new Rectangle(Constants.ScreenWidth - 4, 0, Constants.ScreenWidth, Constants.ScreenHeight), Color.Gray);
-            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, Constants.ScreenHeight - 4), Color.Gray);
+            DrawBorder(spriteBatch);
 
             int y = DrawCreatures(spriteBatch, player, mouseCreature);
             y = DrawItems(spriteBatch, floorItem, mouseItem, y);
             DrawMessages(spriteBatch);
+        }
+
+        public static void DrawBorder(SpriteBatch spriteBatch) {
+            for (int i = 0; i < (Constants.ScreenHeight + 63) / 64; i++) {
+                spriteBatch.Draw(InterfaceDivider, new Vector2(StartX, Constants.ScreenHeight - (i+1) * 64), Color.Gray);
+            }
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, 0), Color.Gray);
+            spriteBatch.Draw(BorderRect, new Rectangle(Constants.ScreenWidth - 4, 0, Constants.ScreenWidth, Constants.ScreenHeight), Color.Gray);
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, Constants.ScreenHeight - 4), Color.Gray);
         }
 
         public int DrawCreatures(SpriteBatch spriteBatch, Creature player, Creature mouseCreature) {
@@ -222,7 +226,7 @@ namespace MonoRogue {
             } else if (item.IsArmor) {
                 Armor armor = (Armor)item;
                 spriteBatch.DrawString(Font12, $"Defense:", new Vector2(x, y + 8), Color.White);
-                DrawHearts(spriteBatch, armor.Defense, armor.MaxDefense, x + 144, y, Color.LightSkyBlue);
+                DrawHearts(spriteBatch, armor.MaxDefense, armor.Defense, x + 144, y, Color.LightSkyBlue);
                 y += 32;
                 spriteBatch.DrawString(Font12, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
                 y += 24;
@@ -235,7 +239,7 @@ namespace MonoRogue {
             }
             if (item.ItemInfo != null) {
                 foreach(string s in item.ItemInfo) {
-                    spriteBatch.DrawString(Font12, s, new Vector2(x, y), Color.White);
+                    spriteBatch.DrawString(Font12, s, new Vector2(x - 8, y), Color.White);
                     y += 24;
                 }
             }

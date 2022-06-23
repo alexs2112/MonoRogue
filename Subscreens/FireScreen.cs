@@ -59,7 +59,7 @@ namespace MonoRogue {
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, MouseHandler mouseHandler) {
             WorldView.Draw(spriteBatch);
-            spriteBatch.Draw(MainInterface.InterfaceDivider, new Vector2(MainInterface.StartX, 0), Color.Gray);
+            MainInterface.DrawBorder(spriteBatch);
 
             int x = MainInterface.StartX + 24;
             int y = 0;

@@ -212,7 +212,7 @@ namespace MonoRogue {
             if ((X-x)*(X-x) + (Y-y)*(Y-y) > Vision * Vision) { return false; }
 
             foreach (Point p in World.GetLine(X, Y, x, y)) {
-                if (World.IsFloor(p.X, p.Y) || (p.X == x && p.Y == y)) { continue; }
+                if (!World.BlockSight(p) || (p.X == x && p.Y == y)) { continue; }
 
                 return false;
             }

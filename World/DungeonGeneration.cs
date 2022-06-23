@@ -8,7 +8,7 @@ namespace MonoRogue {
         private int Width;
         private int Height;
         private int[,] Tiles;
-        private bool[,] Regionized;
+        public int[,] RegionMap;
         public bool[,] DungeonTiles;
         public List<Region> Regions { get; private set; }
         public List<Point> Doors { get; private set; }
@@ -159,7 +159,12 @@ namespace MonoRogue {
             Regions = new List<Region>();
 
             // Keep track of each tile that has already been placed into a region
-            Regionized = new bool[Width, Height];
+            RegionMap = new int[Width, Height];
+            for (int x = 0; x < Width; x++) {
+                for (int y = 0; y < Height; y++) {
+                    RegionMap[x, y] = -1;
+                }
+            }
 
             int id = 0;
 
@@ -167,11 +172,11 @@ namespace MonoRogue {
             for (int x = 0; x < Width; x++) {
                 for (int y = 0; y < Height; y++) {
                     if (Tiles[x, y] == 1) { continue; }
-                    if (Regionized[x, y]) { continue; }
-                    Region r = FloodFillRegion(x, y);
+                    if (RegionMap[x, y] > -1) { continue; }
+                    Region r = FloodFillRegion(x, y, id);
 
                     if (r.Tiles.Count < (Constants.RoomMinSize - 1) * (Constants.RoomMinSize - 1)) {
-                        foreach (Point p in r.Tiles) { Tiles[p.X, p.Y] = 1; }
+                        foreach (Point p in r.Tiles) { Tiles[p.X, p.Y] = 1; RegionMap[p.X, p.Y] = -1; }
                     } else {
                         r.ID = id;
                         id++;
@@ -182,7 +187,7 @@ namespace MonoRogue {
             return Regions;
         }
 
-        private Region FloodFillRegion(int sx, int sy) {
+        private Region FloodFillRegion(int sx, int sy, int id) {
             List<Point> tiles = new List<Point>();
             
             // A bit of a clunky way to find the origin of the region, sum each point in the region and find the average
@@ -195,8 +200,8 @@ namespace MonoRogue {
 
             while (open.Count > 0) {
                 Point p = open.Pop();
-                if (!Regionized[p.X, p.Y]) {
-                    Regionized[p.X, p.Y] = true;
+                if (RegionMap[p.X, p.Y] == -1) {
+                    RegionMap[p.X, p.Y] = id;
                     totalX += p.X;
                     totalY += p.Y;
                     totalPoints++;
@@ -204,7 +209,7 @@ namespace MonoRogue {
                     foreach (Point n in GetNeighbours(p)) {
                         if (n.X < 0 || n.X >= Width || n.Y < 0 || n.Y >= Height) { continue; }
                         if (Tiles[n.X, n.Y] == 1) { continue; }
-                        if (!Regionized[n.X, n.Y]) { open.Push(n); }
+                        if (RegionMap[n.X, n.Y] == -1) { open.Push(n); }
                     }
                 }
             }

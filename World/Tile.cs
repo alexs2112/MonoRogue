@@ -6,12 +6,14 @@ using Microsoft.Xna.Framework.Content;
 namespace MonoRogue {
     public class Tile {
         public bool Walkable;
+        public bool SeeThrough;
         public bool Breakable;
         public Texture2D Glyph;
         public Color Color;
 
-        private Tile(bool walkable, Texture2D glyph, Color color) {
+        protected Tile(bool walkable, bool seeThrough,Texture2D glyph, Color color) {
             Walkable = walkable;
+            SeeThrough = seeThrough;
             Glyph = glyph;
             Color = color;
         }
@@ -21,32 +23,36 @@ namespace MonoRogue {
         private static List<Tile> DungeonFloors;
         private static List<Tile> CaveWalls;
         private static List<Tile> CaveFloors;
-        private static Tile DoorClosed;
-        private static Tile DoorOpen;
+        private static Tile WallCrumbledTopRight;
+        private static Tile WallCrumbledTopLeft;
+        private static Tile WallCrumbledBotRight;
+        private static Tile WallCrumbledBotLeft;
+
         public static void LoadTiles(ContentManager content) {
             DungeonWalls = new List<Tile>();
             for (int i = 0; i < Constants.NumberOfDungeonWallSprites; i++) {
-                DungeonWalls.Add(new Tile(false, content.Load<Texture2D>($"Tiles/Wall{i}"), Color.White));
+                DungeonWalls.Add(new Tile(false, false, content.Load<Texture2D>($"Tiles/Wall{i}"), Color.White));
             }
 
             DungeonFloors = new List<Tile>();
             for (int i = 0; i < Constants.NumberOfDungeonFloorSprites; i++) {
-                DungeonFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/Floor{i}"), Color.LightGray));
+                DungeonFloors.Add(new Tile(true, true, content.Load<Texture2D>($"Tiles/Floor{i}"), Color.LightGray));
             }
 
             CaveWalls = new List<Tile>();
             for (int i = 0; i < Constants.NumberOfCaveWallSprites; i++) {
-                CaveWalls.Add(new Tile(false, content.Load<Texture2D>($"Tiles/CaveWall{i}"), Color.SaddleBrown));
+                CaveWalls.Add(new Tile(false, false, content.Load<Texture2D>($"Tiles/CaveWall{i}"), Color.SaddleBrown));
             }
 
             CaveFloors = new List<Tile>();
             for (int i = 0; i < Constants.NumberOfCaveFloorSprites; i++) {
-                CaveFloors.Add(new Tile(true, content.Load<Texture2D>($"Tiles/CaveFloor{i}"), Color.Tan));
+                CaveFloors.Add(new Tile(true, true, content.Load<Texture2D>($"Tiles/CaveFloor{i}"), Color.Tan));
             }
 
-            DoorClosed = new Tile(false, content.Load<Texture2D>("Tiles/DoorClosed"), Color.Brown);
-            DoorClosed.Breakable = true;
-            DoorOpen = new Tile(true, content.Load<Texture2D>("Tiles/DoorOpen"), Color.Brown);
+            WallCrumbledTopRight = new Tile(false, false, content.Load<Texture2D>("Tiles/CrumbledWall0"), Color.White);
+            WallCrumbledTopLeft = new Tile(false, false, content.Load<Texture2D>("Tiles/CrumbledWall1"), Color.White);
+            WallCrumbledBotRight = new Tile(false, false, content.Load<Texture2D>("Tiles/CrumbledWall2"), Color.White);
+            WallCrumbledBotLeft = new Tile(false, false, content.Load<Texture2D>("Tiles/CrumbledWall3"), Color.White);
         }
 
         public static Tile GetDungeonWall(System.Random random) {
@@ -65,11 +71,17 @@ namespace MonoRogue {
             int i = random.Next(CaveFloors.Count);
             return CaveFloors[i];
         }
-        public static Tile GetClosedDoor() {
-            return DoorClosed;
-        }
-        public static Tile GetOpenDoor() {
-            return DoorOpen;
+
+        // The end of a wall adjacent to cave, make it more interesting
+        // Most of the parsing should be done by now, which is why this method is very simple
+        public static Tile GetCrumbledWall(World world, bool[,] isDungeon, Point p) {
+            if (world.IsWall(p.X, p.Y + 1)) {
+                if (!isDungeon[p.X + 1, p.Y]) { return WallCrumbledTopRight; }
+                else { return WallCrumbledTopLeft; }
+            } else {
+                if (!isDungeon[p.X + 1, p.Y]) { return WallCrumbledBotRight; }
+                else { return WallCrumbledBotLeft; }
+            }
         }
     }
 }
