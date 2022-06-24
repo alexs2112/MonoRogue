@@ -52,11 +52,12 @@ namespace MonoRogue {
         }
 
 
-        public void DrawInterface(SpriteBatch spriteBatch, Creature player, Creature mouseCreature, Item floorItem, Item mouseItem) {
+        public void DrawInterface(SpriteBatch spriteBatch, Creature player, Creature mouseCreature, Item floorItem, Item mouseItem, Tile tile) {
             DrawBorder(spriteBatch);
 
             int y = DrawCreatures(spriteBatch, player, mouseCreature);
             y = DrawItems(spriteBatch, floorItem, mouseItem, y);
+            if (tile != null) { y = DrawTileHeader(spriteBatch, tile, StartX + 24, y); }
             DrawMessages(spriteBatch);
         }
 
@@ -250,6 +251,13 @@ namespace MonoRogue {
             spriteBatch.DrawString(Font14, item.Name, new Vector2(x, y + 8), Color.White);
             spriteBatch.Draw(item.Glyph, new Vector2(iconX, y), item.Color);
             return y + 36;
+        }
+
+        private static int DrawTileHeader(SpriteBatch spriteBatch, Tile tile, int x, int y) {
+            if (!tile.IsFeature) { return y; }
+            spriteBatch.DrawString(Font14, ((Feature)tile).Name, new Vector2(x, y + 8), Color.LightGray);
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y + 32), Color.Gray);
+            return y + 32;
         }
 
         public static void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Color color) {

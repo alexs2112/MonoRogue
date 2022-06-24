@@ -48,7 +48,10 @@ namespace MonoRogue {
         }
         
         public Tile GetTile(Point p) { return GetTile(p.X, p.Y); }
-        public Tile GetTile(int x, int y) { return Tiles[x,y]; }
+        public Tile GetTile(int x, int y) {
+            if (x == -1) { return null; }
+            return Tiles[x,y];
+        }
 
         public Creature GetCreatureAt(Point p) { return GetCreatureAt(p.X, p.Y); }
         public Creature GetCreatureAt(int x, int y) {

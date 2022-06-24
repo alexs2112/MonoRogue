@@ -214,6 +214,7 @@ namespace MonoRogue {
                 Point tile = mouse.GetTile(worldView);
                 Item mouseItem = GetMouseItem(tile);
                 Item floorItem = player.IsDead() ? null : world.GetItemAt(player.X, player.Y);
+                Tile mouseTile = player.CanSee(tile) ? world.GetTile(tile) : null;
                 Creature mouseCreature = GetMouseCreature(tile);
                 if (mouseCreature == player) { mouseCreature = null; }
 
@@ -228,7 +229,7 @@ namespace MonoRogue {
                     else { MainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
                 }
 
-                mainInterface.DrawInterface(spriteBatch, player, mouseCreature, floorItem, mouseItem);
+                mainInterface.DrawInterface(spriteBatch, player, mouseCreature, floorItem, mouseItem, mouseTile);
                 spriteBatch.End();
             }
 

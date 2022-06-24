@@ -8,6 +8,7 @@ namespace MonoRogue {
         public bool Walkable;
         public bool SeeThrough;
         public bool Breakable;
+        public bool IsFeature;
         public Texture2D Glyph;
         public Color Color;
 

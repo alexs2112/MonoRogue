@@ -15,11 +15,12 @@
     * Same as movement, could have multiple projectile sprites based on what is shooting them
 
  * Make messages not overflow the interface if we get a lot of them, maybe consolidate attack messages? "X, Y, and Z attack you for <combined> damage"
+    * This will require parsing notifications when messages are updated, rather than when the player receives them
+    * Might need to parse every time draw is called, otherwise it wont account for mousing over things...
 
  * Dungeon features and fancier rooms, make the dungeon look a little better...
     * Load pregenerated dungeon vaults when generating the dungeon, this could get a little tricky with hallways
-    * Mousing over tiles will show their description in the main interface, similar to items
-    * Add more features
+       * Load the vault when carving rooms, then mark its position in a list to finalize the vault afterwards
 
  * Music and sound effects
     * Main menu music
