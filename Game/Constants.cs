@@ -9,8 +9,8 @@ namespace MonoRogue {
         public static int ScreenHeight = 480;
         public static bool Fullscreen = false;
 
-        public static int WorldWidth = 60;          // World dimensions when generated
-        public static int WorldHeight = 35;         // Default: 60x35, Small: 40x25
+        public static int WorldWidth = 65;          // World dimensions when generated
+        public static int WorldHeight = 50;         // Default: 60x35, Small: 40x25
 
         public static int DungeonIterations = 6;    // How many times we partition the dungeon, will result in up to 2^var rooms, default: 4
         public static int RoomMinSize = 4;          // Minimum Width and Height of a room

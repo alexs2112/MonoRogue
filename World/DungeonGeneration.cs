@@ -12,6 +12,7 @@ namespace MonoRogue {
         public bool[,] DungeonTiles;
         public List<Region> Regions { get; private set; }
         public List<Point> Doors { get; private set; }
+        public List<(Point, Vault)> Vaults { get; private set; }
 
         // Algorithm Overview:
         /*
@@ -50,8 +51,10 @@ namespace MonoRogue {
             // Keep track of which tiles use which tile set
             DungeonTiles = new bool[Width, Height];
 
+            // Keep track of where the vaults are, to generate then when the world is being finalized
+            Vaults = new List<(Point, Vault)>();
+
             // Divide up the world into partitions, generate a room in each partition
-            List<Rectangle> rooms = new List<Rectangle>();
             Partitioner partitioner = new Partitioner(Random, Width - 2, Height - 2);
             List<Rectangle> partitions = partitioner.Partition(1, 1, iterations);
             Dictionary<Rectangle, PartitionType> partitionTypes = new Dictionary<Rectangle, PartitionType>();
@@ -65,8 +68,14 @@ namespace MonoRogue {
             // For each ROOM partition, randomly place a room
             foreach (Rectangle p in partitions) {
                 if (partitionTypes[p] == PartitionType.CAVE) { continue; }
-                Rectangle room = PlaceRoom(p);
-                rooms.Add(room);
+
+                if (Random.Next(10) < 4) {
+                    (Point point, Vault vault) output = PlaceVault(p);
+                    if (output.vault == null) { PlaceRoom(p); }
+                    else { Vaults.Add(output); }
+                } else {
+                    PlaceRoom(p);
+                }
             }
 
             // Find all possible hallways, use Kruskal's algorithm to construct a minimum spanning tree
@@ -152,6 +161,23 @@ namespace MonoRogue {
                 }
             }
             return new Rectangle(x, y, width, height);
+        }
+
+        private (Point, Vault) PlaceVault(Rectangle partition) {
+            Vault v = Vault.GetVault(Random, partition.Width - 1, partition.Height - 1);
+            if (v == null) { return (new Point(0, 0), null); }
+
+            int x = Random.Next(partition.X, partition.X + partition.Width - v.Width);
+            int y = Random.Next(partition.Y, partition.Y + partition.Height - v.Height);
+            for (int dx = -1; dx < v.Width + 1; dx++) {
+                for (int dy = -1; dy < v.Height + 1; dy++) {
+                    DungeonTiles[dx + x, dy + y] = true;
+                    if (dx == -1 || dx == v.Width || dy == -1 || dy == v.Height) { continue; }
+                    Tiles[dx + x, dy + y] = 0;
+                }
+            }
+
+            return (new Point(x, y), v);
         }
 
         // Flood fill each available region of the dungeon, return the list of regions

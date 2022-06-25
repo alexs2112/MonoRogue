@@ -56,18 +56,22 @@ namespace MonoRogue {
             WallCrumbledBotLeft = new Tile(false, false, content.Load<Texture2D>("Tiles/CrumbledWall3"), Color.White);
         }
 
+        public static Tile GetDungeonWall() { return GetDungeonWall(new System.Random()); }
         public static Tile GetDungeonWall(System.Random random) {
             int i = random.Next(DungeonWalls.Count);
             return DungeonWalls[i];
         }
+        public static Tile GetDungeonFloor() { return GetDungeonFloor(new System.Random()); }
         public static Tile GetDungeonFloor(System.Random random) {
             int i = random.Next(DungeonFloors.Count);
             return DungeonFloors[i];
         }
+        public static Tile GetCaveWall() { return GetCaveWall(new System.Random()); }
         public static Tile GetCaveWall(System.Random random) {
             int i = random.Next(CaveWalls.Count);
             return CaveWalls[i];
         }
+        public static Tile GetCaveFloor() { return GetCaveFloor(new System.Random()); }
         public static Tile GetCaveFloor(System.Random random) {
             int i = random.Next(CaveFloors.Count);
             return CaveFloors[i];

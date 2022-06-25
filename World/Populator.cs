@@ -146,6 +146,7 @@ namespace MonoRogue {
                     Region r = depths[i][Random.Next(depths[i].Count)];
 
                     Point tile = r.GetEmptyTile(Random, World);
+                    if (tile.X == -1) { continue; }
                     Food f = Food.RandomFood(Random, r.Depth <= LowDepth ? 0 : (r.Depth <= MedDepth ? 1 : 2));
                     World.Items.Add(tile, f);
                 }

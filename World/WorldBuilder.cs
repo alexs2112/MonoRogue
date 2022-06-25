@@ -36,6 +36,10 @@ namespace MonoRogue {
             // Add dungeon features to the world
             SetWorldFeatures(w, dungeonTiles, regions);
 
+            foreach((Point point, Vault vault) in generator.Vaults) {
+                vault.Parse(w, point.X, point.Y);
+            }
+
             // Set up start and end regions
             Point p = end.GetEmptyTile(Random, w);
             w.Exit = p;

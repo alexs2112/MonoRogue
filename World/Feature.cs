@@ -10,22 +10,22 @@ namespace MonoRogue {
             Name = name;
         }
 
-        private static Feature DoorClosed;
-        private static Feature DoorOpen;
-        private static Feature Bookshelf;
-        private static Feature BookshelfSmall;
-        private static Feature Table;
-        private static Feature Cauldron;
-        private static Feature Candelabra;
-        private static Feature Well;
-        private static Feature Campfire;
-        private static Feature Minecart;
-        private static Feature Rubble;
-        private static Feature Pillar;
-        private static Feature Bones;
-        private static Feature Skull;
-        private static Feature Grass;
-        private static Feature RubbleSmall;
+        public static Feature DoorClosed;
+        public static Feature DoorOpen;
+        public static Feature Bookshelf;
+        public static Feature BookshelfSmall;
+        public static Feature Table;
+        public static Feature Cauldron;
+        public static Feature Candelabra;
+        public static Feature Well;
+        public static Feature Campfire;
+        public static Feature Minecart;
+        public static Feature Rubble;
+        public static Feature Pillar;
+        public static Feature Bones;
+        public static Feature Skull;
+        public static Feature Grass;
+        public static Feature RubbleSmall;
         public static void LoadFeatures(ContentManager content) {
             DoorClosed = new Feature("Door", false, false, content.Load<Texture2D>("Tiles/DoorClosed"), Color.Brown);
             DoorClosed.Breakable = true;

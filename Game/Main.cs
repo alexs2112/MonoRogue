@@ -46,6 +46,7 @@ namespace MonoRogue {
             Heartstone.LoadHeartstone(Content);
             GoldenKey.LoadKey(Content);
             PlayerGlyph.LoadGlyphs(Content);
+            Vault.LoadVaults();
             keyTrack = new KeyboardTrack();
             mouse = new MouseHandler();
             worldView = new WorldView();

@@ -46,10 +46,11 @@ namespace MonoRogue {
                     Texture2D tile = world.Tiles[tileX, tileY].Glyph;
                     Color color = world.Tiles[tileX, tileY].Color;
 
+                    if (world.Items.ContainsKey(point)) { tile = world.Items[point].Glyph; }
+
                     if (canSee) {
                         HasSeen[tileX, tileY] = true;
                         if (world.Items.ContainsKey(point)) {
-                            tile = world.Items[point].Glyph;
                             color = world.Items[point].Color;
                         } else {
                             if (world.ColorOverlay[tileX, tileY] != Color.Transparent) {
