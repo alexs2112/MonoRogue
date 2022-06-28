@@ -29,6 +29,7 @@
    * Broken walls are a bit messed up, check all 4 sides instead of 2 in Tile
    * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
+   * Set the exit as a feature, so you can mouse over it and see it on the minimap.
 
  * Release prep:
    * Fix all @todo tags
