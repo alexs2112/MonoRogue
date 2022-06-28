@@ -41,6 +41,7 @@ namespace MonoRogue {
                     int tileX = x + OffsetX;
                     int tileY = y + OffsetY;
                     Point point = new Point(tileX, tileY);
+                    if (!world.InBounds(point)) { continue; }
 
                     bool canSee = player.CanSee(tileX, tileY);
                     Texture2D tile = world.Tiles[tileX, tileY].Glyph;

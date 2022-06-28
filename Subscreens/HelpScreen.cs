@@ -17,7 +17,8 @@ namespace MonoRogue {
                 " - [s] to see your own stats",
                 " - [r] to rest and repair armor",
                 " - [.] or [5] to wait one turn",
-                " - [f] to fire your weapon at visible enemies",
+                " - [f] to fire a ranged weapon",
+                " - [m] to view your world map",
                 " - [esc] to quit the game or exit menus",
                 " - [/] or [?] to show this menu"
             };
@@ -42,7 +43,7 @@ namespace MonoRogue {
             base.Draw(gameTime, spriteBatch, mouseHandler);
 
             int x = 32;
-            int y = 32;
+            int y = 24;
             foreach (string s in Text) {
                 spriteBatch.DrawString(Font14, s, new Vector2(x,y), Color.White);
                 y += 32;

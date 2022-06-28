@@ -1,8 +1,8 @@
 ### **Roadmap:**
  * Other subscreens:
-    * Map screen to show a much larger portion of explored tiles that you can scroll around to view.
-      * Highlight regions by difficulty here
     * The remaining help screens, multiple menus to swap through to see info about the game
+      * Make sure to adjust chars per line for screen size
+    * Similar to the fire screen, a way to view tiles without using the mouse
 
  * Persistent settings
     * Settings screen, volume settings and player character colour. Settings should persist in a text file somewhere
@@ -22,10 +22,15 @@
     * Main menu music
     * Main game music
     * Subscreen music
-    * Don't think we need sound effects, they seem tacky in a roguelike with no animations
+    * Arcady sound effects for food and stuff?
 
  * Look into enabling saving and persistency
     * I think we can just copy down the world seed, regenerate the entire world. Copy the list of remaining creatures and items and their locations and equipment and stuff and then place them where needed. Could be easy, don't waste too much time on this if it won't work
+
+ * Minor fixes
+   * Have item notifications not stop auto movement
+   * Broken walls are a bit messed up, check all 4 sides instead of 2 in Tile
+   * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
 
  * Release prep:
    * Fix all @todo tags

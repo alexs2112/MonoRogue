@@ -10,6 +10,7 @@
  - [r] to rest and repair armor
  - [.] to wait one turn
  - [f] to fire your weapon at visible enemies
+ - [m] to view your world map
  - [/] or [?] to show the help menu
  - [esc] to quit the game or exit subscreens
 
@@ -111,4 +112,4 @@ Written using the C# MonoGame framework. https://www.monogame.net/
 
 A large portion of the tileset is from https://www.kenney.nl
 
-Music composed by Elephant Toothpaste. https://soundcloud.com/user-385599278
+@todo add music

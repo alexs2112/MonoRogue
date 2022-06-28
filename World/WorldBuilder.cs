@@ -36,6 +36,9 @@ namespace MonoRogue {
             // Add dungeon features to the world
             SetWorldFeatures(w, dungeonTiles, regions);
 
+            // Give the dungeon an array of difficulty
+            w.Difficulty = GetDungeonDifficulty(w, regions, lowDepth, medDepth);
+
             foreach((Point point, Vault vault) in generator.Vaults) {
                 vault.Parse(w, point.X, point.Y);
             }
@@ -130,6 +133,33 @@ namespace MonoRogue {
         }
         private void SetRegionsDepth(List<Region> regions, int startID) {
             foreach (Region r in regions) { r.Depth = r.CostMap[startID]; }
+        }   
+        private int[,] GetDungeonDifficulty(World world, List<Region> regions, int low, int med) {
+            int[,] start = new int[Width, Height];
+            foreach (Region r in regions) { 
+                foreach(Point p in r.Tiles) {
+                    start[p.X, p.Y] = r.Depth <= low ? 1 : r.Depth <= med ? 2 : 3;
+                }
+            }
+            int[,] difficulty = new int[Width, Height];
+            for (int x = 0; x < Width; x++) {
+                for (int y = 0; y < Height; y++) {
+                    difficulty[x, y] = GetTileDifficulty(start, x, y);
+                }
+            }   
+            return difficulty;
+        }
+        private int GetTileDifficulty(int[,] start, int x, int y) {
+            if (start[x,y] != 0) { return start[x,y]; }
+
+            int v = 0;
+            for (int mx = -1; mx <= 1; mx++) {
+                for (int my = -1; my <= 1; my++) {
+                    if (x + mx < 0 || x + mx >= Width || y + my < 0 || y + my >= Height) { continue; }
+                    if (start[x + mx, y + my] > v) { v = start[x + mx, y + my]; }
+                }
+            }
+            return v;
         }
 
         private void SetWorldFeatures(World world, bool[,] isDungeon, List<Region> regions) {

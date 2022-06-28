@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework;
 
 namespace MonoRogue {
     public class World {
-        public Tile[,] Tiles { get; set; }
-        public Color[,] ColorOverlay { get; set; }
+        public Tile[,] Tiles;
+        public Color[,] ColorOverlay;
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Dictionary<Point, Item> Items;
@@ -13,6 +13,9 @@ namespace MonoRogue {
         public List<Creature> Creatures;
 
         public Point Exit;
+
+        // How hard this given tile should be displayed, calculated by region and depth
+        public int[,] Difficulty;
 
         public World(int width, int height,Tile[,] tiles) {
             Width = width;
