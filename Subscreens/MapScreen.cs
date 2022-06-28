@@ -90,7 +90,7 @@ namespace MonoRogue {
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
-            if (key == Keys.Escape || mouse.RightClicked()) { return null; }
+            if (key == Keys.Escape || mouse.RightClicked()) { base.CloseSubscreen(); return null; }
             else if (key == Keys.Left) { MX--; }
             else if (key == Keys.Right) { MX++; }
             else if (key == Keys.Up) { MY--; }
@@ -112,6 +112,7 @@ namespace MonoRogue {
                         } else {
                             Player.Notify(new BasicNotification("Enemies in sight."));
                         }
+                        base.CloseSubscreen();
                         return null;
                     }
                 }

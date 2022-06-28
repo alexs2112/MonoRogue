@@ -16,9 +16,9 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             switch(key) {
-                case Keys.Escape: return null;
+                case Keys.Escape: base.CloseSubscreen(); return null;
                 case Keys.Enter:
-                    if (Index == 0) { return null; }
+                    if (Index == 0) { base.CloseSubscreen(); return null; }
                     else if (Index == 1) { return new WindowResizeScreen(Content, Main, this); }
                     else if (Index == 2) { Main.Exit(); }
                     break;

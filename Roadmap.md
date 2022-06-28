@@ -19,9 +19,6 @@
     * Might need to parse every time draw is called, otherwise it wont account for mousing over things...
 
  * Music and sound effects
-    * Main menu music
-    * Main game music
-    * Subscreen music
     * Arcady sound effects for food and stuff?
 
  * Look into enabling saving and persistency
@@ -31,6 +28,7 @@
    * Have item notifications not stop auto movement
    * Broken walls are a bit messed up, check all 4 sides instead of 2 in Tile
    * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
+   * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
 
  * Release prep:
    * Fix all @todo tags

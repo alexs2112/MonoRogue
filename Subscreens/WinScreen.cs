@@ -8,6 +8,7 @@ namespace MonoRogue {
         private Main Main;
         public WinScreen(Main main, ContentManager content) : base(content) {
             Main = main;
+            Main.Audio.ChangeSong(SongHandler.VictorySong);
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {

@@ -28,5 +28,8 @@ namespace MonoRogue {
         public static int NumberOfCaveFloorSprites = 4;     //
 
         public static bool AllowDiagonalMovement = true;    // Keeping this here in case we want to revert it to only Orthogonal movement
+
+        public static float MusicVolume = 0.5f;
+        public static float EffectVolume = 0.5f;
     }
 }

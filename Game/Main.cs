@@ -22,6 +22,8 @@ namespace MonoRogue {
         private CreatureFactory creatureFactory;
         private EquipmentFactory equipmentFactory;
 
+        public static AudioPlayer Audio;
+
         // Keep track of whos turn it is
         private int currentIndex;
 
@@ -51,6 +53,8 @@ namespace MonoRogue {
             mouse = new MouseHandler();
             worldView = new WorldView();
             mainInterface = new MainInterface();
+
+            Audio = new AudioPlayer(Content);
             
             if (!Constants.Debug) { 
                 subscreen = new StartScreen(this, Content); 
@@ -82,6 +86,7 @@ namespace MonoRogue {
         }
 
         protected override void Update(GameTime gameTime) {
+            Audio.Update(gameTime.ElapsedGameTime);
             mouse.Update();
             KeyboardState kState = Keyboard.GetState();
             keyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
@@ -304,6 +309,10 @@ namespace MonoRogue {
             Constants.WriteMessagesToConsole = cmd.Contains("--messages");
             Constants.Invincible = cmd.Contains("--invincible");
             if (Constants.Invincible) { System.Console.WriteLine("Player Invincibility Enabled"); }
+        }
+
+        protected override void OnExiting(object sender, System.EventArgs args) {
+            base.OnExiting(sender, args);
         }
     }
 }

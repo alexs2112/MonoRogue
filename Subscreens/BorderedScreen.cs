@@ -24,11 +24,12 @@ namespace MonoRogue {
 
             BorderCorners = content.Load<Texture2D>("Interface/BorderCorners");
             BorderSides = content.Load<Texture2D>("Interface/BorderSides");
+
+            Main.Audio.ChangeSong(SongHandler.MenuSong);
         }
         
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
-            if (key == Keys.Escape) { return null; }
-            else if (mouse.RightClicked()) { return null; }
+            if (key == Keys.Escape || mouse.RightClicked()) { CloseSubscreen(); return null; }
             return this;
         }
         
@@ -57,6 +58,10 @@ namespace MonoRogue {
             spriteBatch.Draw(BorderCorners, new Vector2(Constants.ScreenWidth - 16, 0), NECorner, Color.LightGray);
             spriteBatch.Draw(BorderCorners, new Vector2(0, Constants.ScreenHeight - 16), SWCorner, Color.LightGray);
             spriteBatch.Draw(BorderCorners, new Vector2(Constants.ScreenWidth - 16, Constants.ScreenHeight - 16), SECorner, Color.LightGray);
+        }
+
+        public void CloseSubscreen() {
+            Main.Audio.ChangeSong(null);
         }
     }
 }

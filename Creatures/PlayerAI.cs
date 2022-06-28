@@ -72,6 +72,9 @@ namespace MonoRogue {
         public override List<string> GetMessages() { return Messages; }
         public override void ClearMessages() { Messages.Clear(); }
 
-        public override void OnDeath(World world) { AddMessage("Press ESC to quit."); }
+        public override void OnDeath(World world) { 
+            AddMessage("Press ESC to quit.");
+            Main.Audio.ChangeSong(SongHandler.DeathSong);
+        }
     }
 }

@@ -17,8 +17,7 @@ namespace MonoRogue {
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
-            if (key == Keys.Escape || mouse.RightClicked()) { return null; }
-            return this;
+            return base.RespondToInput(key, mouse);
         }
         
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, MouseHandler mouse) {

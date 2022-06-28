@@ -12,6 +12,7 @@ namespace MonoRogue {
             Main = main;
             Seed = "";
             SeedError = "";
+            Main.Audio.SetSong(SongHandler.StartSong);
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
@@ -28,6 +29,7 @@ namespace MonoRogue {
                         }
                     }
                     Main.CreateWorld();
+                    base.CloseSubscreen();
                     return null;
                 case Keys.D0: AddSeedChar('0'); break;
                 case Keys.D1: AddSeedChar('1'); break;
