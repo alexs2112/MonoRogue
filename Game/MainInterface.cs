@@ -58,7 +58,7 @@ namespace MonoRogue {
             int y = DrawCreatures(spriteBatch, player, mouseCreature);
             y = DrawItems(spriteBatch, floorItem, mouseItem, y);
             if (tile != null) { y = DrawTileHeader(spriteBatch, tile, StartX + 24, y); }
-            DrawMessages(spriteBatch);
+            DrawMessages(spriteBatch, y);
         }
 
         public static void DrawBorder(SpriteBatch spriteBatch) {
@@ -255,9 +255,9 @@ namespace MonoRogue {
 
         private static int DrawTileHeader(SpriteBatch spriteBatch, Tile tile, int x, int y) {
             if (!tile.IsFeature) { return y; }
-            spriteBatch.DrawString(Font14, ((Feature)tile).Name, new Vector2(x, y + 8), Color.LightGray);
-            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y + 32), Color.Gray);
-            return y + 32;
+            spriteBatch.DrawString(Font14, ((Feature)tile).Name, new Vector2(x, y + 12), Color.LightGray);
+            spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y + 40), Color.Gray);
+            return y + 40;
         }
 
         public static void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Color color) {
@@ -278,13 +278,15 @@ namespace MonoRogue {
             }
         }
 
-        public void DrawMessages(SpriteBatch spriteBatch) {
+        public void DrawMessages(SpriteBatch spriteBatch, int maxY) {
             if (Messages == null || Messages.Count == 0) { return; }
 
             int lineHeight = 18;
             int y = Constants.ScreenHeight - Messages.Count * lineHeight - 8;
             foreach (string m in Messages) {
-                spriteBatch.DrawString(Font10, m, new Vector2(StartX + 32, y), Color.LightGray);
+                if (y > maxY + 4) {
+                    spriteBatch.DrawString(Font10, m, new Vector2(StartX + 32, y), Color.LightGray);
+                }
                 y += lineHeight;
             }
         }
