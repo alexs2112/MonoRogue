@@ -14,6 +14,7 @@
  * Make messages not overflow the interface if we get a lot of them, maybe consolidate attack messages? "X, Y, and Z attack you for <combined> damage"
     * This will require parsing notifications when messages are updated, rather than when the player receives them
     * Might need to parse every time draw is called, otherwise it wont account for mousing over things...
+    * Might be able to just not show ones that overflow? With the animation changes this is probably sufficient. It should only happen on min screen size if you are being attacked by like 4 things at once and have an axe
 
  * Music and sound effects
     * Arcady sound effects for food and stuff?

@@ -27,7 +27,7 @@ namespace MonoRogue {
             WriteCentered(spriteBatch, Font16, "Press [esc] to exit", v, Color.Gray);
 
             v.Y = Constants.ScreenHeight - 64;
-            WriteCentered(spriteBatch, Font14, $"Seed: {Main.seed}", v, Color.Gray);
+            WriteCentered(spriteBatch, Font14, $"Seed: {Main.Seed}", v, Color.Gray);
         }
     }
 }

@@ -5,30 +5,30 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoRogue {
     public class Main : Game {
-        private System.Random rng;
-        public int seed;
-        private World world;
-        private Creature player;
-        private Subscreen subscreen;
+        private System.Random Random;
+        public int Seed;
+        private World World;
+        private Creature Player;
+        private Subscreen Subscreen;
 
-        private WorldView worldView;
-        private MainInterface mainInterface;
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        private WorldView WorldView;
+        private MainInterface MainInterface;
+        private GraphicsDeviceManager Graphics;
+        private SpriteBatch SpriteBatch;
 
-        private KeyboardTrack keyTrack;
-        private MouseHandler mouse;
+        private KeyboardTrack KeyTrack;
+        private MouseHandler Mouse;
 
-        private CreatureFactory creatureFactory;
-        private EquipmentFactory equipmentFactory;
+        private CreatureFactory CreatureFactory;
+        private EquipmentFactory EquipmentFactory;
 
         public static AudioPlayer Audio;
 
         // Keep track of whos turn it is
-        private int currentIndex;
+        private int CurrentIndex;
 
         public Main(string[] args) {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -40,8 +40,8 @@ namespace MonoRogue {
             Window.Title = "Escape of the Blue Man";
             UpdateScreenSize();
 
-            equipmentFactory = new EquipmentFactory(Content);
-            creatureFactory = new CreatureFactory(Content, equipmentFactory);
+            EquipmentFactory = new EquipmentFactory(Content);
+            CreatureFactory = new CreatureFactory(Content, EquipmentFactory);
             Tile.LoadTiles(Content);
             Feature.LoadFeatures(Content);
             Food.LoadFood(Content);
@@ -49,15 +49,15 @@ namespace MonoRogue {
             GoldenKey.LoadKey(Content);
             PlayerGlyph.LoadGlyphs(Content);
             Vault.LoadVaults();
-            keyTrack = new KeyboardTrack();
-            mouse = new MouseHandler();
-            worldView = new WorldView();
-            mainInterface = new MainInterface();
+            KeyTrack = new KeyboardTrack();
+            Mouse = new MouseHandler();
+            WorldView = new WorldView();
+            MainInterface = new MainInterface();
 
             Audio = new AudioPlayer(Content);
             
             if (!Constants.Debug) { 
-                subscreen = new StartScreen(this, Content); 
+                Subscreen = new StartScreen(this, Content); 
             } else {
                 CreateWorld();
             }
@@ -65,22 +65,22 @@ namespace MonoRogue {
         }
 
         public void CreateWorld() {
-            seed = Constants.Seed;
-            if (seed == -1) { seed = new System.Random().Next(); }
-            rng = new System.Random(seed);
-            if (Constants.Debug) { System.Console.WriteLine($"Using seed {seed}"); }
+            Seed = Constants.Seed;
+            if (Seed == -1) { Seed = new System.Random().Next(); }
+            Random = new System.Random(Seed);
+            if (Constants.Debug) { System.Console.WriteLine($"Using seed {Seed}"); }
 
-            WorldBuilder worldBuilder = new WorldBuilder(rng, Constants.WorldWidth, Constants.WorldHeight);
-            world = worldBuilder.GenerateDungeon(Constants.DungeonIterations, creatureFactory, equipmentFactory);
-            player = world.Player;
+            WorldBuilder worldBuilder = new WorldBuilder(Random, Constants.WorldWidth, Constants.WorldHeight);
+            World = worldBuilder.GenerateDungeon(Constants.DungeonIterations, CreatureFactory, EquipmentFactory);
+            Player = World.Player;
             
-            if (Constants.Debug) { world.PrintToTerminal(); }
+            if (Constants.Debug) { World.PrintToTerminal(); }
 
-            worldView.Update(world, player);
+            WorldView.Update(World, Player);
         }
 
         protected override void LoadContent() {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
             MainInterface.LoadTextures(Content, GraphicsDevice);
             WorldView.LoadContent(Content);
             Projectile.LoadTextures(Content);
@@ -88,113 +88,113 @@ namespace MonoRogue {
 
         protected override void Update(GameTime gameTime) {
             Audio.Update(gameTime.ElapsedGameTime);
-            mouse.Update();
+            Mouse.Update();
             KeyboardState kState = Keyboard.GetState();
-            keyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
+            KeyTrack.Update(kState.GetPressedKeys(), gameTime.ElapsedGameTime);
 
-            bool keyJustPressed = keyTrack.KeyJustPressed();
+            bool keyJustPressed = KeyTrack.KeyJustPressed();
             bool inputGiven = false;
 
-            if (subscreen != null) {
-                if (keyJustPressed || mouse.ButtonClicked()) {
+            if (Subscreen != null) {
+                if (keyJustPressed || Mouse.ButtonClicked()) {
                     Keys k = Keys.None;
                     if (keyJustPressed) { k = kState.GetPressedKeys()[0]; }
-                    subscreen = subscreen.RespondToInput(k, mouse);
+                    Subscreen = Subscreen.RespondToInput(k, Mouse);
 
-                    if (subscreen == null) { inputGiven = true; }
+                    if (Subscreen == null) { inputGiven = true; }
                 }
-            } else if (world.Projectiles.Count > 0) {
-                world.UpdateProjectiles(gameTime.ElapsedGameTime, mainInterface, worldView);
-                if (world.Projectiles.Count == 0 && !player.IsDead()) {
+            } else if (World.Projectiles.Count > 0) {
+                World.UpdateProjectiles(gameTime.ElapsedGameTime, MainInterface, WorldView);
+                if (World.Projectiles.Count == 0 && !Player.IsDead()) {
                     TakeTurns();
                 }
             } else {
                 inputGiven = true;
-                if (keyJustPressed || mouse.ButtonClicked()) {
+                if (keyJustPressed || Mouse.ButtonClicked()) {
                     // Whenever the player presses a key, clear messages
                     // We can update this in the future to show old messages without being confusing
-                    player.AI.ClearMessages();
+                    Player.AI.ClearMessages();
                 }
 
-                if (keyTrack.KeyJustPressed(Keys.Escape)) {
-                    if (player.IsDead()) { Exit(); }
-                    subscreen = new EscapeScreen(this, Content);
-                } else if (!player.IsDead()) {
-                    if (!((PlayerAI)player.AI).PathNullOrEmpty()) {
+                if (KeyTrack.KeyJustPressed(Keys.Escape)) {
+                    if (Player.IsDead()) { Exit(); }
+                    Subscreen = new EscapeScreen(this, Content);
+                } else if (!Player.IsDead()) {
+                    if (!((PlayerAI)Player.AI).PathNullOrEmpty()) {
                         // If the player is automatically following a path, follow it
-                        if (keyTrack.KeyJustPressed() || mouse.ButtonClicked()) {
+                        if (KeyTrack.KeyJustPressed() || Mouse.ButtonClicked()) {
                             // Any input cancels the move
-                            ((PlayerAI)player.AI).ClearPath();
-                            player.AddMessage("Input given, cancelling pathing.");
+                            ((PlayerAI)Player.AI).ClearPath();
+                            Player.AddMessage("Input given, cancelling pathing.");
                         } else {
-                            ((PlayerAI)player.AI).FollowPath(world);
+                            ((PlayerAI)Player.AI).FollowPath(World);
                             inputGiven = true;
                         }
                     }
-                    else if (keyTrack.MovementNPressed()) { player.MoveRelative(0, -1); }
-                    else if (keyTrack.MovementSPressed()) { player.MoveRelative(0, 1); }
-                    else if (keyTrack.MovementWPressed()) { player.MoveRelative(-1, 0); }
-                    else if (keyTrack.MovementEPressed()) { player.MoveRelative(1, 0); }
-                    else if (keyTrack.MovementNEPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(1, -1); }
-                    else if (keyTrack.MovementSEPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(1, 1); }
-                    else if (keyTrack.MovementNWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, -1); }
-                    else if (keyTrack.MovementSWPressed() && Constants.AllowDiagonalMovement) { player.MoveRelative(-1, 1); }
-                    else if (keyTrack.WaitPressed()) { player.TurnTimer = player.GetMovementDelay(); }
-                    else if (keyTrack.KeyJustPressed(Keys.R)) { ((PlayerAI)player.AI).StartResting(); }
-                    else if (keyTrack.KeyJustPressed(Keys.F)) {
-                        if (FireScreen.CanEnter(player)) { subscreen = new FireScreen(worldView, player); }
-                        else { player.AddMessage("No enemies in sight."); }
-                    } else if (keyTrack.KeyJustPressed(Keys.Space)) { 
-                        if (player.X == world.Exit.X && player.Y == world.Exit.Y) {
+                    else if (KeyTrack.MovementNPressed()) { Player.MoveRelative(0, -1); }
+                    else if (KeyTrack.MovementSPressed()) { Player.MoveRelative(0, 1); }
+                    else if (KeyTrack.MovementWPressed()) { Player.MoveRelative(-1, 0); }
+                    else if (KeyTrack.MovementEPressed()) { Player.MoveRelative(1, 0); }
+                    else if (KeyTrack.MovementNEPressed() && Constants.AllowDiagonalMovement) { Player.MoveRelative(1, -1); }
+                    else if (KeyTrack.MovementSEPressed() && Constants.AllowDiagonalMovement) { Player.MoveRelative(1, 1); }
+                    else if (KeyTrack.MovementNWPressed() && Constants.AllowDiagonalMovement) { Player.MoveRelative(-1, -1); }
+                    else if (KeyTrack.MovementSWPressed() && Constants.AllowDiagonalMovement) { Player.MoveRelative(-1, 1); }
+                    else if (KeyTrack.WaitPressed()) { Player.TurnTimer = Player.GetMovementDelay(); }
+                    else if (KeyTrack.KeyJustPressed(Keys.R)) { ((PlayerAI)Player.AI).StartResting(); }
+                    else if (KeyTrack.KeyJustPressed(Keys.F)) {
+                        if (FireScreen.CanEnter(Player)) { Subscreen = new FireScreen(WorldView, Player); }
+                        else { Player.AddMessage("No enemies in sight."); }
+                    } else if (KeyTrack.KeyJustPressed(Keys.Space)) { 
+                        if (Player.X == World.Exit.X && Player.Y == World.Exit.Y) {
                             inputGiven = false;
                             TryToWinGame();
                         } else {
-                            player.PickUp(true); 
+                            Player.PickUp(true); 
                         }
-                    } else if (mouse.RightClicked()) {
-                        Point tile = mouse.GetTile(worldView);
+                    } else if (Mouse.RightClicked()) {
+                        Point tile = Mouse.GetTile(WorldView);
                         Creature mouseCreature = GetMouseCreature(tile);
                         Item mouseItem = GetMouseItem(tile);
-                        if (mouseCreature != null) { subscreen = new CreatureScreen(Content, mouseCreature); }
-                        else if (mouseItem != null) { subscreen = new ItemScreen(Content, mouseItem); }
+                        if (mouseCreature != null) { Subscreen = new CreatureScreen(Content, mouseCreature); }
+                        else if (mouseItem != null) { Subscreen = new ItemScreen(Content, mouseItem); }
                         inputGiven = false;
-                    } else if (mouse.LeftClicked()) {
-                        Point tile = mouse.GetTile(worldView);
+                    } else if (Mouse.LeftClicked()) {
+                        Point tile = Mouse.GetTile(WorldView);
                         Creature mouseCreature = GetMouseCreature(tile);
-                        Creature target = player.GetCreatureInRange(mouseCreature);
+                        Creature target = Player.GetCreatureInRange(mouseCreature);
 
-                        if (mouse.Position().X > MainInterface.StartX + 16) {
-                            subscreen = new CreatureScreen(Content, player);
+                        if (Mouse.Position().X > MainInterface.StartX + 16) {
+                            Subscreen = new CreatureScreen(Content, Player);
                             inputGiven = false;
-                        } else if (mouseCreature == player) {
-                            if (player.X == world.Exit.X && player.Y == world.Exit.Y) {
+                        } else if (mouseCreature == Player) {
+                            if (Player.X == World.Exit.X && Player.Y == World.Exit.Y) {
                                 inputGiven = false;
                                 TryToWinGame();
                             } else {
-                                player.PickUp(false);
+                                Player.PickUp(false);
                             }
                         } else if (target != null) {
-                            player.Attack(target);
-                            player.TurnTimer = player.GetAttackDelay();
-                        } else if (worldView.HasSeen[tile.X, tile.Y] && player.CanEnter(tile)) {
+                            Player.Attack(target);
+                            Player.TurnTimer = Player.GetAttackDelay();
+                        } else if (WorldView.HasSeen[tile.X, tile.Y] && Player.CanEnter(tile)) {
                             // If the player has seen the tile and is not clicking a creature, give them a path to automatically follow
-                            List<Point> path = Pathfinder.FindPath(player, tile.X, tile.Y);
-                            if (path.Count > 0) { player.MoveTo(path[0]); path.RemoveAt(0); }
+                            List<Point> path = Pathfinder.FindPath(Player, tile.X, tile.Y);
+                            if (path.Count > 0) { Player.MoveTo(path[0]); path.RemoveAt(0); }
 
-                            if (player.AI.CreatureInView(world) == null) {
-                                if (path.Count > 0) { ((PlayerAI)player.AI).SetPath(path); }
+                            if (Player.AI.CreatureInView(World) == null) {
+                                if (path.Count > 0) { ((PlayerAI)Player.AI).SetPath(path); }
                             }
                         }
                     } else {     
-                        if (keyTrack.KeyJustPressed(Keys.S)) { subscreen = new CreatureScreen(Content, player); }
-                        else if (keyTrack.KeyJustPressed(Keys.OemQuestion)) { subscreen = new HelpScreen(Content); }
-                        else if (keyTrack.KeyJustPressed(Keys.M)) { subscreen = new MapScreen(Content, world, worldView); }
+                        if (KeyTrack.KeyJustPressed(Keys.S)) { Subscreen = new CreatureScreen(Content, Player); }
+                        else if (KeyTrack.KeyJustPressed(Keys.OemQuestion)) { Subscreen = new HelpScreen(Content); }
+                        else if (KeyTrack.KeyJustPressed(Keys.M)) { Subscreen = new MapScreen(Content, World, WorldView); }
                         inputGiven = false; 
                     }
                 }
 
                 // If input has been given, update the world
-                if (inputGiven && !player.IsDead() && world.Projectiles.Count == 0) {
+                if (inputGiven && !Player.IsDead() && World.Projectiles.Count == 0) {
                     TakeTurns();
                 }
             }
@@ -203,56 +203,56 @@ namespace MonoRogue {
         }
 
         private void TakeTurns() {
-            worldView.Update(world, player);
-            while (player.TurnTimer > 0) {
+            WorldView.Update(World, Player);
+            while (Player.TurnTimer > 0) {
                 // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
-                currentIndex = (currentIndex + 1) % world.Creatures.Count;
-                Creature c = world.Creatures[currentIndex];
+                CurrentIndex = (CurrentIndex + 1) % World.Creatures.Count;
+                Creature c = World.Creatures[CurrentIndex];
                 c.TurnTimer--;
                 if (c.TurnTimer <= 0) { 
-                    c.TakeTurn(world);
+                    c.TakeTurn(World);
 
-                    if (player.IsDead()) { break; }
-                    if (world.Projectiles.Count > 0) { break; }
+                    if (Player.IsDead()) { break; }
+                    if (World.Projectiles.Count > 0) { break; }
                 }
             }
-            mainInterface.UpdateMessages(player.AI.GetMessages());
-            worldView.Update(world, player);
+            MainInterface.UpdateMessages(Player.AI.GetMessages());
+            WorldView.Update(World, Player);
         }
 
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
 
-            if (subscreen != null) {
-                spriteBatch.Begin();
-                subscreen.Draw(gameTime, spriteBatch, mouse);
-                spriteBatch.End();
+            if (Subscreen != null) {
+                SpriteBatch.Begin();
+                Subscreen.Draw(gameTime, SpriteBatch, Mouse);
+                SpriteBatch.End();
             } else {
                 // Some mouse handling in draw so we can keep it as a local variable
-                Point tile = mouse.GetTile(worldView);
+                Point tile = Mouse.GetTile(WorldView);
                 Item mouseItem = GetMouseItem(tile);
-                Item floorItem = player.IsDead() ? null : world.GetItemAt(player.X, player.Y);
-                Tile mouseTile = player.CanSee(tile) ? world.GetTile(tile) : null;
+                Item floorItem = Player.IsDead() ? null : World.GetItemAt(Player.X, Player.Y);
+                Tile mouseTile = Player.CanSee(tile) ? World.GetTile(tile) : null;
                 Creature mouseCreature = GetMouseCreature(tile);
-                if (mouseCreature == player) { mouseCreature = null; }
+                if (mouseCreature == Player) { mouseCreature = null; }
 
-                spriteBatch.Begin();
+                SpriteBatch.Begin();
 
-                worldView.Draw(spriteBatch);
+                WorldView.Draw(SpriteBatch);
                 
-                MainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.White);
+                MainInterface.DrawTileHighlight(SpriteBatch, Mouse, WorldView, Color.White);
                 if (mouseCreature != null) {
-                    Creature target = player.GetCreatureInRange(mouseCreature);
-                    if (target != null) { MainInterface.DrawLineToCreature(spriteBatch, mouse, worldView, player, target, Color.Red); }
-                    else { MainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
+                    Creature target = Player.GetCreatureInRange(mouseCreature);
+                    if (target != null) { MainInterface.DrawLineToCreature(SpriteBatch, Mouse, WorldView, Player, target, Color.Red); }
+                    else { MainInterface.DrawTileHighlight(SpriteBatch, Mouse, WorldView, Color.Yellow); }
                 }
 
-                foreach (Projectile p in world.Projectiles) {
-                    p.Draw(spriteBatch, worldView);
+                foreach (Projectile p in World.Projectiles) {
+                    p.Draw(SpriteBatch, WorldView);
                 }
 
-                mainInterface.DrawInterface(spriteBatch, player, mouseCreature, floorItem, mouseItem, mouseTile);
-                spriteBatch.End();
+                MainInterface.DrawInterface(SpriteBatch, Player, mouseCreature, floorItem, mouseItem, mouseTile);
+                SpriteBatch.End();
             }
 
             base.Draw(gameTime);
@@ -260,37 +260,37 @@ namespace MonoRogue {
         
         private Creature GetMouseCreature(Point tile) {
             if (tile.X != -1) {
-                if (player.CanSee(tile)) {
-                    return world.GetCreatureAt(tile);
+                if (Player.CanSee(tile)) {
+                    return World.GetCreatureAt(tile);
                 }
             }
             return null;
         }
         private Item GetMouseItem(Point tile) {
             if (tile.X != -1) {
-                if (player.CanSee(tile)) {
-                    return world.GetItemAt(tile);
+                if (Player.CanSee(tile)) {
+                    return World.GetItemAt(tile);
                 }
             }
             return null;
         }
 
         private void TryToWinGame() {
-            if (player.HasKey) {
-                subscreen = new WinScreen(this, Content);
+            if (Player.HasKey) {
+                Subscreen = new WinScreen(this, Content);
             } else {
-                player.AddMessage("You need the Golden Key to unlock the exit to the dungeon!");
+                Player.AddMessage("You need the Golden Key to unlock the exit to the dungeon!");
             }
         }
 
         public void UpdateScreenSize() {
-            graphics.PreferredBackBufferWidth = Constants.ScreenWidth;
-            graphics.PreferredBackBufferHeight = Constants.ScreenHeight;
-            graphics.IsFullScreen = Constants.Fullscreen;
-            graphics.ApplyChanges();
+            Graphics.PreferredBackBufferWidth = Constants.ScreenWidth;
+            Graphics.PreferredBackBufferHeight = Constants.ScreenHeight;
+            Graphics.IsFullScreen = Constants.Fullscreen;
+            Graphics.ApplyChanges();
 
             MainInterface.StartX = 32 * Constants.WorldViewWidth;
-            if (worldView != null) { worldView.UpdateScreenSize(); }
+            if (WorldView != null) { WorldView.UpdateScreenSize(); }
         }
 
         private static void ParseParameters(string[] args) {

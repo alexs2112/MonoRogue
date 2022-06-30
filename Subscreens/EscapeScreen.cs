@@ -43,7 +43,7 @@ namespace MonoRogue {
             WriteCentered(spriteBatch, Font16, "Quit", v, Index == 2 ? Color.LawnGreen : Color.White);
 
             v.Y = Constants.ScreenHeight - 64;
-            WriteCentered(spriteBatch, Font14, $"Seed: {Main.seed}", v, Color.Gray);
+            WriteCentered(spriteBatch, Font14, $"Seed: {Main.Seed}", v, Color.Gray);
         }
     }
 }
