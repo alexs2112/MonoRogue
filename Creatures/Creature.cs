@@ -358,6 +358,7 @@ namespace MonoRogue {
             } else if (i.IsKey) {
                 World.Items.Remove(p);
                 HasKey = true;
+                World.Tiles[World.Exit.X, World.Exit.Y] = Feature.ExitOpen;
                 AddMessage("You pick up the Golden Key!");
             }
             TurnTimer = 10;

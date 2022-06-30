@@ -46,6 +46,7 @@ namespace MonoRogue {
             // Set up start and end regions
             Point p = end.GetEmptyTile(Random, w);
             w.Exit = p;
+            w.Tiles[p.X, p.Y] = Feature.Exit;
             SpawnPlayer(w, creatureFactory, start);
 
             // Populate the dungeon with items and creatures

@@ -10,6 +10,9 @@ namespace MonoRogue {
             Name = name;
         }
 
+        public static Feature Exit;
+        public static Feature ExitOpen;
+
         public static Feature DoorClosed;
         public static Feature DoorOpen;
         public static Feature Bookshelf;
@@ -26,11 +29,20 @@ namespace MonoRogue {
         public static Feature Skull;
         public static Feature Grass;
         public static Feature RubbleSmall;
+
+        // Vault specific features
+        public static Feature Tree;
+        public static Feature Bars;
+        public static Feature BarsBroken;
+
         public static void LoadFeatures(ContentManager content) {
+            Exit = new Feature("Exit", true, true, content.Load<Texture2D>("Misc/ExitLocked"), Color.Gold);
+            ExitOpen = new Feature("Exit", true, true, content.Load<Texture2D>("Misc/ExitOpen"), Color.SkyBlue);
+
             DoorClosed = new Feature("Door", false, false, content.Load<Texture2D>("Tiles/DoorClosed"), Color.Brown);
             DoorClosed.Breakable = true;
-
             DoorOpen = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen"), Color.Brown);
+
             Bookshelf = new Feature("Bookshelf", false, false, content.Load<Texture2D>("Tiles/Bookshelf"), Color.RosyBrown);
             BookshelfSmall = new Feature("Bookshelf", false, true, content.Load<Texture2D>("Tiles/BookshelfSmall"), Color.RosyBrown);
             Table = new Feature("Table", false, true, content.Load<Texture2D>("Tiles/Table"), Color.Sienna);
@@ -47,6 +59,10 @@ namespace MonoRogue {
             Skull = new Feature("Bones", true, true, content.Load<Texture2D>("Tiles/Skull"), Color.LightGray);
             Grass = new Feature("Grass", true, true, content.Load<Texture2D>("Tiles/Grass"), Color.ForestGreen);
             RubbleSmall = new Feature("Rubble", true, true, content.Load<Texture2D>("Tiles/RubbleSmall"), Color.LightGray);
+
+            Tree = new Feature("Tree", false, false, content.Load<Texture2D>("Tiles/Tree"), Color.ForestGreen);
+            Bars = new Feature("Bars", false, true, content.Load<Texture2D>("Tiles/Bars"), Color.LightGray);
+            BarsBroken = new Feature("Bars", true, true, content.Load<Texture2D>("Tiles/BarsBroken"), Color.LightGray);
         }
 
         public static Feature GetClosedDoor() {

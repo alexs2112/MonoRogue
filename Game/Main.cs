@@ -82,7 +82,6 @@ namespace MonoRogue {
         protected override void LoadContent() {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             MainInterface.LoadTextures(Content, GraphicsDevice);
-            WorldView.LoadContent(Content);
             Projectile.LoadTextures(Content);
         }
 
@@ -144,12 +143,11 @@ namespace MonoRogue {
                     else if (KeyTrack.KeyJustPressed(Keys.F)) {
                         if (FireScreen.CanEnter(Player)) { Subscreen = new FireScreen(WorldView, Player); }
                         else { Player.AddMessage("No enemies in sight."); }
-                    } else if (KeyTrack.KeyJustPressed(Keys.Space)) { 
-                        if (Player.X == World.Exit.X && Player.Y == World.Exit.Y) {
+                    } else if (KeyTrack.KeyJustPressed(Keys.Space)) {
+                        if (World.GetItemAt(Player.X, Player.Y) != null) { Player.PickUp(true); }
+                        else if (Player.X == World.Exit.X && Player.Y == World.Exit.Y) {
                             inputGiven = false;
                             TryToWinGame();
-                        } else {
-                            Player.PickUp(true); 
                         }
                     } else if (Mouse.RightClicked()) {
                         Point tile = Mouse.GetTile(WorldView);
@@ -319,6 +317,11 @@ namespace MonoRogue {
                     System.Console.WriteLine("The --difficulty argument requires either 1, 2 or 3 to follow it.");
                     System.Console.WriteLine("Setting difficulty to default (3).");
                 }
+            }
+
+            if (cmd.Contains("--small")) {
+                Constants.WorldWidth = 40;
+                Constants.WorldHeight = 25;
             }
 
             Constants.WriteMessagesToConsole = cmd.Contains("--messages");

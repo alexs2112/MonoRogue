@@ -33,6 +33,9 @@ namespace MonoRogue {
             Vaults.Add(Bones());
             Vaults.Add(SmallLibrary());
             Vaults.Add(CollapsedMine());
+            Vaults.Add(CeilingCollapse());
+            Vaults.Add(TreeSmall());
+            Vaults.Add(Prison());
         }
         public static Vault GetVault(System.Random random, int maxWidth, int maxHeight) {
             List<Vault> potential = new List<Vault>(Vaults);
@@ -187,6 +190,50 @@ namespace MonoRogue {
             map.Add('r', Feature.RubbleSmall);
             map.Add('R', Feature.Rubble);
             map.Add('b', Feature.Bones);
+            return new Vault(tiles, map);
+        }
+        private static Vault CeilingCollapse() {
+            string[] tiles = new string[5] {
+                "..,..",
+                ".,r,.",
+                ".,Rb,",
+                ",r,,.",
+                "...,."
+            };
+            Dictionary<char, Tile> map = new Dictionary<char, Tile>();
+            map.Add('r', Feature.RubbleSmall);
+            map.Add('R', Feature.Rubble);
+            map.Add('b', Feature.Bones);
+            return new Vault(tiles, map);
+        }
+
+        private static Vault TreeSmall() {
+            string[] tiles = new string[5] {
+                "..,..",
+                ".,,,.",
+                ".,T,,",
+                ".,,..",
+                "....."
+            };
+            Dictionary<char, Tile> map = new Dictionary<char, Tile>();
+            map.Add('T', Feature.Tree);
+            return new Vault(tiles, map);
+        }
+
+        private static Vault Prison() {
+            string[] tiles = new string[7] {
+                ".........",
+                "..#####..",
+                "..Br#,b..",
+                "..#####..",
+                "..b,#,B..",
+                "..#####..",
+                "........."
+            };
+            Dictionary<char, Tile> map = new Dictionary<char, Tile>();
+            map.Add('B', Feature.Bars);
+            map.Add('b', Feature.BarsBroken);
+            map.Add('r', Feature.Bones);
             return new Vault(tiles, map);
         }
 

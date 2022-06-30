@@ -22,12 +22,13 @@
  * Look into enabling saving and persistency
     * I think we can just copy down the world seed, regenerate the entire world. Copy the list of remaining creatures and items and their locations and equipment and stuff and then place them where needed. Could be easy, don't waste too much time on this if it won't work
 
+ * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
+
  * Minor fixes
    * Have item notifications not stop auto movement
    * Broken walls are a bit messed up, check all 4 sides instead of 2 in Tile
    * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
-   * Set the exit as a feature, so you can mouse over it and see it on the minimap.
 
  * Release prep:
    * Fix all @todo tags

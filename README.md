@@ -9,6 +9,7 @@ A work in progress simple turn based roguelike written in monogame to learn how 
     - `--messages` to print player notifications to the terminal
     - `--invincible` to stop the player from modifying their health
     - `--no-animations` to disable attack and projectile animations
+    - `--small` generate a small world
     - `--difficulty <1|2|3>` to set the rate of enemy and item spawn. 1 is easiest, 3 is hardest (default)
 
 ## Algorithms in use:
