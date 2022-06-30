@@ -41,6 +41,7 @@ namespace MonoRogue {
 
         // Some visual flavour
         public Color BloodColor { get; set; }
+        public Projectile.Type BaseProjectile { get; set; }
 
         public Armor Armor { get; set; }
         public Weapon Weapon { get; set; }
@@ -184,7 +185,7 @@ namespace MonoRogue {
                 Y = y;
                 TurnTimer = GetMovementDelay();
 
-                // Spears get a free attack if you move towards an enemy and end up in range
+                // Spears get a free lunge attack if you move towards an enemy and end up in range
                 if (GetWeaponType() == Item.Type.Spear) {
                     int dx = X - oldX;
                     int dy = Y - oldY;
@@ -243,6 +244,17 @@ namespace MonoRogue {
         }
 
         public void Attack(Creature target) {
+            if (Constants.AllowAnimations) {
+                if (Weapon != null) {
+                    World.Projectiles.Add(Projectile.GetProjectile(this, target, Weapon.BaseProjectile));
+                } else {
+                    World.Projectiles.Add(Projectile.GetProjectile(this, target, BaseProjectile));
+                }
+            }
+            else { FinishAttack(target); }
+        }
+
+        public void FinishAttack(Creature target) {
             int damage = new System.Random().Next(GetDamage().Min, GetDamage().Max + 1);
             string action;
             if (Weapon != null && Weapon.AttackText != null) {

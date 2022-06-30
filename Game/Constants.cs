@@ -29,7 +29,9 @@ namespace MonoRogue {
 
         public static bool AllowDiagonalMovement = true;    // Keeping this here in case we want to revert it to only Orthogonal movement
 
-        public static float MusicVolume = 0.5f;
-        public static float EffectVolume = 0.5f;
+        public static bool AllowAnimations = true;         // Enable/Disable attack and projectile animations
+
+        public static float MusicVolume = 0.5f;             // Volume of background soundtrack
+        public static float EffectVolume = 0.5f;            // Volume of sound effects
     }
 }

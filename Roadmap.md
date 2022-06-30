@@ -11,9 +11,6 @@
     * Pretty up the window resize screen. Maybe disable screen sizes that are too big if possible, seems to mess things up if you set it to bigger than your physical screen and in fullscreen mode. If we can't get monitor size (niche case of external monitor) maybe add a warning like "This window size is greater than your detected monitor size of ___, proceed with caution"
       * Maybe a "Fit to Screen" button that will match it to our resultion and enable full screen (which can then be turned off but might be ugly)
 
- * Animate projectiles
-    * Same as movement, could have multiple projectile sprites based on what is shooting them
-
  * Make messages not overflow the interface if we get a lot of them, maybe consolidate attack messages? "X, Y, and Z attack you for <combined> damage"
     * This will require parsing notifications when messages are updated, rather than when the player receives them
     * Might need to parse every time draw is called, otherwise it wont account for mousing over things...

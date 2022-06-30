@@ -83,6 +83,7 @@ namespace MonoRogue {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             MainInterface.LoadTextures(Content, GraphicsDevice);
             WorldView.LoadContent(Content);
+            Projectile.LoadTextures(Content);
         }
 
         protected override void Update(GameTime gameTime) {
@@ -101,6 +102,11 @@ namespace MonoRogue {
                     subscreen = subscreen.RespondToInput(k, mouse);
 
                     if (subscreen == null) { inputGiven = true; }
+                }
+            } else if (world.Projectiles.Count > 0) {
+                world.UpdateProjectiles(gameTime.ElapsedGameTime, mainInterface, worldView);
+                if (world.Projectiles.Count == 0 && !player.IsDead()) {
+                    TakeTurns();
                 }
             } else {
                 inputGiven = true;
@@ -186,27 +192,32 @@ namespace MonoRogue {
                         inputGiven = false; 
                     }
                 }
-            }
 
-            // If input has been given, update the world
-            if (inputGiven && !player.IsDead()) {
-                worldView.Update(world, player);
-                while (player.TurnTimer > 0) {
-                    // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
-                    currentIndex = (currentIndex + 1) % world.Creatures.Count;
-                    Creature c = world.Creatures[currentIndex];
-                    c.TurnTimer--;
-                    if (c.TurnTimer <= 0) { 
-                        c.TakeTurn(world);
-
-                        if (player.IsDead()) { break; }
-                    }
+                // If input has been given, update the world
+                if (inputGiven && !player.IsDead() && world.Projectiles.Count == 0) {
+                    TakeTurns();
                 }
-                worldView.Update(world, player);
-                mainInterface.UpdateMessages(player.AI.GetMessages());
             }
 
             base.Update(gameTime);
+        }
+
+        private void TakeTurns() {
+            worldView.Update(world, player);
+            while (player.TurnTimer > 0) {
+                // Loop through each creatures timer, decrementing them and taking a turn when it hits 0
+                currentIndex = (currentIndex + 1) % world.Creatures.Count;
+                Creature c = world.Creatures[currentIndex];
+                c.TurnTimer--;
+                if (c.TurnTimer <= 0) { 
+                    c.TakeTurn(world);
+
+                    if (player.IsDead()) { break; }
+                    if (world.Projectiles.Count > 0) { break; }
+                }
+            }
+            mainInterface.UpdateMessages(player.AI.GetMessages());
+            worldView.Update(world, player);
         }
 
         protected override void Draw(GameTime gameTime) {
@@ -234,6 +245,10 @@ namespace MonoRogue {
                     Creature target = player.GetCreatureInRange(mouseCreature);
                     if (target != null) { MainInterface.DrawLineToCreature(spriteBatch, mouse, worldView, player, target, Color.Red); }
                     else { MainInterface.DrawTileHighlight(spriteBatch, mouse, worldView, Color.Yellow); }
+                }
+
+                foreach (Projectile p in world.Projectiles) {
+                    p.Draw(spriteBatch, worldView);
                 }
 
                 mainInterface.DrawInterface(spriteBatch, player, mouseCreature, floorItem, mouseItem, mouseTile);
@@ -307,6 +322,7 @@ namespace MonoRogue {
             }
 
             Constants.WriteMessagesToConsole = cmd.Contains("--messages");
+            Constants.AllowAnimations = !cmd.Contains("--no-animations");
             Constants.Invincible = cmd.Contains("--invincible");
             if (Constants.Invincible) { System.Console.WriteLine("Player Invincibility Enabled"); }
         }

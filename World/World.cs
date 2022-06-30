@@ -12,6 +12,8 @@ namespace MonoRogue {
         public Creature Player;
         public List<Creature> Creatures;
 
+        public List<Projectile> Projectiles;
+
         public Point Exit;
 
         // How hard this given tile should be displayed, calculated by region and depth
@@ -23,6 +25,7 @@ namespace MonoRogue {
             Tiles = tiles;
             Creatures = new List<Creature>();
             Items = new Dictionary<Point, Item>();
+            Projectiles = new List<Projectile>();
 
             // To account for bloodstains on the floor, possibly some future usage
             ColorOverlay = new Color[width, height];
@@ -97,6 +100,32 @@ namespace MonoRogue {
             foreach(Creature c in dead) {
                 Creatures.Remove(c);
             }
+        }
+
+        public void UpdateProjectiles(System.TimeSpan elapsed, MainInterface mainInterface, WorldView worldView) {
+            if (!Constants.AllowAnimations) { return; }
+
+            bool updateDisplay = false;
+            for (int i = 0; i < Projectiles.Count; i++) {
+                Projectile p = Projectiles[i];
+                p.Update(elapsed);
+                if (p.Finished) {
+                    Projectiles.RemoveAt(i);
+                    i--;
+                    updateDisplay = true;
+                }
+            }
+            if (updateDisplay) {
+                mainInterface.UpdateMessages(Player.AI.GetMessages());
+                worldView.Update(this, Player);
+            }
+        }
+
+        public void EndProjectiles() {
+            foreach (Projectile p in Projectiles) {
+                p.EndEarly();
+            }
+            Projectiles.Clear();
         }
 
         public void PrintToTerminal() {

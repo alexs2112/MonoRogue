@@ -42,6 +42,7 @@ namespace MonoRogue {
         public int Delay { get; private set; }
         public int Range { get; private set; }
         public string AttackText { get; private set; }
+        public Projectile.Type BaseProjectile { get; private set; }
 
         public Weapon(string name, Texture2D glyph, Color color) : base(name, glyph, color) {
             IsArmor = false;
@@ -57,5 +58,6 @@ namespace MonoRogue {
 
         public void SetRange(int range) { Range = range; }
         public void SetAttackText(string s) { AttackText = s; }
+        public void SetProjectileType(Projectile.Type type) { BaseProjectile = type; }
     }
 }

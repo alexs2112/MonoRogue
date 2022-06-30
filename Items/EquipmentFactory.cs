@@ -196,6 +196,7 @@ namespace MonoRogue {
             w.SetType(Item.Type.Bow);
             w.SetDescription("A short, curved piece of wood and sinew designed for firing arrows.");
             w.SetAttackText("shoot");
+            w.SetProjectileType(Projectile.Type.Arrow);
             return w;
         }
 
@@ -247,6 +248,7 @@ namespace MonoRogue {
             w.SetType(Item.Type.Bow);
             w.SetDescription("A long, strong bow made of yew.");
             w.SetAttackText("shoot");
+            w.SetProjectileType(Projectile.Type.Arrow);
             return w;
         }
 
@@ -298,6 +300,7 @@ namespace MonoRogue {
             w.SetType(Item.Type.Bow);
             w.SetDescription("A bow with limbs that curve away from the user, offering more power and speed to the fired arrow.");
             w.SetAttackText("shoot");
+            w.SetProjectileType(Projectile.Type.Arrow);
             return w;
         }
 
