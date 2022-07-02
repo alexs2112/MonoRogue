@@ -228,11 +228,17 @@ namespace MonoRogue {
                 Armor armor = (Armor)item;
                 spriteBatch.DrawString(Font12, $"Defense:", new Vector2(x, y + 8), Color.White);
                 DrawHearts(spriteBatch, armor.MaxDefense, armor.Defense, x + 144, y, Color.LightSkyBlue);
+                if (armor.Block > 0) {
+                    y += 32;
+                    spriteBatch.DrawString(Font14, $"Block: {armor.Block}", new Vector2(x, y), Color.White);
+                }
                 y += 32;
                 spriteBatch.DrawString(Font12, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
                 y += 24;
             } else if (item.IsWeapon) {
                 Weapon weapon = (Weapon)item;
+                spriteBatch.DrawString(Font12, $"Type: {weapon.ItemType}", new Vector2(x, y), Color.White);
+                y += 24;
                 spriteBatch.DrawString(Font12, $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
                 y += 24;
                 spriteBatch.DrawString(Font12, $"Delay: {weapon.Delay}", new Vector2(x, y), Color.White);

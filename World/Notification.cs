@@ -47,9 +47,29 @@ namespace MonoRogue {
                 if (player.CanSee(Target.X, Target.Y)) { s += $"the {Target.Name} "; }
                 else { s += "something "; }
             }
-            s += $"for {Damage} damage!";
+            s += $"for ";
+            if (Damage > 0) { s += $"{Damage}"; }
+            else { s += "no"; }
+            s += " damage.";
             if (Crit) { s += " CRIT!"; }
             return s;
+        }
+    }
+
+    public class ParryNotification : Notification {
+        private Creature Attacker;
+        private Creature Target;
+        public ParryNotification(Creature attacker, Creature target) {
+            Attacker = attacker;
+            Target = target;
+        }
+
+        public override string Parse(Creature player) {
+            if (Attacker == player) {
+                return $"The {Target.Name} parries your attack.";
+            } else {
+                return $"You parry the {Attacker.Name}'s attack.";
+            }
         }
     }
 

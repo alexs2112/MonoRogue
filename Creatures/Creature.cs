@@ -22,6 +22,7 @@ namespace MonoRogue {
         public int Defense { get; private set; }
         public int MaxDefense { get; private set; }
         public int DefenseTimer { get; private set; }
+        public int BaseBlock { get; private set; }
 
         // Attack Stats
         private (int Min, int Max) Damage { get; set; }
@@ -52,8 +53,7 @@ namespace MonoRogue {
             Color = color;
         }
 
-        public void SetStats(int hp, int defense, (int, int) damage) { SetStats(hp, defense, damage, 10, 10); }
-        public void SetStats(int hp, int defense, (int, int) damage, int movementDelay, int attackDelay) {
+        public void SetStats(int hp, int defense, (int, int) damage, int movementDelay = 10, int attackDelay = 10, int block = 0) {
             MaxHP = hp;
             HP = hp; 
             Defense = defense;
@@ -65,6 +65,7 @@ namespace MonoRogue {
             BaseAttackText = "attack";
             BaseRange = 1;
             BloodColor = Color.DarkRed;
+            BaseBlock = block;
         }
 
         // Setters for private attributes
@@ -81,6 +82,19 @@ namespace MonoRogue {
             } else {
                 return Damage;
             }
+        }
+        public int GetArmorWeight() {
+            if (Armor == null) { return 0; }
+            return Armor.Weight;
+        }
+        public int GetCritChance() {
+            return GetWeaponType() == Weapon.Type.Dagger ? 15 - 3 * GetArmorWeight() : 0;
+        }
+        public int GetParryChance() {
+            return GetWeaponType() == Weapon.Type.Sword ? 30 - 5 * GetArmorWeight() : 0;
+        }
+        public int GetBlock() {
+            return BaseBlock + (Armor != null ? Armor.Block : 0);
         }
         public void ModifyDefense(int value) { MaxDefense += value; Defense += value; }
         public (int Current, int Max) GetDefense() {
@@ -264,23 +278,28 @@ namespace MonoRogue {
             }
 
             bool isCrit = false;
-            if (GetWeaponType() == Item.Type.Dagger) {
+            if (GetWeaponType() == Weapon.Type.Dagger) {
                 // Daggers can critically hit, dealing double damage
-                int chance = new System.Random().Next(10);
-
-                // 10% chance to crit
-                if (chance < 1) { damage = damage * 2; isCrit = true; }
-            } else if (GetWeaponType() == Item.Type.Mace) {
-                // Maces deal additional damage to armor, scaled by difficulty
+                int chance = new System.Random().Next(100);
+                if (chance < GetCritChance()) { damage = damage * 2; isCrit = true; }
+            } else if (GetWeaponType() == Weapon.Type.Mace) {
+                // Maces deal additional damage to armor
                 if (target.GetDefense().Current > 0) {
-                    int bonus = System.Math.Min(target.GetDefense().Current, IsPlayer ? target.Difficulty : Difficulty);
+                    int bonus = System.Math.Min(target.GetDefense().Current, Weapon.MaceDamage);
                     damage += bonus;
                 }
             }
 
-            NotifyWorld(new AttackNotification(this, target, action, damage, isCrit), target.X, target.Y);
-            target.TakeDamage(damage);
-            target.GetAttacked(this);
+            if (target.GetWeaponType() == Weapon.Type.Sword && new System.Random().Next(100) < target.GetParryChance()) {
+                // Swords can parry attacks, taking no damage
+                NotifyWorld(new ParryNotification(this, target), target.X, target.Y);
+            } else {
+                damage -= target.GetBlock();
+                NotifyWorld(new AttackNotification(this, target, action, damage, isCrit), target.X, target.Y);
+                target.TakeDamage(damage);
+                target.GetAttacked(this);
+            }
+
             TurnTimer = GetAttackDelay();
         }
 

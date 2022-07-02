@@ -30,19 +30,29 @@ Food is the only way to heal your character's health in the dungeon.
 
 ## Weapons:
 There are 6 different weapon types that you can equip. Each functions slightly differently to add some variety to gameplay.
-* Swords deal higher damage than other weapons of its level
+* Swords have a chance to parry incoming attacks. Parry chance decreased by armor weight.
 * Spears have increased range. Moving towards an enemy lets you "lunge" and get a free attack
 * Axes hit all enemies adjacent to you whenever you attack
-* Daggers lower your attack delay and can critically hit
+* Daggers lower your attack delay and can critically hit. Critical hit chance decreased by armor weight.
 * Maces deal bonus damage to defense
 * Bows have extended range but deal a little less damage
 
 ## Armor:
-Armor has two stats: Defense and Weight. 
+Armor has three stats: Defense, Weight, and Block. 
 
 * Defense serves to increase player survivability in the form of Blue Hearts. Blue hearts function similarly to regular hearts, but they regenerate outside of combat. 
 
 * Armor Weight increases your move delay and attack delay, slowing you down. Heavier armor has higher defense, but also tends to have higher weight.
+
+* Block decreases the amount of damage you take by a flat amount. Only found on heavy armor.
+
+There are three types of armor:
+ 
+* Light Armor: Has no weight but does not provide much protection. Best used with bows and daggers as the lack of weight allows you to run away from melee enemies and make multiple attacks against slower ones.
+
+* Medium Armor: Has a little bit of weight but provides moderate protection. Best used with swords and spears as melee weapons that want the defense, but don't want too much weight for parrying attacks or kiting enemies.
+
+* Heavy Armor: Has the greatest weight, but the highest defense. Lowers the amount of damage enemies will deal to you with Block. Best used with axes and maces as heavy hitting melee weapons that benefit the most from being in close combat.
 
 ## Enemies:
 This section will give a bit of info about each enemy. Contains spoiler material if you have not made it to the end of the game yet.

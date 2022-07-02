@@ -158,7 +158,7 @@ namespace MonoRogue {
         }
         public Weapon NewClub() {
             Weapon w = new Weapon("Club", Glyphs["Club"], Color.IndianRed);
-            w.SetWeaponStats((2, 4));
+            w.SetWeaponStats((3, 5), 10, 1);
             w.SetType(Item.Type.Mace);
             w.SetDescription("A makeshift weapon constructed from a piece of hardwood and the strength to swing it.");
             w.SetAttackText("club");
@@ -174,7 +174,7 @@ namespace MonoRogue {
         }
         public Weapon NewHandAxe() {
             Weapon w = new Weapon("Hand Axe", Glyphs["HandAxe"], Color.OliveDrab);
-            w.SetWeaponStats((2, 4));
+            w.SetWeaponStats((3, 5));
             w.SetType(Item.Type.Axe);
             w.SetDescription("A small axe weighted towards a bladed head.");
             w.SetAttackText("hack");
@@ -182,7 +182,7 @@ namespace MonoRogue {
         }
         public Weapon NewStaff() {
             Weapon w = new Weapon("Staff", Glyphs["Staff"], Color.BurlyWood);
-            w.SetWeaponStats((2, 4));
+            w.SetWeaponStats((3, 5));
             w.SetType(Item.Type.Spear);
             w.SetDescription("A simple polearm composed of hardened and sturdy wood.");
             w.SetAttackText("jab");
@@ -191,7 +191,7 @@ namespace MonoRogue {
         }
         public Weapon NewShortbow() {
             Weapon w = new Weapon("Shortbow", Glyphs["Shortbow"], Color.Peru);
-            w.SetWeaponStats((2, 3), 12);
+            w.SetWeaponStats((3, 5), 12);
             w.SetRange(5);
             w.SetType(Item.Type.Bow);
             w.SetDescription("A short, curved piece of wood and sinew designed for firing arrows.");
@@ -210,7 +210,7 @@ namespace MonoRogue {
         }
         public Weapon NewWarhammer() {
             Weapon w = new Weapon("Warhammer", Glyphs["Warhammer"], Color.LightCoral);
-            w.SetWeaponStats((3, 6));
+            w.SetWeaponStats((4, 7), 10, 2);
             w.SetType(Item.Type.Mace);
             w.SetDescription("A large hammer, blunt and heavy that can strike with maximum impact.");
             w.SetAttackText("crush");
@@ -218,15 +218,15 @@ namespace MonoRogue {
         }
         public Weapon NewFalchion() {
             Weapon w = new Weapon("Falchion", Glyphs["Falchion"], Color.SteelBlue);
-            w.SetWeaponStats((4, 7), 8);
+            w.SetWeaponStats((4, 7));
             w.SetType(Item.Type.Sword);
-            w.SetDescription("A long single-edged sword with a slightly curved blade. It is far lighter and sharper than a standard sword.");
+            w.SetDescription("A long single-edged sword with a slightly curved blade. It is far sharper and more effective than a standard sword.");
             w.SetAttackText("slash");
             return w;
         }
         public Weapon NewWarAxe() {
             Weapon w = new Weapon("War Axe", Glyphs["WarAxe"], Color.Olive);
-            w.SetWeaponStats((3, 6));
+            w.SetWeaponStats((4, 7));
             w.SetType(Item.Type.Axe);
             w.SetDescription("A bigger axe with a longer haft and a large, bladed head.");
             w.SetAttackText("hack");
@@ -234,7 +234,7 @@ namespace MonoRogue {
         }
         public Weapon NewSpear() {
             Weapon w = new Weapon("Spear", Glyphs["Spear"], Color.Wheat);
-            w.SetWeaponStats((3, 6));
+            w.SetWeaponStats((4, 7));
             w.SetType(Item.Type.Spear);
             w.SetDescription("A long wooden shaft with a sharpened metal head fastened on the end.");
             w.SetAttackText("jab");
@@ -243,7 +243,7 @@ namespace MonoRogue {
         }
         public Weapon NewLongbow() {
             Weapon w = new Weapon("Longbow", Glyphs["Longbow"], Color.Sienna);
-            w.SetWeaponStats((3, 5), 12);
+            w.SetWeaponStats((4, 7), 12);
             w.SetRange(6);
             w.SetType(Item.Type.Bow);
             w.SetDescription("A long, strong bow made of yew.");
@@ -262,7 +262,7 @@ namespace MonoRogue {
         }
         public Weapon NewMorningstar() {
             Weapon w = new Weapon("Morningstar", Glyphs["Morningstar"], Color.MediumVioletRed);
-            w.SetWeaponStats((4, 8));
+            w.SetWeaponStats((5, 9), 10, 3);
             w.SetType(Item.Type.Mace);
             w.SetDescription("A large mace with the head covered in protruding spikes.");
             w.SetAttackText("crush");
@@ -270,7 +270,7 @@ namespace MonoRogue {
         }
         public Weapon NewGreatsword() {
             Weapon w = new Weapon("Greatsword", Glyphs["Greatsword"], Color.RoyalBlue);
-            w.SetWeaponStats((5, 9), 12);
+            w.SetWeaponStats((5, 9));
             w.SetType(Item.Type.Sword);
             w.SetDescription("An extremely long sword with an exceptionally heavy blade.");
             w.SetAttackText("slash");
@@ -278,7 +278,7 @@ namespace MonoRogue {
         }
         public Weapon NewBattleAxe() {
             Weapon w = new Weapon("Battle Axe", Glyphs["BattleAxe"], Color.LimeGreen);
-            w.SetWeaponStats((4, 8));
+            w.SetWeaponStats((5, 9));
             w.SetType(Item.Type.Axe);
             w.SetDescription("A hefty axe with a large crescent shaped bladed head.");
             w.SetAttackText("hack");
@@ -286,7 +286,7 @@ namespace MonoRogue {
         }
         public Weapon NewGreatspear() {
             Weapon w = new Weapon("Greatspear", Glyphs["Greatspear"], Color.DarkSalmon);
-            w.SetWeaponStats((4, 8));
+            w.SetWeaponStats((5, 9));
             w.SetType(Item.Type.Spear);
             w.SetDescription("A longer and heavier spear designed for war.");
             w.SetAttackText("jab");
@@ -295,7 +295,7 @@ namespace MonoRogue {
         }
         public Weapon NewRecurveBow() {
             Weapon w = new Weapon("Recurve Bow", Glyphs["RecurveBow"], Color.SaddleBrown);
-            w.SetWeaponStats((4, 7), 12);
+            w.SetWeaponStats((5, 9), 12);
             w.SetRange(6);
             w.SetType(Item.Type.Bow);
             w.SetDescription("A bow with limbs that curve away from the user, offering more power and speed to the fired arrow.");
@@ -313,14 +313,14 @@ namespace MonoRogue {
         }
         public Armor NewRingMail() {
             Armor a = new Armor("Ring Mail", Glyphs["RingMail"], Color.Gainsboro);
-            a.SetArmorStats(6, 2);
+            a.SetArmorStats(6, 3);
             a.SetType(Item.Type.MediumArmor);
             a.SetDescription("A leather suit reinforced by hundreds of metal rings. It is protective, but heavy enough to slow your movement.");
             return a;
         }
         public Armor NewHalfPlate() {
             Armor a = new Armor("Half Plate", Glyphs["HalfPlate"], Color.LightSteelBlue);
-            a.SetArmorStats(8, 3);
+            a.SetArmorStats(8, 5, 1);
             a.SetType(Item.Type.HeavyArmor);
             a.SetDescription("Most of a set of full plate armor. The lack of protection on your legs and lower body allows you to move a little faster than you could otherwise.");
             return a;
@@ -335,14 +335,14 @@ namespace MonoRogue {
         }
         public Armor NewScaleMail() {
             Armor a = new Armor("Scale Mail", Glyphs["ScaleMail"], Color.RosyBrown);
-            a.SetArmorStats(8, 2);
+            a.SetArmorStats(8, 3);
             a.SetType(Item.Type.MediumArmor);
             a.SetDescription("A set of armor consisting of many small, individual plates of armor that form scales across the entirety of it.");
             return a;
         }
         public Armor NewPlateArmor() {
             Armor a = new Armor("Plate Armor", Glyphs["PlateArmor"], Color.PowderBlue);
-            a.SetArmorStats(10, 4);
+            a.SetArmorStats(10, 5, 2);
             a.SetType(Item.Type.HeavyArmor);
             a.SetDescription("A set of heavy metal plates that can cover your entire body, offering great protection at the cost of great weight.");
             return a;
@@ -350,21 +350,21 @@ namespace MonoRogue {
 
         public Armor NewLeatherArmor() {
             Armor a = new Armor("Leather Armor", Glyphs["LeatherArmor"], Color.SaddleBrown);
-            a.SetArmorStats(8, 1);
+            a.SetArmorStats(8);
             a.SetType(Item.Type.LightArmor);
             a.SetDescription("A masterfully constructed set of tanned animal hides. It provides decent protection and barely hinders your movement.");
             return a;
         }
         public Armor NewChainMail() {
             Armor a = new Armor("Chain Mail", Glyphs["ChainMail"], Color.Silver);
-            a.SetArmorStats(10, 2);
+            a.SetArmorStats(10, 3);
             a.SetType(Item.Type.MediumArmor);
             a.SetDescription("A mesh of thick metal chains. It is heavy, but its structure allows relative ease of movement.");
             return a;
         }
         public Armor NewDragonscale() {
             Armor a = new Armor("Dragonscale", Glyphs["Dragonscale"], Color.Gold);
-            a.SetArmorStats(12, 4);
+            a.SetArmorStats(12, 5, 3);
             a.SetType(Item.Type.HeavyArmor);
             a.SetDescription("A full set of armor made from thick, heavy, but nearly impenetrable dragon scales. Not sure how it ended up here.");
             return a;
@@ -373,7 +373,7 @@ namespace MonoRogue {
         // Enemy specific items
         public Weapon NewBident() {
             Weapon w = new Weapon("Bident", Glyphs["Bident"], Color.Brown);
-            w.SetWeaponStats((2, 5), 12);
+            w.SetWeaponStats((2, 5));
             w.SetType(Item.Type.Spear);
             w.SetDescription("A  two pronged spear. It is warm to the touch.");
             w.SetAttackText("jab");
@@ -382,7 +382,7 @@ namespace MonoRogue {
         }
         public Weapon NewSawtooth() {
             Weapon w = new Weapon("Sawtooth", Glyphs["Sawtooth"], Color.MediumBlue);
-            w.SetWeaponStats((4, 7), 12);
+            w.SetWeaponStats((4, 7));
             w.SetType(Item.Type.Sword);
             w.SetDescription("A long and nasty blade. Serrated on one side to rip and tear through flesh.");
             w.SetAttackText("slash");
@@ -390,7 +390,7 @@ namespace MonoRogue {
         }
         public Weapon NewCultistStaff() {
             Weapon w = new Weapon("Cultist Staff", Glyphs["CultistStaff"], Color.DarkOrchid);
-            w.SetWeaponStats((4, 7), 12);
+            w.SetWeaponStats((4, 7));
             w.SetType(Item.Type.Spear);
             w.SetDescription("A staff once held by a cultist. You aren't sure how to use it for its full potential, but hitting people with it seems like a good start.");
             w.SetAttackText("smack");

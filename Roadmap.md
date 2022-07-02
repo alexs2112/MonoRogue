@@ -1,4 +1,19 @@
 ### **Roadmap:**
+ * Balance Update:
+    * Want to focus on player builds as combinations of an armor and a weapon.
+      * Light Armor: Does not have any weight, allows you to kite better with bows or hit more with daggers
+      * Medium Armor: Has some weight, provides better defense. Planned on working with swords (better parry chance with fine defense) and spears (low weight for kiting)
+      * Heavy Armor: Heavy, good defense, mitigates damage regardless of your defense. Planned for Maces and Axes as weapons that let you slug out combat with enemies.
+    * Remove positive attack delay from weapons
+    * Change up some weapon abilities:
+      * Swords now have a chance to parry, blocking (30 - 5*weight)% of incoming attacks
+      * Critical chance is decreased based on weight. Base of (15 - 3*weight)%
+      * Display Parry chance, Crit chance, Block in creature stat screen
+    * Nerf late game enemy damage by a bit.
+      * Change enemy equipment so that they don't constantly drop the same thing. Less and more varied equipment that doesn't provide huge buffs
+      * Reduce the rate at which food drops
+    * Update the user manual
+
  * Other subscreens:
     * The remaining help screens, multiple menus to swap through to see info about the game
       * Make sure to adjust chars per line for screen size
@@ -24,6 +39,12 @@
    * Broken walls are a bit messed up, check all 4 sides instead of 2 in Tile
    * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
+   * Fix the cultist AI, so that he keeps track of where you are and tells its summons where you are
+   * Turns out we don't need to overload every constructor, we can set default arguments
+   * Have the fire screen automatically select the last guy you targeted
+   * Music stops for a long time after the first song ends
+   * Have every enemy that can see an enemy that you hit know where you are
+   * Have thugs not run away if they can see you have a bow
 
  * Release prep:
    * Fix all @todo tags

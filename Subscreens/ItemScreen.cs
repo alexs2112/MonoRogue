@@ -35,6 +35,10 @@ namespace MonoRogue {
             } else if (Item.IsArmor) {
                 Armor armor = (Armor)Item;
                 spriteBatch.DrawString(Font14, $"Defense: {armor.Defense}/{armor.MaxDefense}", new Vector2(x, y), Color.White);
+                if (armor.Block > 0) {
+                    y += 32;
+                    spriteBatch.DrawString(Font14, $"Block: {armor.Block}", new Vector2(x, y), Color.White);
+                }
                 y += 32;
                 spriteBatch.DrawString(Font14, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
             } else if (Item.IsWeapon) {

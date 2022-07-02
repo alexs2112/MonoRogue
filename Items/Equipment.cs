@@ -3,21 +3,24 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRogue {
     public class Armor : Item {
-        public int Defense { get; set; }
+        public int Defense;
         public int MaxDefense { get; private set; }
         private int Timer;
         public int Weight { get; private set; }
+        public int Block { get; private set; }
 
         public Armor(string name, Texture2D glyph, Color color) : base(name, glyph, color) {
             IsArmor = true;
             IsWeapon = false;
         }
 
-        public void SetArmorStats(int defense) { SetArmorStats(defense, 0); }
-        public void SetArmorStats(int defense, int weight) {
+        public void SetArmorStats(int defense) { SetArmorStats(defense, 0, 0); }
+        public void SetArmorStats(int defense, int weight) { SetArmorStats(defense, weight, 0); }
+        public void SetArmorStats(int defense, int weight, int block) {
             MaxDefense = defense;
             Defense = defense;
             Weight = weight;
+            Block = block;
         }
 
         // Updates the armor for it to regenerate
@@ -41,6 +44,7 @@ namespace MonoRogue {
         public (int Min, int Max) Damage { get; private set; }
         public int Delay { get; private set; }
         public int Range { get; private set; }
+        public int MaceDamage { get; private set; } // Bonus damage against defense
         public string AttackText { get; private set; }
         public Projectile.Type BaseProjectile { get; private set; }
 
@@ -50,8 +54,7 @@ namespace MonoRogue {
             Range = 1;
         }
 
-        public void SetWeaponStats((int, int) damage) { SetWeaponStats(damage, 10); }
-        public void SetWeaponStats((int, int) damage, int attackDelay) {
+        public void SetWeaponStats((int, int) damage, int attackDelay = 10, int maceDamage = 0) {
             Damage = damage;
             Delay = attackDelay;
         }

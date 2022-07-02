@@ -31,7 +31,7 @@ namespace MonoRogue {
 
         public static bool AllowAnimations = true;         // Enable/Disable attack and projectile animations
 
-        public static float MusicVolume = 0.5f;             // Volume of background soundtrack
-        public static float EffectVolume = 0.5f;            // Volume of sound effects
+        public static float MusicVolume = 0.2f;             // Volume of background soundtrack
+        public static float EffectVolume = 0.2f;            // Volume of sound effects
     }
 }

@@ -38,6 +38,17 @@ namespace MonoRogue {
             spriteBatch.DrawString(Font14, $"Range: {Creature.GetRange()}", new Vector2(x, y), Color.White);
             y += 48;
 
+            int parry = Creature.GetParryChance();
+            if (parry > 0) {
+                spriteBatch.DrawString(Font14, $"Parry Chance: {parry}%", new Vector2(x, y), Color.White);
+                y += 48;
+            }
+            int crit = Creature.GetCritChance();
+            if (crit > 0) {
+                spriteBatch.DrawString(Font14, $"Critical Chance: {crit}%", new Vector2(x, y), Color.White);
+                y += 48;
+            }
+
             x = Constants.ScreenWidth / 2;
             y = 32;
             y = DrawEquipment(spriteBatch, x, y);
@@ -56,6 +67,10 @@ namespace MonoRogue {
             } else {
                 MainInterface.DrawHearts(spriteBatch, Creature.GetDefense().Max, Creature.GetDefense().Current, x + 160, y - 8, Color.LightSkyBlue);
             }
+
+            y += 32;
+            spriteBatch.DrawString(Font14, $"Block: {Creature.GetBlock()}", new Vector2(x, y), Creature.GetBlock() > 0 ? Color.White : Color.Gray);
+
             return y + 48;
         }
 
@@ -113,6 +128,10 @@ namespace MonoRogue {
             y += 32;
             spriteBatch.DrawString(Font14, $"Defense:", new Vector2(x, y), Color.White);
             MainInterface.DrawHearts(spriteBatch, a.MaxDefense, a.Defense, x + 160, y - 8, Color.LightSkyBlue);
+            if (a.Block > 0) {
+                y += 32;
+                spriteBatch.DrawString(Font14, $"Block: {a.Block}", new Vector2(x, y), Color.White);
+            }
             y += 32;
             spriteBatch.DrawString(Font14, $"Weight: {a.Weight}", new Vector2(x, y), Color.White);
             return y + 48;
