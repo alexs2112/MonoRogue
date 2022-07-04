@@ -90,7 +90,7 @@ Mystical creature. It is ranged, but deals little damage.
 
 <details>
 <summary>Thug</summary>
-An armored enemy with a polearm. When it runs out of defense it will attempt to run away from the player.
+An armored enemy with a polearm. When it runs out of defense it will attempt to run away from the player if the player does not have a ranged weapon.
 </details>
 
 <details>

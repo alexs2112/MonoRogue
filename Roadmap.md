@@ -2,6 +2,7 @@
  * Balance Update:
    * Change enemy equipment so that they don't constantly drop the same thing. More varied equipment that doesn't provide huge buffs and spawns more often
    * Reduce the rate at which food and items drop (since items will be on enemies)
+   * Have more enemies speak
 
  * Other subscreens:
     * The remaining help screens, multiple menus to swap through to see info about the game
@@ -28,11 +29,9 @@
    * Broken walls are a bit messed up, check all 4 sides instead of 2 in Tile
    * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
-   * Fix the cultist AI, so that he keeps track of where you are and tells its summons where you are
    * Turns out we don't need to overload every constructor, we can set default arguments
    * Have the fire screen automatically select the last guy you targeted
    * Have every enemy that can see an enemy that you hit know where you are
-   * Have thugs not run away if they can see you have a bow
 
  * Release prep:
    * Fix all @todo tags

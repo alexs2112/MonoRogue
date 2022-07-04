@@ -169,7 +169,7 @@ namespace MonoRogue {
         public ThugAI(Creature creature, Creature player) : base(creature, player) { }
 
         public override void TakeTurn(World world) {
-            if (Host.GetDefense().Current <= 0 && Host.CanSee(Player.X, Player.Y)) {
+            if (Host.GetDefense().Current <= 0 && Host.CanSee(Player.X, Player.Y) && Player.GetWeaponType() != Weapon.Type.Bow) {
                 int dx = Host.X - Player.X;
                 int dy = Host.Y - Player.Y;
                 int mx = dx >= dy ? (dx > 0 ? 1 : -1) : 0;
@@ -262,6 +262,8 @@ namespace MonoRogue {
 
         public override void TakeTurn(World world) {
             if (SummonsLeft > 0 && Host.CanSee(Player.X, Player.Y)) {
+                TargetTile = new Point(Player.X, Player.Y);
+
                 // A lot of work with a list so that we can take a random valid tile without breaking the game if there isnt one
                 List<Point> tiles = new List<Point>();
                 for (int x = -Host.Vision; x <= Host.Vision; x++) {
@@ -283,6 +285,7 @@ namespace MonoRogue {
                     else { color = Color.Gold; }
 
                     Creature summon = Factory.NewImp(world, tile.X, tile.Y, color);
+                    summon.AI.GiveTargetTile(TargetTile);
                     summon.TurnTimer = 10;
                     Host.TurnTimer = 20;
                     SummonsLeft--;
