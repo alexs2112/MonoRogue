@@ -230,7 +230,7 @@ namespace MonoRogue {
                 DrawHearts(spriteBatch, armor.MaxDefense, armor.Defense, x + 144, y, Color.LightSkyBlue);
                 if (armor.Block > 0) {
                     y += 32;
-                    spriteBatch.DrawString(Font14, $"Block: {armor.Block}", new Vector2(x, y), Color.White);
+                    spriteBatch.DrawString(Font12, $"Block: {armor.Block}", new Vector2(x, y), Color.White);
                 }
                 y += 32;
                 spriteBatch.DrawString(Font12, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);

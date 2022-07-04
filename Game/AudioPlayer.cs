@@ -48,7 +48,6 @@ namespace MonoRogue {
                 FadeOut -= ticks;
                 MediaPlayer.Volume -= ((float)ticks / MusicFadeTime) * Constants.MusicVolume;
                 if (FadeOut <= 0) {
-                    MediaPlayer.Stop();
                     SubSong = NextSong;
                     NextSong = null;
 
@@ -75,7 +74,6 @@ namespace MonoRogue {
         }
 
         public void SetSong(SongHandler song) {
-            MediaPlayer.Stop();
             SubSong = song;
             NextSong = null;
             FadeOut = 0;
@@ -104,6 +102,7 @@ namespace MonoRogue {
         public void Start() {
             MediaPlayer.Play(Song, CurrentTime);
             Finished = false;
+            System.Console.WriteLine(TotalTime);
         }
         public void Restart() {
             CurrentTime = System.TimeSpan.Zero;
@@ -111,15 +110,12 @@ namespace MonoRogue {
             Finished = false;
         }
         public void Stop() {
-            MediaPlayer.Stop();
             CurrentTime = System.TimeSpan.Zero;
-        }
-        public void Pause() {
-            MediaPlayer.Stop();
         }
 
         public void Update(System.TimeSpan elapsed) {
             CurrentTime += elapsed;
+            System.Console.WriteLine(TotalTime - CurrentTime);
             if (CurrentTime >= TotalTime) {
                 Finished = true;
                 Stop();
