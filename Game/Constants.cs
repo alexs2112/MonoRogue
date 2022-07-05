@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.IO;
+
 namespace MonoRogue {
     public struct Constants {
         public static bool Debug;                   // If debug mode is enabled
@@ -33,5 +36,55 @@ namespace MonoRogue {
 
         public static float MusicVolume = 0.2f;             // Volume of background soundtrack
         public static float EffectVolume = 0.2f;            // Volume of sound effects
+
+        public static string SettingsPath = "BlueMan.settings"; // Relative path to the settings file
+    }
+
+    public class Settings {
+        public static void SaveSettings() {
+            StreamWriter writer = new StreamWriter(Constants.SettingsPath);
+
+            writer.WriteLine($"ScreenWidth:{Constants.ScreenWidth}");
+            writer.WriteLine($"ScreenHeight:{Constants.ScreenHeight}");
+            writer.WriteLine($"Fullscreen:{Constants.Fullscreen}");
+
+            writer.WriteLine($"WorldViewWidth:{Constants.WorldViewWidth}");
+            writer.WriteLine($"WorldViewHeight:{Constants.WorldViewHeight}");
+
+            writer.WriteLine($"MusicVolume:{Constants.MusicVolume}");
+            writer.WriteLine($"EffectVolume:{Constants.EffectVolume}");
+
+            writer.Close();
+        }
+
+        public static void LoadSettings() {
+            if (!File.Exists(Constants.SettingsPath)) { return; }
+
+            Dictionary<string, string> settings = new Dictionary<string, string>();
+            StreamReader reader = new StreamReader(Constants.SettingsPath);
+
+            try {
+                do {
+                    string line = reader.ReadLine();
+                    string[] s = line.Split(':', 2);
+                    settings[s[0]] = s[1];
+                } while (reader.Peek() != -1);
+            } catch {
+                System.Console.WriteLine("Failed to load settings file.");
+            } finally {
+                reader.Close();
+            }
+
+            if (settings.ContainsKey("ScreenWidth")) { Constants.ScreenWidth = int.Parse(settings["ScreenWidth"]); }
+            if (settings.ContainsKey("ScreenHeight")) { Constants.ScreenHeight = int.Parse(settings["ScreenHeight"]); }
+
+            if (settings.ContainsKey("Fullscreen")) { Constants.Fullscreen = bool.Parse(settings["Fullscreen"]); }
+
+            if (settings.ContainsKey("WorldViewWidth")) { Constants.WorldViewWidth = int.Parse(settings["WorldViewWidth"]); }
+            if (settings.ContainsKey("WorldViewHeight")) { Constants.WorldViewHeight = int.Parse(settings["WorldViewHeight"]); }
+
+            if (settings.ContainsKey("MusicVolume")) { Constants.MusicVolume = float.Parse(settings["MusicVolume"]); }
+            if (settings.ContainsKey("EffectVolume")) { Constants.EffectVolume = float.Parse(settings["EffectVolume"]); }
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace MonoRogue {
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
+            Settings.LoadSettings();
             ParseParameters(args);
         }
 
@@ -288,7 +289,10 @@ namespace MonoRogue {
             Graphics.ApplyChanges();
 
             MainInterface.StartX = 32 * Constants.WorldViewWidth;
-            if (WorldView != null) { WorldView.UpdateScreenSize(); }
+            if (WorldView != null) { 
+                WorldView.UpdateScreenSize();
+                WorldView.Update(World, Player);
+            }
         }
 
         private static void ParseParameters(string[] args) {

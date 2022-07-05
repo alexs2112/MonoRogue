@@ -268,7 +268,11 @@ namespace MonoRogue {
 
         public static void DrawTileHighlight(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Color color) {
             Point p = mouse.GetViewTile(world);
-            if (p.X == -1 || !world.HasSeen[p.X + world.OffsetX, p.Y + world.OffsetY]) { return; }
+            if (p.X == -1) { return; }
+
+            p.X += world.OffsetX; p.Y += world.OffsetY;
+            if (p.X >= Constants.WorldWidth || p.Y >= Constants.WorldHeight) { return; }
+            if (!world.HasSeen[p.X + world.OffsetX, p.Y + world.OffsetY]) { return; }
 
             spriteBatch.Draw(TileHighlight, new Vector2(p.X * 32, p.Y * 32), color);
         }

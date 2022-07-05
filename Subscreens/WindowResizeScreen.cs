@@ -121,6 +121,7 @@ namespace MonoRogue {
                     Constants.WorldViewHeight = Height;
                     Constants.Fullscreen = Fullscreen;
                     Main.UpdateScreenSize();
+                    Settings.SaveSettings();
                     return LastScreen;
                 }
             }

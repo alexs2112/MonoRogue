@@ -102,7 +102,6 @@ namespace MonoRogue {
         public void Start() {
             MediaPlayer.Play(Song, CurrentTime);
             Finished = false;
-            System.Console.WriteLine(TotalTime);
         }
         public void Restart() {
             CurrentTime = System.TimeSpan.Zero;
@@ -115,7 +114,6 @@ namespace MonoRogue {
 
         public void Update(System.TimeSpan elapsed) {
             CurrentTime += elapsed;
-            System.Console.WriteLine(TotalTime - CurrentTime);
             if (CurrentTime >= TotalTime) {
                 Finished = true;
                 Stop();
