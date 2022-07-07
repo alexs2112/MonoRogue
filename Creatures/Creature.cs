@@ -23,11 +23,13 @@ namespace MonoRogue {
         public int MaxDefense { get; private set; }
         public int DefenseTimer { get; private set; }
         public int BaseBlock { get; private set; }
+        public int BaseWeight { get; private set; }
 
         // Attack Stats
         private (int Min, int Max) Damage { get; set; }
         private int BaseRange { get; set; }
         private string BaseAttackText { get; set; }
+        public string AbilityText { get; private set; }
 
         // How many game ticks it takes to recover after taking an action, default 10
         public int TurnTimer { get; set; }
@@ -53,15 +55,16 @@ namespace MonoRogue {
             Color = color;
         }
 
-        public void SetStats(int hp, int defense, (int, int) damage, int movementDelay = 10, int attackDelay = 10, int block = 0) {
+        public void SetStats(int hp, int defense, (int, int) damage, int baseWeight = 0, int block = 0) {
             MaxHP = hp;
             HP = hp; 
             Defense = defense;
             MaxDefense = defense;
             Damage = damage;
+            BaseWeight = baseWeight;
             Vision = 7;
-            MovementDelay = movementDelay;
-            AttackDelay = attackDelay;
+            MovementDelay = 10;
+            AttackDelay = 10;
             BaseAttackText = "attack";
             BaseRange = 1;
             BloodColor = Color.DarkRed;
@@ -71,9 +74,11 @@ namespace MonoRogue {
         // Setters for private attributes
         public void SetColor(Color color) { Color = color; }
         public void SetName(string name) { Name = name; }
+        public void SetGlyph(Texture2D glyph) { Glyph = glyph; }
         public void SetDescription(string s) { Description = s; }
         public void SetBaseRange(int r) { BaseRange = r; }
         public void SetAttackText(string t) { BaseAttackText = t; }
+        public void SetAbilityText(string t) { AbilityText = t; }
         public void ModifyDamage(int amount) { ModifyDamage(amount, amount); }
         public void ModifyDamage(int min, int max) { Damage = (Damage.Min + min, Damage.Max + max); }
         public (int Min, int Max) GetDamage() {
@@ -88,10 +93,10 @@ namespace MonoRogue {
             return Armor.Weight;
         }
         public int GetCritChance() {
-            return GetWeaponType() == Weapon.Type.Dagger ? 15 - 3 * GetArmorWeight() : 0;
+            return GetWeaponType() == Weapon.Type.Dagger ? System.Math.Max(1, 15 - 3 * (GetArmorWeight() + BaseWeight)) : 0;
         }
         public int GetParryChance() {
-            return GetWeaponType() == Weapon.Type.Sword ? 30 - 5 * GetArmorWeight() : 0;
+            return GetWeaponType() == Weapon.Type.Sword ? 30 - 5 * (GetArmorWeight() + BaseWeight) : 0;
         }
         public int GetBlock() {
             return BaseBlock + (Armor != null ? Armor.Block : 0);
@@ -104,14 +109,15 @@ namespace MonoRogue {
 
         public void ModifyMovementDelay(int x) { MovementDelay += x; }
         public int GetMovementDelay() {
-            if (Armor != null) { return MovementDelay + Armor.Weight; }
-            else { return MovementDelay; }
+            if (Armor != null) { return MovementDelay + Armor.Weight + BaseWeight; }
+            else { return MovementDelay + BaseWeight; }
         }
         public void ModifyAttackDelay(int x) { AttackDelay += x; }
         public int GetAttackDelay() {
             int v = AttackDelay;
             if (Weapon != null) { v = Weapon.Delay; }
             if (Armor != null) { v += Armor.Weight; }
+            v += BaseWeight;
             return v;
         }
         public int GetRange() { return Weapon == null ? BaseRange : Weapon.Range; }

@@ -76,11 +76,11 @@ namespace MonoRogue {
 
                     Creature c;
                     if (r.Depth <= LowDepth) {
-                        c = Creature.NewWeakCreature(Random, World, tile.X, tile.Y);
+                        c = Creature.NewWeakCreature(World, tile.X, tile.Y);
                     } else if (r.Depth <= MedDepth) {
-                        c = Creature.NewMediumCreature(Random, World, tile.X, tile.Y);
+                        c = Creature.NewMediumCreature(World, tile.X, tile.Y);
                     } else {
-                        c = Creature.NewStrongCreature(Random, World, tile.X, tile.Y);
+                        c = Creature.NewStrongCreature(World, tile.X, tile.Y);
                     }
                     difficulty[r.Depth] += c.Difficulty;
                 }
@@ -97,15 +97,15 @@ namespace MonoRogue {
             }
 
             // Spawn items by depth as a function of difficulty
-            int mod = 0;
+            int mod = 2;
             for (int i = 0; i <= HighDepth; i++) {
                 int current = difficulty[i] + mod;
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= LowDepth) { divisor = 4 - (Constants.Difficulty - 3); }
-                else if (i <= MedDepth) { divisor = 9 - 2 * (Constants.Difficulty - 3); }
-                else { divisor = 14 - 3 * (Constants.Difficulty - 3); }
+                if (i <= LowDepth) { divisor = 5 - (Constants.Difficulty - 3); }
+                else if (i <= MedDepth) { divisor = 10 - 2 * (Constants.Difficulty - 3); }
+                else { divisor = 15 - 3 * (Constants.Difficulty - 3); }
                 
                 int num = current / divisor;
                 mod = current % divisor;
@@ -128,15 +128,15 @@ namespace MonoRogue {
             }
 
             // Do the same with food
-            mod = 0;
+            mod = 4;
             for (int i = 0; i <= HighDepth; i++) {
                 int current = difficulty[i] + mod;
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= LowDepth) { divisor = 5 - (Constants.Difficulty - 3); }
-                else if (i <= MedDepth) { divisor = 11 - 2 * (Constants.Difficulty - 3); }
-                else { divisor = 17 - 3 * (Constants.Difficulty - 3); }
+                if (i <= LowDepth) { divisor = 7 - (Constants.Difficulty - 3); }
+                else if (i <= MedDepth) { divisor = 15 - 2 * (Constants.Difficulty - 3); }
+                else { divisor = 22 - 3 * (Constants.Difficulty - 3); }
                 
                 int num = current / divisor;
                 mod = current % divisor;

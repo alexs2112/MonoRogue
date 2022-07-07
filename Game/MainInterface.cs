@@ -231,6 +231,7 @@ namespace MonoRogue {
                 if (armor.Block > 0) {
                     y += 32;
                     spriteBatch.DrawString(Font12, $"Block: {armor.Block}", new Vector2(x, y), Color.White);
+                    y -= 8;
                 }
                 y += 32;
                 spriteBatch.DrawString(Font12, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
@@ -272,9 +273,9 @@ namespace MonoRogue {
 
             p.X += world.OffsetX; p.Y += world.OffsetY;
             if (p.X >= Constants.WorldWidth || p.Y >= Constants.WorldHeight) { return; }
-            if (!world.HasSeen[p.X + world.OffsetX, p.Y + world.OffsetY]) { return; }
+            if (!world.HasSeen[p.X, p.Y]) { return; }
 
-            spriteBatch.Draw(TileHighlight, new Vector2(p.X * 32, p.Y * 32), color);
+            spriteBatch.Draw(TileHighlight, new Vector2((p.X - world.OffsetX) * 32, (p.Y - world.OffsetY) * 32), color);
         }
 
         public static void DrawLineToCreature(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Creature start, Creature end, Color color) {

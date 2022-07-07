@@ -220,7 +220,7 @@ namespace MonoRogue {
         public BruteAI(Creature creature, Creature player) : base(creature, player) { }
 
         public override void OnHit(World world, Creature attacker) {
-            if (Host.GetDefense().Current > 0 && attacker.GetWeaponType() != Item.Type.Bow) {
+            if (Host.GetDefense().Current > 0 && Host.GetLineToPoint(attacker.X, attacker.Y).Count <= 1) {
                 int damage = new System.Random().Next(1, 3);
                 attacker.AddMessage($"You take {damage} damage. (Spines)");
             }
@@ -242,7 +242,7 @@ namespace MonoRogue {
                     Player.MoveTo(path[0]);
                     Player.AddMessage($"The {Host.Name} pulls you in.");
                     Cooldown = 3;
-                    Host.TurnTimer = 8;
+                    Host.TurnTimer = 10;
             } else {
                 base.TakeTurn(world);
             }

@@ -8,11 +8,15 @@ namespace MonoRogue {
     public class CreatureScreen : BorderedScreen {
         private Creature Creature;
         private List<string> Description;
+        private List<string> AbilityText;
 
         public CreatureScreen(ContentManager content, Creature creature) : base(content) {
             Creature = creature;
             if (Creature.Description != null) {
                 Description = MainInterface.SplitMessage(Creature.Description, MaxScreenChars);
+            }
+            if (Creature.AbilityText != null) {
+                AbilityText = MainInterface.SplitMessage(Creature.AbilityText, MaxScreenChars / 2 - 1);
             }
         }
 
@@ -52,6 +56,7 @@ namespace MonoRogue {
             x = Constants.ScreenWidth / 2;
             y = 32;
             y = DrawEquipment(spriteBatch, x, y);
+            y = DrawAbilities(spriteBatch, x, y);
 
             DrawDescription(spriteBatch);
         }
@@ -102,29 +107,29 @@ namespace MonoRogue {
                 spriteBatch.DrawString(Font14, "Unarmed", new Vector2(x + 16, y), Color.Gray);
                 y += 32;
             } else {
-                y = DrawWeapon(spriteBatch, x + 16, y, Creature.Weapon);
+                y = DrawWeapon(spriteBatch, x + 48, y, Creature.Weapon);
             }
             if (Creature.Armor == null) {
                 spriteBatch.DrawString(Font14, "No Armor", new Vector2(x + 16, y), Color.Gray);
                 y += 48;
             } else {
-                DrawArmor(spriteBatch, x + 16, y, Creature.Armor);
+                y = DrawArmor(spriteBatch, x + 48, y, Creature.Armor);
             }
             return y;
         }
 
         private int DrawWeapon(SpriteBatch spriteBatch, int x, int y, Weapon w) {
-            spriteBatch.DrawString(Font16, w.Name, new Vector2(x - 8, y), Color.White);
+            spriteBatch.DrawString(Font16, w.Name, new Vector2(x - 32, y), Color.White);
             y += 32;
             spriteBatch.DrawString(Font14, $"Damage: {w.Damage.Min}-{w.Damage.Max}", new Vector2(x, y), Color.White);
             y += 32;
             spriteBatch.DrawString(Font14, $"Range: {w.Range}", new Vector2(x, y), Color.White);
             y += 32;
             spriteBatch.DrawString(Font14, $"Attack Delay: {w.Delay}", new Vector2(x, y), Color.White);
-            return y + 48;
+            return y + 32;
         }
         private int DrawArmor(SpriteBatch spriteBatch, int x, int y, Armor a) {
-            spriteBatch.DrawString(Font16, a.Name, new Vector2(x - 8, y), Color.White);
+            spriteBatch.DrawString(Font16, a.Name, new Vector2(x - 32, y), Color.White);
             y += 32;
             spriteBatch.DrawString(Font14, $"Defense:", new Vector2(x, y), Color.White);
             MainInterface.DrawHearts(spriteBatch, a.MaxDefense, a.Defense, x + 160, y - 8, Color.LightSkyBlue);
@@ -134,6 +139,20 @@ namespace MonoRogue {
             }
             y += 32;
             spriteBatch.DrawString(Font14, $"Weight: {a.Weight}", new Vector2(x, y), Color.White);
+            return y + 32;
+        }
+
+        private int DrawAbilities(SpriteBatch spriteBatch, int x, int y) {
+            if (AbilityText == null) { return y; }
+            
+            spriteBatch.DrawString(Font16, "Abilities", new Vector2(x - 16, y), Color.White);
+            y += 32;
+
+            foreach (string s in AbilityText) {
+                spriteBatch.DrawString(Font14, s, new Vector2(x+16, y), Color.White);
+                y += 32;
+            }
+
             return y + 48;
         }
 

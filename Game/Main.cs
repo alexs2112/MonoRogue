@@ -41,8 +41,13 @@ namespace MonoRogue {
             Window.Title = "Escape of the Blue Man";
             UpdateScreenSize();
 
+            Seed = Constants.Seed;
+            if (Seed == -1) { Seed = new System.Random().Next(); }
+            Random = new System.Random(Seed);
+            if (Constants.Debug) { System.Console.WriteLine($"Using seed {Seed}"); }
+
             EquipmentFactory = new EquipmentFactory(Content);
-            CreatureFactory = new CreatureFactory(Content, EquipmentFactory);
+            CreatureFactory = new CreatureFactory(Content, EquipmentFactory, Random);
             Tile.LoadTiles(Content);
             Feature.LoadFeatures(Content);
             Food.LoadFood(Content);
@@ -66,11 +71,6 @@ namespace MonoRogue {
         }
 
         public void CreateWorld() {
-            Seed = Constants.Seed;
-            if (Seed == -1) { Seed = new System.Random().Next(); }
-            Random = new System.Random(Seed);
-            if (Constants.Debug) { System.Console.WriteLine($"Using seed {Seed}"); }
-
             WorldBuilder worldBuilder = new WorldBuilder(Random, Constants.WorldWidth, Constants.WorldHeight);
             World = worldBuilder.GenerateDungeon(Constants.DungeonIterations, CreatureFactory, EquipmentFactory);
             Player = World.Player;
