@@ -77,15 +77,19 @@ namespace MonoRogue {
             return CaveFloors[i];
         }
 
-        // The end of a wall adjacent to cave, make it more interesting
-        // Most of the parsing should be done by now, which is why this method is very simple
         public static Tile GetCrumbledWall(World world, bool[,] isDungeon, Point p) {
             if (world.IsWall(p.X, p.Y + 1)) {
                 if (!isDungeon[p.X + 1, p.Y]) { return WallCrumbledTopRight; }
                 else { return WallCrumbledTopLeft; }
-            } else {
+            } else if (world.IsWall(p.X, p.Y - 1)) {
                 if (!isDungeon[p.X + 1, p.Y]) { return WallCrumbledBotRight; }
                 else { return WallCrumbledBotLeft; }
+            } else if (world.IsWall(p.X + 1, p.Y)) {
+                if (!isDungeon[p.X, p.Y + 1]) { return WallCrumbledBotLeft; }
+                else { return WallCrumbledTopLeft; }
+            } else {
+                if (!isDungeon[p.X, p.Y - 1]) { return WallCrumbledTopRight; }
+                else { return WallCrumbledBotRight; }
             }
         }
     }

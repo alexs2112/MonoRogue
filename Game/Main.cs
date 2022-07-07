@@ -44,7 +44,7 @@ namespace MonoRogue {
             Seed = Constants.Seed;
             if (Seed == -1) { Seed = new System.Random().Next(); }
             Random = new System.Random(Seed);
-            if (Constants.Debug) { System.Console.WriteLine($"Using seed {Seed}"); }
+            System.Console.WriteLine($"Using seed {Seed}");
 
             EquipmentFactory = new EquipmentFactory(Content);
             CreatureFactory = new CreatureFactory(Content, EquipmentFactory, Random);
@@ -173,7 +173,7 @@ namespace MonoRogue {
                                 Player.PickUp(false);
                             }
                         } else if (target != null) {
-                            Player.Attack(target);
+                            Player.MoveTo(target.X, target.Y);
                             Player.TurnTimer = Player.GetAttackDelay();
                         } else if (WorldView.HasSeen[tile.X, tile.Y] && Player.CanEnter(tile)) {
                             // If the player has seen the tile and is not clicking a creature, give them a path to automatically follow

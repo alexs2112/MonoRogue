@@ -210,6 +210,8 @@ namespace MonoRogue {
                     int dx = X - oldX;
                     int dy = Y - oldY;
                     for (int r = 1; r <= GetRange(); r++) {
+                        if (World.IsWall(X + dx*r, Y + dy*r)) { break; }
+
                         Creature poke = World.GetCreatureAt(X + dx * r, Y + dy * r);
                         if (poke == null) { continue; }
                         else if (poke.IsPlayer != IsPlayer) { 

@@ -112,6 +112,10 @@ namespace MonoRogue {
                 MoveTowards(target);
             }
         }
+
+        public override void OnHit(World world, Creature attacker) {
+            TargetTile = new Point(attacker.X, attacker.Y);
+        }
     }
 
     public class PigAI : BasicAI {
@@ -135,6 +139,7 @@ namespace MonoRogue {
         }
 
         public override void OnHit(World world, Creature attacker) {
+            base.OnHit(world, attacker);
             if (!Hostile && attacker.IsPlayer) {
                 BecomeHostile();
             }
@@ -220,6 +225,7 @@ namespace MonoRogue {
         public BruteAI(Creature creature, Creature player) : base(creature, player) { }
 
         public override void OnHit(World world, Creature attacker) {
+            base.OnHit(world, attacker);
             if (Host.GetDefense().Current > 0 && Host.GetLineToPoint(attacker.X, attacker.Y).Count <= 1) {
                 int damage = new System.Random().Next(1, 3);
                 attacker.AddMessage($"You take {damage} damage. (Spines)");

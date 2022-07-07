@@ -22,6 +22,7 @@
 
  * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
    * Currently it is technically possible that the exit spawns in an impossible to reach location
+   * A hack is just making a wall tile that looks like a floor tile, to block movement and things spawning in (but the player should never be able to move here anyway)
 
  * Interface bugs
    * Text in the creature screen can overlap on small screen sizes, 3 lines of description and critical/parry chance will overlap.
@@ -33,16 +34,13 @@
 
  * Minor fixes
    * Have item notifications not stop auto movement
-   * Broken walls are a bit messed up, check all 4 sides instead of 2 in Tile
    * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
    * Turns out we don't need to overload every constructor, we can set default arguments
    * Have the fire screen automatically select the last guy you targeted
+     * Display this creature in the main interface as though you are mousing over it
    * Have every enemy that can see an enemy that you hit know where you are
-   * Hitting an enemy should tell them where you are
-   * Spear lunge attack can go through walls
    * Have more enemies speak
-   * Clicking enemies to attack them with an axe will not cleave into other adjacent enemies
 
  * Release prep:
    * Fix all @todo tags
