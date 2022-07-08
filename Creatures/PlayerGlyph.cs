@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
@@ -10,14 +9,6 @@ namespace MonoRogue {
 
         // Store all combinations of glyphs. Priority is given to weapon, then armor
         // Default to null if the given [Weapon][Armor] doesnt exist
-        /* Example
-        * Unarmed
-        *  - Unarmed with no armor
-        * Dagger
-        *  - Dagger with no armor
-        * Sword
-        *  - Sword with no armor
-        */
         private static Dictionary<Item.Type, Dictionary<Item.Type, Texture2D>> glyphs;
 
         public static void LoadGlyphs(ContentManager content) {

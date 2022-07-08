@@ -11,14 +11,14 @@
       * Changing player colour changes game name. Set gender as well. "Escape of the Yellow Person"
         * Write "Blue Man" or whatever instead of player in main interface/creature screen
       * Enable/Disable animations here
+      * Save these settings, redo saving settings to use json
     * Pretty up the window resize screen. Increase screen resolution options but limit it on detected screen size
     * Let the start screen go to settings and help screens
+    * Actual game over screen
+    * Game history screen with stats?
 
  * Music and sound effects
-    * Arcady sound effects for food and stuff?
-
- * Look into enabling saving and persistency
-    * I think we can just copy down the world seed, regenerate the entire world. Copy the list of remaining creatures and items and their locations and equipment and stuff and then place them where needed. Could be easy, don't waste too much time on this if it won't work
+    * Arcady sound effects for food, attacks, doors and stuff?
 
  * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
    * Currently it is technically possible that the exit spawns in an impossible to reach location
@@ -41,9 +41,12 @@
      * Display this creature in the main interface as though you are mousing over it
    * Have every enemy that can see an enemy that you hit know where you are
    * Have more enemies speak
+   * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
 
  * Release prep:
    * Fix all @todo tags
+   * Make sure closing the game saves it
+   * Dying or winning the game should delete your save
    * See if we can clean up app builds to include no unnecessary dlls without breaking
    * Test persistent settings and savegames across different devices
    * Look into mac and linux deploys

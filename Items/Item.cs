@@ -48,6 +48,63 @@ namespace MonoRogue {
             Glyph = glyph;
             Color = color;
         }
+
+        public static Item GetItemByName(string name, EquipmentFactory equipment) {
+            switch(name) {
+                // Misc
+                case "Heartstone": return Heartstone.GetHeartstone();
+                case "Golden Key": return GoldenKey.GetKey();
+
+                // Food
+                case "Apple": return Food.Apple;
+                case "Cheese": return Food.Cheese;
+                case "Meat": return Food.Meat;
+                case "Fish": return Food.Fish;
+                case "Pig Meat": return Food.PigMeat;
+
+                // Weapons
+                case "Dagger": return equipment.NewDagger();
+                case "Club": return equipment.NewClub();
+                case "Sword": return equipment.NewSword();
+                case "Hand Axe": return equipment.NewHandAxe();
+                case "Staff": return equipment.NewStaff();
+                case "Shortbow": return equipment.NewShortbow();
+
+                case "Broadknife": return equipment.NewBroadknife();
+                case "Warhammer": return equipment.NewWarhammer();
+                case "Falchion": return equipment.NewFalchion();
+                case "War Axe": return equipment.NewWarAxe();
+                case "Spear": return equipment.NewSpear();
+                case "Longbow": return equipment.NewLongbow();
+                
+                case "Double Dagger": return equipment.NewDoubleDagger();
+                case "Morningstar": return equipment.NewMorningstar();
+                case "Greatsword": return equipment.NewGreatsword();
+                case "Battle Axe": return equipment.NewBattleAxe();
+                case "Greatspear": return equipment.NewGreatspear();
+                case "Recurve Bow": return equipment.NewRecurveBow();
+
+                // Armor
+                case "Cloth Armor": return equipment.NewClothArmor();
+                case "Ring Mail": return equipment.NewRingMail();
+                case "Half Plate": return equipment.NewHalfPlate();
+                case "Hide Armor": return equipment.NewHideArmor();
+                case "Scale Mail": return equipment.NewScaleMail();
+                case "Plate Armor": return equipment.NewPlateArmor();
+                case "Leather Armor": return equipment.NewLeatherArmor();
+                case "Chain Mail": return equipment.NewChainMail();
+                case "Dragonscale": return equipment.NewDragonscale();
+
+                // Enemy Equipment
+                case "Bident": return equipment.NewBident();
+                case "Sawtooth": return equipment.NewSawtooth();
+                case "Cultist Staff": return equipment.NewCultistStaff();
+                case "Ritual Dagger": return equipment.NewRitualDagger();
+                case "Warden's Plate": return equipment.NewWardensPlate();
+
+                default: throw new System.Exception($"Could not find {name}.");
+            }
+        }
     }
 
     // Specific type of item that increases your max health by 4 when consumed

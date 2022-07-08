@@ -24,6 +24,11 @@ namespace MonoRogue {
         // For specifically the Warden, to tell each other creature where the player is
         public virtual void GiveTargetTile(Point p) { }
 
+        // Some bools that are useful for saving/loading the game
+        public bool IsTank;
+        public bool IsCultist;
+        public bool IsWarden;
+
         // Some movement methods
         protected void MoveTowards(Creature target) { MoveTowards(target.X, target.Y); }
         protected void MoveTowards(Point p) { MoveTowards(p.X, p.Y); }
@@ -63,7 +68,7 @@ namespace MonoRogue {
 
         // If the creature has seen the player but the player is out of sight, move towards
         // where the player was last seen
-        protected Point TargetTile;
+        public Point TargetTile;
         public override void GiveTargetTile(Point p) { TargetTile = p; }
 
         public BasicAI(Creature creature, Creature player) : base(creature) {
@@ -235,9 +240,11 @@ namespace MonoRogue {
 
     public class TankAI : BasicAI {
         // If the player is two tiles away, pull them adjacent
-        public TankAI(Creature creature, Creature player) : base(creature, player) { }
+        public TankAI(Creature creature, Creature player) : base(creature, player) {
+            IsTank = true;
+        }
 
-        private int Cooldown;
+        public int Cooldown;
         public override void TakeTurn(World world) {
             if (Cooldown > 0) { Cooldown--; }
             if (Host.CanSee(Player.X, Player.Y) && 
@@ -258,12 +265,13 @@ namespace MonoRogue {
     public class CultistAI : BasicAI {
         // Can spawn up to 2 imps that die when the cultist does
         private CreatureFactory Factory;
-        private int SummonsLeft;
-        private List<Creature> Summons;
+        public int SummonsLeft;
+        public List<Creature> Summons;
         public CultistAI(Creature creature, Creature player, CreatureFactory factory) : base(creature, player) {
             Factory = factory;
             SummonsLeft = 2;
             Summons = new List<Creature>();
+            IsCultist = true;
         }
 
         public override void TakeTurn(World world) {
@@ -312,7 +320,9 @@ namespace MonoRogue {
 
     public class WardenAI : BasicAI {
         // The final boss, it can notify nearby enemies where the player is, and drops a golden key when he dies
-        public WardenAI(Creature creature, Creature player) : base(creature, player) { }
+        public WardenAI(Creature creature, Creature player) : base(creature, player) {
+            IsWarden = true;
+        }
 
         public bool PlayerInSight;
         public int AlarmCooldown;

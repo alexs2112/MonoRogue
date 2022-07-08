@@ -20,7 +20,10 @@ namespace MonoRogue {
                 case Keys.Enter:
                     if (Index == 0) { base.CloseSubscreen(); return null; }
                     else if (Index == 1) { return new WindowResizeScreen(Content, Main, this); }
-                    else if (Index == 2) { Main.Exit(); }
+                    else if (Index == 2) {
+                        Main.SaveGame();
+                        Main.Exit();
+                    }
                     break;
 
                 // With only two options, it really only just toggles the index
@@ -40,7 +43,7 @@ namespace MonoRogue {
             v.Y += 32;
             WriteCentered(spriteBatch, Font16, "Settings", v, Index == 1 ? Color.LawnGreen : Color.White);
             v.Y += 32;
-            WriteCentered(spriteBatch, Font16, "Quit", v, Index == 2 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font16, "Save and Quit", v, Index == 2 ? Color.LawnGreen : Color.White);
 
             v.Y = Constants.ScreenHeight - 64;
             WriteCentered(spriteBatch, Font14, $"Seed: {Main.Seed}", v, Color.Gray);

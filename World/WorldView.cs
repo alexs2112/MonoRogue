@@ -1,6 +1,5 @@
 using static System.Math;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRogue {
@@ -46,8 +45,8 @@ namespace MonoRogue {
                         if (world.Items.ContainsKey(point)) {
                             color = world.Items[point].Color;
                         } else {
-                            if (world.ColorOverlay[tileX, tileY] != Color.Transparent) {
-                                color = world.ColorOverlay[tileX, tileY];
+                            if (world.Bloodstains[tileX, tileY]) {
+                                color = Color.DarkRed;
                             }
                         }
                     } else if (!HasSeen[tileX, tileY]) { 

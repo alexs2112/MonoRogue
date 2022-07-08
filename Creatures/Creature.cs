@@ -43,7 +43,7 @@ namespace MonoRogue {
         public bool HasKey { get; set; }
 
         // Some visual flavour
-        public Color BloodColor { get; set; }
+        public bool Bleeds { get; set; }
         public Projectile.Type BaseProjectile { get; set; }
 
         public Armor Armor { get; set; }
@@ -67,7 +67,7 @@ namespace MonoRogue {
             AttackDelay = 10;
             BaseAttackText = "attack";
             BaseRange = 1;
-            BloodColor = Color.DarkRed;
+            Bleeds = true;
             BaseBlock = block;
         }
 
@@ -102,6 +102,7 @@ namespace MonoRogue {
             return BaseBlock + (Armor != null ? Armor.Block : 0);
         }
         public void ModifyDefense(int value) { MaxDefense += value; Defense += value; }
+        public void SetDefense(int value) { Defense = value; }
         public (int Current, int Max) GetDefense() {
             if (Armor == null) { return (Defense, MaxDefense); }
             return (Armor.Defense + Defense, Armor.MaxDefense + MaxDefense);
@@ -134,7 +135,7 @@ namespace MonoRogue {
                 AI.OnDeath(World);
                 World.Creatures.Remove(this);
 
-                if (BloodColor != Color.Black) { World.ColorOverlay[X, Y] = Color.DarkRed; }
+                if (Bleeds) { World.Bloodstains[X, Y] = true; }
                 if (Armor != null) { DropItem(Armor); }
                 if (Weapon != null) { DropItem(Weapon); }
             } else if (HP > MaxHP) {
@@ -369,16 +370,9 @@ namespace MonoRogue {
             }
 
             if (i.IsFood) { World.EatFoodAt(this, p); }
-            else if (i.IsArmor) {
+            else if (i.IsArmor || i.IsWeapon) {
                 World.Items.Remove(p);
                 Equip(i);
-
-                Glyph = PlayerGlyph.GetUpdatedGlyph(this);
-            } else if (i.IsWeapon) {
-                World.Items.Remove(p);
-                Equip(i);
-
-                Glyph = PlayerGlyph.GetUpdatedGlyph(this);
             } else if (i.IsHeartstone) {
                 ((Heartstone)i).Consume(this);
                 World.Items.Remove(p);
@@ -397,14 +391,20 @@ namespace MonoRogue {
                 Armor = (Armor)item;
                 AddMessage($"You equip the {item.Name}.");
 
-                if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
+                if (temp != null) { DropItem(temp); }
             } else if (item.IsWeapon) {
                 Weapon temp = Weapon;
                 Weapon = (Weapon)item;
 
                 AddMessage($"You equip the {item.Name}.");
-                if (temp != null) { World.Items.Add(new Point(X, Y), temp); }
+                if (temp != null) { DropItem(temp); }
+
+                if (!IsPlayer) {
+                    Texture2D next = EnemyGlyph.GetGlyph(this);
+                    if (next != null) { Glyph = next; }
+                }
             }
+            if (IsPlayer) { Glyph = PlayerGlyph.GetUpdatedGlyph(this); }
         }
         public void DropItem(Item item) {
             if (World.GetItemAt(X, Y) == null) { World.Items[new Point(X, Y)] = item; }

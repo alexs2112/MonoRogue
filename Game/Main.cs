@@ -7,6 +7,7 @@ namespace MonoRogue {
     public class Main : Game {
         private System.Random Random;
         public int Seed;
+        public GameLoader GameLoader;
         private World World;
         private Creature Player;
         private Subscreen Subscreen;
@@ -35,25 +36,21 @@ namespace MonoRogue {
 
             Settings.LoadSettings();
             ParseParameters(args);
+
+            if (GameLoader.CanLoad()) { GameLoader = new GameLoader(); }
         }
 
         protected override void Initialize() {
             Window.Title = "Escape of the Blue Man";
             UpdateScreenSize();
 
-            Seed = Constants.Seed;
-            if (Seed == -1) { Seed = new System.Random().Next(); }
-            Random = new System.Random(Seed);
-            System.Console.WriteLine($"Using seed {Seed}");
-
-            EquipmentFactory = new EquipmentFactory(Content);
-            CreatureFactory = new CreatureFactory(Content, EquipmentFactory, Random);
             Tile.LoadTiles(Content);
             Feature.LoadFeatures(Content);
             Food.LoadFood(Content);
             Heartstone.LoadHeartstone(Content);
             GoldenKey.LoadKey(Content);
             PlayerGlyph.LoadGlyphs(Content);
+            EnemyGlyph.LoadGlyphs(Content);
             Vault.LoadVaults();
             KeyTrack = new KeyboardTrack();
             Mouse = new MouseHandler();
@@ -70,14 +67,39 @@ namespace MonoRogue {
             base.Initialize();
         }
 
-        public void CreateWorld() {
+        public void CreateWorld(bool loadFromSave = false) {
+            Seed = Constants.Seed;
+            if (loadFromSave && GameLoader != null) { 
+                Seed = GameLoader.Seed;
+                Constants.Difficulty = GameLoader.Difficulty;
+            }
+            else if (Seed == -1) { Seed = new System.Random().Next(); }
+            Random = new System.Random(Seed);
+            System.Console.WriteLine($"Using seed {Seed}");
+
+            EquipmentFactory = new EquipmentFactory(Content);
+            CreatureFactory = new CreatureFactory(Content, EquipmentFactory, Random);
+
+            if (loadFromSave && GameLoader == null) { loadFromSave = false; }
+            if (loadFromSave) {
+                Constants.WorldWidth = GameLoader.WorldData.Width;
+                Constants.WorldHeight = GameLoader.WorldData.Height;
+                WorldView = new WorldView();
+            }
             WorldBuilder worldBuilder = new WorldBuilder(Random, Constants.WorldWidth, Constants.WorldHeight);
             World = worldBuilder.GenerateDungeon(Constants.DungeonIterations, CreatureFactory, EquipmentFactory);
+
+            if (loadFromSave) {
+                GameLoader.LoadGame(World, WorldView, EquipmentFactory, CreatureFactory);
+                World = GameLoader.World;
+            } else {
+                SaveGame();
+            }
+
             Player = World.Player;
+            WorldView.Update(World, Player);
             
             if (Constants.Debug) { World.PrintToTerminal(); }
-
-            WorldView.Update(World, Player);
         }
 
         protected override void LoadContent() {
@@ -291,7 +313,7 @@ namespace MonoRogue {
             MainInterface.StartX = 32 * Constants.WorldViewWidth;
             if (WorldView != null) { 
                 WorldView.UpdateScreenSize();
-                WorldView.Update(World, Player);
+                if (World != null) { WorldView.Update(World, Player); }
             }
         }
 
@@ -332,6 +354,10 @@ namespace MonoRogue {
             Constants.AllowAnimations = !cmd.Contains("--no-animations");
             Constants.Invincible = cmd.Contains("--invincible");
             if (Constants.Invincible) { System.Console.WriteLine("Player Invincibility Enabled"); }
+        }
+
+        public void SaveGame() {
+            new GameSaver(Seed, World, WorldView).SaveGame();
         }
 
         protected override void OnExiting(object sender, System.EventArgs args) {

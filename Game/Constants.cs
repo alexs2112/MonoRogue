@@ -37,7 +37,9 @@ namespace MonoRogue {
         public static float MusicVolume = 0.2f;             // Volume of background soundtrack
         public static float EffectVolume = 0.2f;            // Volume of sound effects
 
-        public static string SettingsPath = "BlueMan.settings"; // Relative path to the settings file
+        public static string SettingsPath = "BlueMan.settings";     // Relative path to the settings file
+        public static string SavegamePath = "BlueSave.savegame";    // Relative path to the currently saved game
+        public static bool IndentedSave = false;                    // If the json of the save file should be formatted
     }
 
     public class Settings {

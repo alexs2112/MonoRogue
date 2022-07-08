@@ -27,32 +27,40 @@ namespace MonoRogue
             Glyphs.Add("Undead", content.Load<Texture2D>("Creatures/Undead"));
 
             Glyphs.Add("Grunt", content.Load<Texture2D>("Creatures/Grunt"));
-            Glyphs.Add("Grunt-Dagger", content.Load<Texture2D>("Creatures/Grunt-Dagger"));
-            Glyphs.Add("Grunt-Sword", content.Load<Texture2D>("Creatures/Grunt-Sword"));
-            Glyphs.Add("Grunt-Bow", content.Load<Texture2D>("Creatures/Grunt-Bow"));
             Glyphs.Add("Imp", content.Load<Texture2D>("Creatures/Imp"));
-            Glyphs.Add("Thug-Spear", content.Load<Texture2D>("Creatures/Thug-Spear"));
-            Glyphs.Add("Thug-Sword", content.Load<Texture2D>("Creatures/Thug-Sword"));
+            Glyphs.Add("Thug", content.Load<Texture2D>("Creatures/Thug-Spear")); // Default of spear
             Glyphs.Add("Brute", content.Load<Texture2D>("Creatures/Brute"));
-            Glyphs.Add("Brute-Mace", content.Load<Texture2D>("Creatures/Brute-Mace"));
-            Glyphs.Add("Brute-Axe", content.Load<Texture2D>("Creatures/Brute-Axe"));
 
             Glyphs.Add("Haunt", content.Load<Texture2D>("Creatures/Haunt"));
-            Glyphs.Add("Gatekeeper-Sword", content.Load<Texture2D>("Creatures/Gatekeeper-Sword"));
-            Glyphs.Add("Gatekeeper-Axe", content.Load<Texture2D>("Creatures/Gatekeeper-Axe"));
-            Glyphs.Add("Gatekeeper-Mace", content.Load<Texture2D>("Creatures/Gatekeeper-Mace"));
+            Glyphs.Add("Gatekeeper", content.Load<Texture2D>("Creatures/Gatekeeper-Sword")); // Default of sword
             Glyphs.Add("Tank", content.Load<Texture2D>("Creatures/Tank"));
             Glyphs.Add("Cultist", content.Load<Texture2D>("Creatures/Cultist"));
-            Glyphs.Add("Cultist-Spear", content.Load<Texture2D>("Creatures/Cultist-Spear"));
-            Glyphs.Add("Cultist-Dagger", content.Load<Texture2D>("Creatures/Cultist-Dagger"));
 
-            Glyphs.Add("Warden-Sword", content.Load<Texture2D>("Creatures/Warden-Sword"));
-            Glyphs.Add("Warden-Axe", content.Load<Texture2D>("Creatures/Warden-Axe"));
-            Glyphs.Add("Warden-Mace", content.Load<Texture2D>("Creatures/Warden-Mace"));
-            Glyphs.Add("Warden-Spear", content.Load<Texture2D>("Creatures/Warden-Spear"));
+            Glyphs.Add("Warden", content.Load<Texture2D>("Creatures/Warden-Sword")); // Default of sword
 
             Equipment = equipment;
             Random = random;
+        }
+
+        public Creature CreatureByName(string name, World world, int x, int y) {
+            switch(name) {
+                case "Player": return NewPlayer(world, x, y);
+                case "Rat": return NewRat(world, x, y);
+                case "Pig": return NewPig(world, x, y);
+                case "Angry Pig": return NewAngryPig(world, x, y);
+                case "Spawn": return NewSpawn(world, x, y);
+                case "Undead": return NewUndead(world, x, y);
+                case "Grunt": return NewGrunt(world, x, y);
+                case "Imp": return NewImp(world, x, y);
+                case "Thug": return NewThug(world, x, y);
+                case "Brute": return NewBrute(world, x, y);
+                case "Haunt": return NewHaunt(world, x, y);
+                case "Gatekeeper": return NewGatekeeper(world, x, y);
+                case "Tank": return NewTank(world, x, y);
+                case "Cultist": return NewCultist(world, x, y);
+                case "Warden": return NewWarden(world, x, y);
+                default: throw new System.Exception($"Cannot find {name}.");
+            }
         }
 
         public Creature NewPlayer(World world, int x, int y)
@@ -139,6 +147,12 @@ namespace MonoRogue
             return c;
         }
 
+        private Creature NewAngryPig(World world, int x, int y) {
+            Creature c = NewPig(world, x, y);
+            ((PigAI)c.AI).OnHit(world, Player);
+            return c;
+        }
+
         private Creature NewSpawn(World world, int x, int y)
         {
             Creature c = new Creature("Spawn", Glyphs["Spawn"], Color.LightSalmon);
@@ -160,7 +174,7 @@ namespace MonoRogue
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Difficulty = 2;
-            c.BloodColor = Color.Black;
+            c.Bleeds = false;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
             return c;
@@ -180,15 +194,12 @@ namespace MonoRogue
                 switch(Random.Next(3)) {
                     case 0: 
                         c.Equip(Equipment.NewDagger());
-                        c.SetGlyph(Glyphs["Grunt-Dagger"]);
                         break;
                     case 1: 
                         c.Equip(Equipment.NewSword());
-                        c.SetGlyph(Glyphs["Grunt-Sword"]);
                         break;
                     case 2:
                         c.Equip(Equipment.NewShortbow());
-                        c.SetGlyph(Glyphs["Grunt-Bow"]);
                         break;
                 }
             }
@@ -208,7 +219,7 @@ namespace MonoRogue
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Difficulty = 3;
-            c.BloodColor = Color.Black;
+            c.Bleeds = false;
             c.BaseProjectile = Projectile.Type.Spell;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
@@ -217,20 +228,17 @@ namespace MonoRogue
 
         private Creature NewThug(World world, int x, int y)
         {
+            Creature c = new Creature("Thug", Glyphs["Thug"], Color.SeaGreen);
+            c.SetStats(6, 6, (3, 5), 3);
             Item e;
-            Texture2D g;
             string w;
             if (Random.Next(3) == 0) {
                 e = Equipment.NewBident();
-                g = Glyphs["Thug-Spear"];
                 w = "bident";
             } else {
                 e = Equipment.NewFalchion();
-                g = Glyphs["Thug-Sword"];
                 w = "falchion";
             }
-            Creature c = new Creature("Thug", g, Color.SeaGreen);
-            c.SetStats(6, 6, (3, 5), 3);
             c.Equip(e);
             c.SetDescription($"A humanoid that looks to be related to a type of demon. It hops back and forth and wields a flaming {w}.");
             c.SetAbilityText("Becomes cowardly without any defense.");
@@ -257,11 +265,9 @@ namespace MonoRogue
                 switch(Random.Next(2)) {
                     case 0: 
                         c.Equip(Equipment.NewWarhammer());
-                        c.SetGlyph(Glyphs["Brute-Mace"]);
                         break;
                     case 1: 
                         c.Equip(Equipment.NewWarAxe());
-                        c.SetGlyph(Glyphs["Brute-Axe"]);
                         break;
                 }
             }
@@ -279,7 +285,7 @@ namespace MonoRogue
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Difficulty = 5;
-            c.BloodColor = Color.Black;
+            c.Bleeds = false;
             c.BaseProjectile = Projectile.Type.Spell;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
@@ -288,28 +294,24 @@ namespace MonoRogue
 
         private Creature NewGatekeeper(World world, int x, int y)
         {
+            Creature c = new Creature("Gatekeeper", Glyphs["Gatekeeper"], Color.MediumTurquoise);
+            c.SetStats(12, 0, (4, 6), 2);
             Item e;
-            Texture2D g;
             string w;
             switch(Random.Next(4)) {
             case 0:
                 e = Equipment.NewMorningstar();
-                g = Glyphs["Gatekeeper-Mace"];
                 w = "morningstar";
                 break;
             case 1:
                 e = Equipment.NewBattleAxe();
-                g = Glyphs["Gatekeeper-Axe"];
                 w = "battleaxe";
                 break;
             default:
                 e = Equipment.NewSawtooth();
-                g = Glyphs["Gatekeeper-Sword"];
                 w = "sawtooth blade";
                 break;
             }
-            Creature c = new Creature("Gatekeeper", g, Color.MediumTurquoise);
-            c.SetStats(12, 0, (4, 6), 2);
             c.Equip(e);
             c.Equip(Random.Next(2) == 0 ? Equipment.NewChainMail() : Equipment.NewDragonscale());
             c.SetDescription($"An insectoid creature that stands on two legs. It has four beady eyes, pincers, and wields a {w}.");
@@ -349,11 +351,9 @@ namespace MonoRogue
                 switch(Random.Next(2)) {
                     case 0: 
                         c.Equip(Equipment.NewRitualDagger());
-                        c.SetGlyph(Glyphs["Cultist-Dagger"]);
                         break;
                     default: 
                         c.Equip(Equipment.NewCultistStaff());
-                        c.SetGlyph(Glyphs["Cultist-Spear"]);
                         c.ModifyAttackDelay(2);
                         break;
                 }
@@ -365,28 +365,23 @@ namespace MonoRogue
 
         public Creature NewWarden(World world, int x, int y)
         {
+            Creature c = new Creature("Warden", Glyphs["Warden"], Color.Red);
+            c.SetStats(16, 0, (5, 9));
             Item e;
-            Texture2D g;
             switch(Random.Next(4)) {
             case 0:
                 e = Equipment.NewMorningstar();
-                g = Glyphs["Warden-Mace"];
                 break;
             case 1:
                 e = Equipment.NewBattleAxe();
-                g = Glyphs["Warden-Axe"];
                 break;
             case 2:
                 e = Equipment.NewGreatspear();
-                g = Glyphs["Warden-Spear"];
                 break;
             default:
                 e = Equipment.NewGreatsword();
-                g = Glyphs["Warden-Sword"];
                 break;    
             }
-            Creature c = new Creature("Warden", g, Color.Red);
-            c.SetStats(16, 0, (5, 9));
             c.SetDescription("The warden of the dungeon. It is fully armed and armored in red, runic metal. From its belt you can see a dangling golden key.");
             c.SetAbilityText("Will raise the alarm in the dungeon.");
             c.Equip(e);

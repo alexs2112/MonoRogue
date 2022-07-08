@@ -7,8 +7,9 @@ using Microsoft.Xna.Framework.Content;
 namespace MonoRogue {
     public class HelpScreen : BorderedScreen {
         private List<string> Text;
+        private Subscreen LastScreen;
 
-        public HelpScreen(ContentManager content) : base(content) {
+        public HelpScreen(ContentManager content, Subscreen lastScreen = null) : base(content) {
             string[] text = new string[] {
                 "Controls:",
                 " - Arrow keys, Left Click, Numpad, or Vi Keys to move and attack",
@@ -22,8 +23,9 @@ namespace MonoRogue {
                 " - [esc] to quit the game or exit menus",
                 " - [/] or [?] to show this menu"
             };
-
             Text = SplitText(text, MaxScreenChars);
+
+            LastScreen = lastScreen;
         }
 
         private List<string> SplitText(string[] text, int maxChars) {
@@ -35,7 +37,8 @@ namespace MonoRogue {
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
-            return base.RespondToInput(key, mouse);
+            if (key == Keys.Escape || mouse.RightClicked()) { CloseSubscreen(); return LastScreen; }
+            return this;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, MouseHandler mouseHandler) {
