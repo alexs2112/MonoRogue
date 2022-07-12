@@ -31,7 +31,7 @@ namespace MonoRogue {
         private List<string> SplitText(string[] text, int maxChars) {
             List<string> output = new List<string>();
             foreach (string line in text) {
-                output.AddRange(MainInterface.SplitMessage(line, maxChars));
+                output.AddRange(Font.Size14.SplitString(line, Constants.ScreenWidth - 64));
             }
             return output;
         }
@@ -47,7 +47,7 @@ namespace MonoRogue {
             int x = 32;
             int y = 24;
             foreach (string s in Text) {
-                spriteBatch.DrawString(Font14, s, new Vector2(x,y), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), s, new Vector2(x,y), Color.White);
                 y += 32;
             }
         }

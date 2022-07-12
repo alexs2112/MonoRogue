@@ -146,32 +146,32 @@ namespace MonoRogue {
             Vector2 glyphVector = new Vector2(Legend.X * 16 + 8, Legend.Y * 16 + 4);
             Vector2 textVector = new Vector2(Legend.X * 16 + 32, Legend.Y * 16 + 4);
 
-            spriteBatch.DrawString(Font12, "Map", glyphVector, Color.White);
+            spriteBatch.DrawString(Font.Size12.Get(), "Map", glyphVector, Color.White);
             glyphVector.Y += increment;
             textVector.Y += increment;
 
             spriteBatch.Draw(Creature, glyphVector, Color.SkyBlue);
-            spriteBatch.DrawString(Font12, "You", textVector, Color.White);
+            spriteBatch.DrawString(Font.Size12.Get(), "You", textVector, Color.White);
             glyphVector.Y += increment;
             textVector.Y += increment;
 
             spriteBatch.Draw(Creature, glyphVector, Color.Red);
-            spriteBatch.DrawString(Font12, "Enemy", textVector, Color.White);
+            spriteBatch.DrawString(Font.Size12.Get(), "Enemy", textVector, Color.White);
             glyphVector.Y += increment;
             textVector.Y += increment;
 
             spriteBatch.Draw(Item, glyphVector, Color.Yellow);
-            spriteBatch.DrawString(Font12, "Item", textVector, Color.White);
+            spriteBatch.DrawString(Font.Size12.Get(), "Item", textVector, Color.White);
             glyphVector.Y += increment;
             textVector.Y += increment;
 
             spriteBatch.Draw(Item, glyphVector, Color.Green);
-            spriteBatch.DrawString(Font12, "Food", textVector, Color.White);
+            spriteBatch.DrawString(Font.Size12.Get(), "Food", textVector, Color.White);
             glyphVector.Y += increment;
             textVector.Y += increment;
 
             spriteBatch.Draw(Door, glyphVector, Color.SaddleBrown);
-            spriteBatch.DrawString(Font12, "Door", textVector, Color.White);
+            spriteBatch.DrawString(Font.Size12.Get(), "Door", textVector, Color.White);
         }
     }
 }

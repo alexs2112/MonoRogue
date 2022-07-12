@@ -1,7 +1,6 @@
 ### **Roadmap:**
  * Other subscreens:
     * The remaining help screens, multiple menus to swap through to see info about the game
-      * Make sure to adjust chars per line for screen size
       * Keybindings
       * Basic game help
       * Essentially rehash the user manual but in game with icons
@@ -15,7 +14,10 @@
     * Pretty up the window resize screen. Increase screen resolution options but limit it on detected screen size
     * Let the start screen go to settings and help screens
     * Actual game over screen
-    * Game history screen with stats?
+
+ * Game history and stats
+    * Keep track of score, time taken, difficulty
+    * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
 
  * Music and sound effects
     * Arcady sound effects for food, attacks, doors and stuff?
@@ -42,6 +44,7 @@
    * Have every enemy that can see an enemy that you hit know where you are
    * Have more enemies speak
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
+   * Loading a game when the player has a key still allows them to win but does not show the correct exit glyph
 
  * Release prep:
    * Fix all @todo tags

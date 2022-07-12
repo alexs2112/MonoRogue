@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text.Json;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRogue {
     public class GameLoader {
@@ -64,7 +65,8 @@ namespace MonoRogue {
 
             if (creature.Weapon != null) {
                 c.Weapon = (Weapon)ParseItem(creature.Weapon);
-                c.SetGlyph(EnemyGlyph.GetGlyph(c));
+                Texture2D next = EnemyGlyph.GetGlyph(c);
+                if (next != null) { c.SetGlyph(next); }
             }
             if (creature.Armor != null) {
                 c.Armor = (Armor)ParseItem(creature.Armor);
@@ -74,7 +76,7 @@ namespace MonoRogue {
                 c.SetGlyph(PlayerGlyph.GetUpdatedGlyph(c));
             }
 
-            if (creature.TargetTile != null) {
+            if (creature.TargetTile != null && creature.TargetTile.X != -1) {
                 c.AI.GiveTargetTile(new Point(creature.TargetTile.X, creature.TargetTile.Y));
             }
 

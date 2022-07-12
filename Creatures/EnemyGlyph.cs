@@ -15,12 +15,14 @@ namespace MonoRogue {
             Glyphs.Add("Grunt-Bow", content.Load<Texture2D>("Creatures/Grunt-Bow"));
 
             Glyphs.Add("Thug-Sword", content.Load<Texture2D>("Creatures/Thug-Sword"));
+            Glyphs.Add("Thug-Spear", content.Load<Texture2D>("Creatures/Thug-Spear"));
 
             Glyphs.Add("Brute-Mace", content.Load<Texture2D>("Creatures/Brute-Mace"));
             Glyphs.Add("Brute-Axe", content.Load<Texture2D>("Creatures/Brute-Axe"));
 
             Glyphs.Add("Gatekeeper-Axe", content.Load<Texture2D>("Creatures/Gatekeeper-Axe"));
             Glyphs.Add("Gatekeeper-Mace", content.Load<Texture2D>("Creatures/Gatekeeper-Mace"));
+            Glyphs.Add("Gatekeeper-Sword", content.Load<Texture2D>("Creatures/Gatekeeper-Sword"));
 
             Glyphs.Add("Cultist-Spear", content.Load<Texture2D>("Creatures/Cultist-Spear"));
             Glyphs.Add("Cultist-Dagger", content.Load<Texture2D>("Creatures/Cultist-Dagger"));
@@ -28,6 +30,7 @@ namespace MonoRogue {
             Glyphs.Add("Warden-Axe", content.Load<Texture2D>("Creatures/Warden-Axe"));
             Glyphs.Add("Warden-Mace", content.Load<Texture2D>("Creatures/Warden-Mace"));
             Glyphs.Add("Warden-Spear", content.Load<Texture2D>("Creatures/Warden-Spear"));
+            Glyphs.Add("Warden-Sword", content.Load<Texture2D>("Creatures/Warden-Sword"));
         }
 
         public static Texture2D GetGlyph(Creature c) {

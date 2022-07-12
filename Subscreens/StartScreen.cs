@@ -88,28 +88,28 @@ namespace MonoRogue {
 
             int x = Constants.ScreenWidth / 2;
             int y = Constants.ScreenHeight / 2 - 96;
-            WriteCentered(spriteBatch, Font24, "Escape of the Blue Man", new Vector2(x, y), Color.White);
+            WriteCentered(spriteBatch, Font.Size24.Get(), "Escape of the Blue Man", new Vector2(x, y), Color.White);
             y += 48;
-            WriteCentered(spriteBatch, Font16, "Continue", new Vector2(x, y), CanContinue ? Index == 0 ? Color.LawnGreen : Color.White : Color.Gray);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "Continue", new Vector2(x, y), CanContinue ? Index == 0 ? Color.LawnGreen : Color.White : Color.Gray);
             y += 32;
-            WriteCentered(spriteBatch, Font16, "New Game", new Vector2(x, y), Index == 1 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "New Game", new Vector2(x, y), Index == 1 ? Color.LawnGreen : Color.White);
             y += 32;
-            WriteCentered(spriteBatch, Font16, "Settings", new Vector2(x, y), Index == 2 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "Settings", new Vector2(x, y), Index == 2 ? Color.LawnGreen : Color.White);
             y += 32;
-            WriteCentered(spriteBatch, Font16, "Help", new Vector2(x, y), Index == 3 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "Help", new Vector2(x, y), Index == 3 ? Color.LawnGreen : Color.White);
             y += 32;
-            WriteCentered(spriteBatch, Font16, "Exit", new Vector2(x, y), Index == 4 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "Exit", new Vector2(x, y), Index == 4 ? Color.LawnGreen : Color.White);
             y += 32;
 
             y = Constants.ScreenHeight - 64;
-            WriteCentered(spriteBatch, Font14, "Press [?] in game for help", new Vector2(x, y), Color.Gray);
+            WriteCentered(spriteBatch, Font.Size14.Get(), "Press [?] in game for help", new Vector2(x, y), Color.Gray);
 
             if (SeedError.Length > 0) {
-                spriteBatch.DrawString(Font14, SeedError, new Vector2(32,32), Color.Gray);
+                spriteBatch.DrawString(Font.Size14.Get(), SeedError, new Vector2(32,32), Color.Gray);
             } else if (Seed.Length > 0) {
-                spriteBatch.DrawString(Font14, "Seed: " + Seed, new Vector2(32,32), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), "Seed: " + Seed, new Vector2(32,32), Color.White);
             } else {
-                spriteBatch.DrawString(Font14, "Input numbers to set the seed.", new Vector2(32,32), Color.Gray);
+                spriteBatch.DrawString(Font.Size14.Get(), "Input numbers to set the seed.", new Vector2(32,32), Color.Gray);
             }
         }
 

@@ -47,6 +47,7 @@ namespace MonoRogue {
             Tile.LoadTiles(Content);
             Feature.LoadFeatures(Content);
             Food.LoadFood(Content);
+            Font.LoadFonts(Content);
             Heartstone.LoadHeartstone(Content);
             GoldenKey.LoadKey(Content);
             PlayerGlyph.LoadGlyphs(Content);

@@ -112,7 +112,7 @@ namespace MonoRogue {
         private Heartstone(Texture2D glyph) : base("Heartstone", glyph, Color.Red) {
             SetType(Type.Heartstone);
             IsHeartstone = true;
-            ItemInfo = MainInterface.SplitMessage("Consuming this grants you another health heart!", 18);
+            ItemInfo = Font.Size12.SplitString("Consuming this grants you another health heart!", MainInterface.InterfaceWidth - 16);
         }
 
         private static Heartstone Stone;
@@ -135,7 +135,7 @@ namespace MonoRogue {
     public class GoldenKey : Item {
         private GoldenKey(Texture2D glyph) : base("Golden Key", glyph, Color.Yellow) {
             SetType(Type.Key);
-            ItemInfo = MainInterface.SplitMessage("You need this to unlock the exit to the dungeon.", 16);
+            ItemInfo = Font.Size12.SplitString("You need this to unlock the exit to the dungeon.", MainInterface.InterfaceWidth - 16);
             IsKey = true;
         }
 

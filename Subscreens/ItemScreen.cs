@@ -12,7 +12,7 @@ namespace MonoRogue {
         public ItemScreen(ContentManager content, Item item) : base(content) {
             Item = item;
             if (item.Description != null) {
-                Description = MainInterface.SplitMessage(Item.Description, MaxScreenChars);
+                Description = Font.Size14.SplitString(Item.Description, Constants.ScreenWidth - 64);
             }
         }
 
@@ -25,29 +25,29 @@ namespace MonoRogue {
 
             int x = 48;
             int y = 32;
-            spriteBatch.DrawString(Font24, Item.Name, new Vector2(x - 16, y), Color.White);
-            spriteBatch.Draw(Item.Glyph, new Vector2(x + Font24.MeasureString(Item.Name).X, y), Item.Color);
+            spriteBatch.DrawString(Font.Size24.Get(), Item.Name, new Vector2(x - 16, y), Color.White);
+            spriteBatch.Draw(Item.Glyph, new Vector2(x + Font.Size24.Width * Item.Name.Length, y), Item.Color);
             y += 48;
 
             if (Item.IsFood) {
                 Food food = (Food)Item;
-                spriteBatch.DrawString(Font14, $"Food Value: {food.Value}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), $"Food Value: {food.Value}", new Vector2(x, y), Color.White);
             } else if (Item.IsArmor) {
                 Armor armor = (Armor)Item;
-                spriteBatch.DrawString(Font14, $"Defense: {armor.Defense}/{armor.MaxDefense}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), $"Defense: {armor.Defense}/{armor.MaxDefense}", new Vector2(x, y), Color.White);
                 if (armor.Block > 0) {
                     y += 32;
-                    spriteBatch.DrawString(Font14, $"Block: {armor.Block}", new Vector2(x, y), Color.White);
+                    spriteBatch.DrawString(Font.Size14.Get(), $"Block: {armor.Block}", new Vector2(x, y), Color.White);
                 }
                 y += 32;
-                spriteBatch.DrawString(Font14, $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
             } else if (Item.IsWeapon) {
                 Weapon weapon = (Weapon)Item;
-                spriteBatch.DrawString(Font14, $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
                 y += 32;
-                spriteBatch.DrawString(Font14, $"Range: {weapon.Range}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), $"Range: {weapon.Range}", new Vector2(x, y), Color.White);
                 y += 32;
-                spriteBatch.DrawString(Font14, $"Attack Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Size14.Get(), $"Attack Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
             }
             y += 48;
             DrawDescription(spriteBatch, 32, y);
@@ -56,7 +56,7 @@ namespace MonoRogue {
         private int DrawDescription(SpriteBatch spriteBatch, int x, int y) {
             if (Description == null) { return y; }
             foreach (string s in Description) {
-                spriteBatch.DrawString(Font14, s, new Vector2(x, y), Color.Gray);
+                spriteBatch.DrawString(Font.Size14.Get(), s, new Vector2(x, y), Color.Gray);
                 y += 32;
             }
             return y + 48;

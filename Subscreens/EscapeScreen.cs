@@ -37,16 +37,16 @@ namespace MonoRogue {
             base.Draw(gameTime, spriteBatch, mouseHandler);
 
             Vector2 v = new Vector2(Constants.ScreenWidth / 2, 128);
-            WriteCentered(spriteBatch, Font24, "Paused", v, Color.White);
+            WriteCentered(spriteBatch, Font.Size24.Get(), "Paused", v, Color.White);
             v.Y += 64;
-            WriteCentered(spriteBatch, Font16, "Continue", v, Index == 0 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "Continue", v, Index == 0 ? Color.LawnGreen : Color.White);
             v.Y += 32;
-            WriteCentered(spriteBatch, Font16, "Settings", v, Index == 1 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "Settings", v, Index == 1 ? Color.LawnGreen : Color.White);
             v.Y += 32;
-            WriteCentered(spriteBatch, Font16, "Save and Quit", v, Index == 2 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Size16.Get(), "Save and Quit", v, Index == 2 ? Color.LawnGreen : Color.White);
 
             v.Y = Constants.ScreenHeight - 64;
-            WriteCentered(spriteBatch, Font14, $"Seed: {Main.Seed}", v, Color.Gray);
+            WriteCentered(spriteBatch, Font.Size14.Get(), $"Seed: {Main.Seed}", v, Color.Gray);
         }
     }
 }

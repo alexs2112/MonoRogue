@@ -5,11 +5,6 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MonoRogue {
     public class BorderedScreen : Subscreen {
-        protected SpriteFont Font24;
-        protected SpriteFont Font16;
-        protected SpriteFont Font14;
-        protected SpriteFont Font12;
-
         private Texture2D BorderCorners;
         private Texture2D BorderSides;
 
@@ -17,11 +12,6 @@ namespace MonoRogue {
         protected static int MaxScreenChars = 40;
 
         public BorderedScreen(ContentManager content) { 
-            Font24 = content.Load<SpriteFont>("Interface/sds24");
-            Font16 = content.Load<SpriteFont>("Interface/sds16");
-            Font14 = content.Load<SpriteFont>("Interface/sds14");
-            Font12 = content.Load<SpriteFont>("Interface/sds12");
-
             BorderCorners = content.Load<Texture2D>("Interface/BorderCorners");
             BorderSides = content.Load<Texture2D>("Interface/BorderSides");
 
