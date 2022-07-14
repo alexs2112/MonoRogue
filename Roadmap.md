@@ -1,9 +1,5 @@
 ### **Roadmap:**
  * Other subscreens:
-    * The remaining help screens, multiple menus to swap through to see info about the game
-      * Keybindings
-      * Basic game help
-      * Essentially rehash the user manual but in game with icons
     * Similar to the fire screen, a way to view tiles without using the mouse
     * Volume settings screen
     * Game settings screen
@@ -33,6 +29,7 @@
    * Target screen should give priority to targetable enemies, right now it is just by distance. Can also overlap the bottom of the screen
    * Armor subscreen should show hearts, not numbers for defense
    * Creature screen needs to scale by window
+   * It is possible that the player can have too many hearts on easy if they have the Warden's Armor (4 blue hearts + 1 blue heart + 5 red hearts)
 
  * Minor fixes
    * Have item notifications not stop auto movement

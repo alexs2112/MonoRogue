@@ -44,6 +44,16 @@ namespace MonoRogue {
         public static Font Size14;
         public static Font Size16;
         public static Font Size24;
+        public static SpriteFont Get(int size) {
+            switch(size) {
+                case 10: return Size10.Get();
+                case 12: return Size12.Get();
+                case 14: return Size14.Get();
+                case 16: return Size16.Get();
+                case 24: return Size24.Get();
+                default: throw new System.Exception($"Could not find font with size {size}.");
+            }
+        }
         public static void LoadFonts(ContentManager content) {
             Size24 = new Font(content.Load<SpriteFont>("Interface/sds24"), 24);
             Size16 = new Font(content.Load<SpriteFont>("Interface/sds16"), 16);

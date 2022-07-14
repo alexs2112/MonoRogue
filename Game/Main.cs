@@ -209,7 +209,7 @@ namespace MonoRogue {
                         }
                     } else {     
                         if (KeyTrack.KeyJustPressed(Keys.S)) { Subscreen = new CreatureScreen(Content, Player); }
-                        else if (KeyTrack.KeyJustPressed(Keys.OemQuestion)) { Subscreen = new HelpScreen(Content); }
+                        else if (KeyTrack.KeyJustPressed(Keys.OemQuestion)) { Subscreen = new HelpMenuScreen(Content); }
                         else if (KeyTrack.KeyJustPressed(Keys.M)) { Subscreen = new MapScreen(Content, World, WorldView); }
                         inputGiven = false; 
                     }

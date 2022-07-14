@@ -7,11 +7,10 @@ namespace MonoRogue {
     public class BorderedScreen : Subscreen {
         private Texture2D BorderCorners;
         private Texture2D BorderSides;
-
-        // Maximum chars to fit on a screen with a starting X of 32, font 14
-        protected static int MaxScreenChars = 40;
+        protected ContentManager Content;
 
         public BorderedScreen(ContentManager content) { 
+            Content = content;
             BorderCorners = content.Load<Texture2D>("Interface/BorderCorners");
             BorderSides = content.Load<Texture2D>("Interface/BorderSides");
 

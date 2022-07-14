@@ -20,14 +20,14 @@ namespace MonoRogue {
             base.Draw(gameTime, spriteBatch, mouseHandler);
 
             Vector2 v = new Vector2(Constants.ScreenWidth / 2, 128);
-            WriteCentered(spriteBatch, Font.Size24.Get(), "Congratulations!", v, Color.White);
+            WriteCentered(spriteBatch, Font.Get(24), "Congratulations!", v, Color.White);
             v.Y += 64;
-            WriteCentered(spriteBatch, Font.Size16.Get(), "The Blue Man escaped the dungeon!", v, Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "The Blue Man escaped the dungeon!", v, Color.White);
             v.Y += 32;
-            WriteCentered(spriteBatch, Font.Size16.Get(), "Press [esc] to exit", v, Color.Gray);
+            WriteCentered(spriteBatch, Font.Get(16), "Press [esc] to exit", v, Color.Gray);
 
             v.Y = Constants.ScreenHeight - 64;
-            WriteCentered(spriteBatch, Font.Size14.Get(), $"Seed: {Main.Seed}", v, Color.Gray);
+            WriteCentered(spriteBatch, Font.Get(14), $"Seed: {Main.Seed}", v, Color.Gray);
         }
     }
 }

@@ -87,19 +87,19 @@ namespace MonoRogue {
             // Draw creature damage, attack delay, movement delay
             Texture2D weaponGlyph = creature.Weapon != null ? creature.Weapon.Glyph : UnarmedGlyph;
             spriteBatch.Draw(weaponGlyph, new Vector2(x, y), Color.White);
-            spriteBatch.DrawString(Font.Size12.Get(), $"{creature.GetDamage().Min}-{creature.GetDamage().Max}", new Vector2(x + 36, y + 8), Color.White);
+            spriteBatch.DrawString(Font.Get(12), $"{creature.GetDamage().Min}-{creature.GetDamage().Max}", new Vector2(x + 36, y + 8), Color.White);
 
             int nx = x + 112;
             int delay = creature.GetAttackDelay();
             Color color = delay < 8 ? Color.LightSeaGreen : delay <= 12 ? Color.White : Color.LightSalmon;
             spriteBatch.Draw(AttackDelayGlyph, new Vector2(nx, y), Color.White);
-            spriteBatch.DrawString(Font.Size12.Get(), $"{delay}", new Vector2(nx + 36, y + 8), color);
+            spriteBatch.DrawString(Font.Get(12), $"{delay}", new Vector2(nx + 36, y + 8), color);
 
             nx += 96;
             delay = creature.GetMovementDelay();
             color = delay < 8 ? Color.LightSeaGreen : delay <= 12 ? Color.White : Color.LightSalmon;
             spriteBatch.Draw(MoveDelayGlyph, new Vector2(nx, y), Color.White);
-            spriteBatch.DrawString(Font.Size12.Get(), $"{delay}", new Vector2(nx + 36, y + 8), color);
+            spriteBatch.DrawString(Font.Get(12), $"{delay}", new Vector2(nx + 36, y + 8), color);
 
             // Draw the final line at the bottom
             y += 36;
@@ -112,7 +112,7 @@ namespace MonoRogue {
         }
         public static int DrawCreatureHeader(SpriteBatch spriteBatch, Creature creature, int x, int y, Color nameColor) {
             spriteBatch.Draw(creature.Glyph, new Vector2(x, y), creature.Color);
-            spriteBatch.DrawString(Font.Size14.Get(), creature.Name, new Vector2(x + 36, y + 8), nameColor);
+            spriteBatch.DrawString(Font.Get(14), creature.Name, new Vector2(x + 36, y + 8), nameColor);
             if (!creature.IsPlayer) {
                 int skullX = x + 48 + Font.Size14.Width * creature.Name.Length;
                 for (int i = 0; i < creature.Difficulty; i += 2) {
@@ -214,33 +214,33 @@ namespace MonoRogue {
 
             if (item.IsFood) {
                 Food food = (Food)item;
-                spriteBatch.DrawString(Font.Size12.Get(), $"Food:", new Vector2(x, y + 8), Color.White);
+                spriteBatch.DrawString(Font.Get(12), $"Food:", new Vector2(x, y + 8), Color.White);
                 DrawHearts(spriteBatch, food.Value, food.Value, x + 96, y, Color.Yellow);
                 y += 32;
             } else if (item.IsArmor) {
                 Armor armor = (Armor)item;
-                spriteBatch.DrawString(Font.Size12.Get(), $"Defense:", new Vector2(x, y + 8), Color.White);
+                spriteBatch.DrawString(Font.Get(12), $"Defense:", new Vector2(x, y + 8), Color.White);
                 DrawHearts(spriteBatch, armor.MaxDefense, armor.Defense, x + 144, y, Color.LightSkyBlue);
                 if (armor.Block > 0) {
                     y += 32;
-                    spriteBatch.DrawString(Font.Size12.Get(), $"Block: {armor.Block}", new Vector2(x, y), Color.White);
+                    spriteBatch.DrawString(Font.Get(12), $"Block: {armor.Block}", new Vector2(x, y), Color.White);
                     y -= 8;
                 }
                 y += 32;
-                spriteBatch.DrawString(Font.Size12.Get(), $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Get(12), $"Weight: {armor.Weight}", new Vector2(x, y), Color.White);
                 y += 24;
             } else if (item.IsWeapon) {
                 Weapon weapon = (Weapon)item;
-                spriteBatch.DrawString(Font.Size12.Get(), $"Type: {weapon.ItemType}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Get(12), $"Type: {weapon.ItemType}", new Vector2(x, y), Color.White);
                 y += 24;
-                spriteBatch.DrawString(Font.Size12.Get(), $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Get(12), $"Damage: {weapon.Damage.Min}-{weapon.Damage.Max}", new Vector2(x, y), Color.White);
                 y += 24;
-                spriteBatch.DrawString(Font.Size12.Get(), $"Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Get(12), $"Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
                 y += 24;
             }
             if (item.ItemInfo != null) {
                 foreach(string s in item.ItemInfo) {
-                    spriteBatch.DrawString(Font.Size12.Get(), s, new Vector2(x - 8, y), Color.White);
+                    spriteBatch.DrawString(Font.Get(12), s, new Vector2(x - 8, y), Color.White);
                     y += 24;
                 }
             }
@@ -248,14 +248,14 @@ namespace MonoRogue {
         }
         private static int DrawItemHeader(SpriteBatch spriteBatch, Item item, int x, int y) {
             int iconX = x + Font.Size14.Width * item.Name.Length + 16;
-            spriteBatch.DrawString(Font.Size14.Get(), item.Name, new Vector2(x, y + 8), Color.White);
+            spriteBatch.DrawString(Font.Get(14), item.Name, new Vector2(x, y + 8), Color.White);
             spriteBatch.Draw(item.Glyph, new Vector2(iconX, y), item.Color);
             return y + 36;
         }
 
         private static int DrawTileHeader(SpriteBatch spriteBatch, Tile tile, int x, int y) {
             if (!tile.IsFeature) { return y; }
-            spriteBatch.DrawString(Font.Size14.Get(), ((Feature)tile).Name, new Vector2(x, y + 12), Color.LightGray);
+            spriteBatch.DrawString(Font.Get(14), ((Feature)tile).Name, new Vector2(x, y + 12), Color.LightGray);
             spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y + 40), Color.Gray);
             return y + 40;
         }
@@ -289,7 +289,7 @@ namespace MonoRogue {
             int y = Constants.ScreenHeight - Messages.Count * lineHeight - 8;
             foreach (string m in Messages) {
                 if (y > maxY + 4) {
-                    spriteBatch.DrawString(Font.Size10.Get(), m, new Vector2(StartX + 24, y), Color.LightGray);
+                    spriteBatch.DrawString(Font.Get(10), m, new Vector2(StartX + 24, y), Color.LightGray);
                 }
                 y += lineHeight;
             }

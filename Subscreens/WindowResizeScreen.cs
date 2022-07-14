@@ -135,13 +135,13 @@ namespace MonoRogue {
             Vector2 pos = new Vector2(x, y);
 
             (int Width, int Height) result = GetResult();
-            WriteCentered(spriteBatch, Font.Size24.Get(), $"Window Size: {result.Width}x{result.Height}", pos, Color.White);
+            WriteCentered(spriteBatch, Font.Get(24), $"Window Size: {result.Width}x{result.Height}", pos, Color.White);
             pos.Y += 64;
 
-            WriteCentered(spriteBatch, Font.Size16.Get(), $"Back", pos, Index == 0 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), $"Back", pos, Index == 0 ? Color.LawnGreen : Color.White);
             pos.Y += 48;
 
-            WriteCentered(spriteBatch, Font.Size16.Get(), $"Use Preset", pos, Index == 1 ? Color.LawnGreen : UsePreset ? Color.White : Color.Gray);
+            WriteCentered(spriteBatch, Font.Get(16), $"Use Preset", pos, Index == 1 ? Color.LawnGreen : UsePreset ? Color.White : Color.Gray);
             pos.Y += 32;
 
             Vector2 posPreset = new Vector2(pos.X - (Resolutions.Length / 2) * 192 - 85, pos.Y);
@@ -154,25 +154,25 @@ namespace MonoRogue {
                 if (r.Height < 1000) { h = $"{r.Height} "; }
                 else { h = $"{r.Height}"; }
 
-                spriteBatch.DrawString(Font.Size14.Get(), $"{w}x{h}", posPreset, UsePreset ? (ResolutionIndex == i && Index == 2 ? Color.LawnGreen : Color.White) : Color.Gray);
+                spriteBatch.DrawString(Font.Get(14), $"{w}x{h}", posPreset, UsePreset ? (ResolutionIndex == i && Index == 2 ? Color.LawnGreen : Color.White) : Color.Gray);
                 posPreset.X += 192;
             }
 
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Size16.Get(), $"Use Custom", pos, Index == 3 ? Color.LawnGreen : UsePreset ? Color.Gray : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), $"Use Custom", pos, Index == 3 ? Color.LawnGreen : UsePreset ? Color.Gray : Color.White);
             pos.Y += 32;
-            WriteCentered(spriteBatch, Font.Size14.Get(), $"Width: {Width}", pos, UsePreset ? Color.Gray : Index == 4 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(14), $"Width: {Width}", pos, UsePreset ? Color.Gray : Index == 4 ? Color.LawnGreen : Color.White);
             pos.Y += 32;
-            WriteCentered(spriteBatch, Font.Size14.Get(), $"Height: {Height}", pos, UsePreset ? Color.Gray : Index == 5 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(14), $"Height: {Height}", pos, UsePreset ? Color.Gray : Index == 5 ? Color.LawnGreen : Color.White);
 
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Size16.Get(), $"Fullscreen: {Fullscreen}", pos, Index == 6 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), $"Fullscreen: {Fullscreen}", pos, Index == 6 ? Color.LawnGreen : Color.White);
 
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Size16.Get(), "Reset", pos, Index == 7 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "Reset", pos, Index == 7 ? Color.LawnGreen : Color.White);
 
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Size16.Get(), "Continue", pos, Index == 8 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "Continue", pos, Index == 8 ? Color.LawnGreen : Color.White);
         }
 
         private (int Width, int Height) GetResult() {
