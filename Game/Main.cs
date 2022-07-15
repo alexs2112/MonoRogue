@@ -41,7 +41,7 @@ namespace MonoRogue {
         }
 
         protected override void Initialize() {
-            Window.Title = "Escape of the Blue Man";
+            Window.Title = $"Escape of the {Constants.GetPlayerName()}";
             UpdateScreenSize();
 
             Tile.LoadTiles(Content);
@@ -318,6 +318,16 @@ namespace MonoRogue {
             }
         }
 
+        public void UpdatePlayer() {
+            Window.Title = $"Escape of the {Constants.GetPlayerName()}";
+
+            if (Player == null) { return; }
+            Player.SetName(Constants.GetPlayerName());
+            Player.SetColor(Constants.Colors[Constants.ColorIndex]);
+
+            WorldView.Update(World, Player);
+        }
+
         private static void ParseParameters(string[] args) {
             List<string> cmd = new List<string>(args);
             Constants.Debug = cmd.Contains("--debug");
@@ -350,10 +360,11 @@ namespace MonoRogue {
                 Constants.WorldWidth = 40;
                 Constants.WorldHeight = 25;
             }
+            if (cmd.Contains("--no-animations")) { Constants.AllowAnimations = false; }
 
             Constants.WriteMessagesToConsole = cmd.Contains("--messages");
-            Constants.AllowAnimations = !cmd.Contains("--no-animations");
             Constants.Invincible = cmd.Contains("--invincible");
+
             if (Constants.Invincible) { System.Console.WriteLine("Player Invincibility Enabled"); }
         }
 

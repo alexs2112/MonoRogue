@@ -14,9 +14,10 @@ namespace MonoRogue {
         /* Options:
         *  0: Continue (if possible)
         *  1: New Game
-        *  2: Settings
-        *  3: Help
-        *  4: Quit
+        *  2: Display
+        *  3: Settings
+        *  4: Help
+        *  5: Quit
         */
         
         public StartScreen(Main main, ContentManager content) : base(content) { 
@@ -52,6 +53,8 @@ namespace MonoRogue {
                     } else if (Index == 2) {
                         return new WindowResizeScreen(Content, Main, this);
                     } else if (Index == 3) {
+                        return new GameSettingsScreen(Content, Main, this);
+                    } else if (Index == 4) {
                         return new HelpMenuScreen(Content, this);
                     } else {
                         Main.Exit();
@@ -86,17 +89,19 @@ namespace MonoRogue {
 
             int x = Constants.ScreenWidth / 2;
             int y = Constants.ScreenHeight / 2 - 96;
-            WriteCentered(spriteBatch, Font.Get(24), "Escape of the Blue Man", new Vector2(x, y), Color.White);
+            WriteCentered(spriteBatch, Font.Get(24), $"Escape of the {Constants.GetPlayerName()}", new Vector2(x, y), Color.White);
             y += 48;
             WriteCentered(spriteBatch, Font.Get(16), "Continue", new Vector2(x, y), CanContinue ? Index == 0 ? Color.LawnGreen : Color.White : Color.Gray);
             y += 32;
             WriteCentered(spriteBatch, Font.Get(16), "New Game", new Vector2(x, y), Index == 1 ? Color.LawnGreen : Color.White);
             y += 32;
-            WriteCentered(spriteBatch, Font.Get(16), "Settings", new Vector2(x, y), Index == 2 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "Display", new Vector2(x, y), Index == 2 ? Color.LawnGreen : Color.White);
             y += 32;
-            WriteCentered(spriteBatch, Font.Get(16), "Help", new Vector2(x, y), Index == 3 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "Settings", new Vector2(x, y), Index == 3 ? Color.LawnGreen : Color.White);
             y += 32;
-            WriteCentered(spriteBatch, Font.Get(16), "Exit", new Vector2(x, y), Index == 4 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "Help", new Vector2(x, y), Index == 4 ? Color.LawnGreen : Color.White);
+            y += 32;
+            WriteCentered(spriteBatch, Font.Get(16), "Exit", new Vector2(x, y), Index == 5 ? Color.LawnGreen : Color.White);
             y += 32;
 
             y = Constants.ScreenHeight - 64;
@@ -113,12 +118,12 @@ namespace MonoRogue {
 
         private void Decrement() {
             Index--;
-            if (Index == 0 && !CanContinue) { Index = 4; }
-            else if (Index < 0) { Index = 4; }
+            if (Index == 0 && !CanContinue) { Index = 5; }
+            else if (Index < 0) { Index = 5; }
         }
         private void Increment() {
             Index++;
-            if (Index > 4) {
+            if (Index > 5) {
                 if (CanContinue) { Index = 0; }
                 else { Index = 1; }
             }

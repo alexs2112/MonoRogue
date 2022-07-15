@@ -104,9 +104,15 @@ namespace MonoRogue {
 
         private CreatureData PrepareCreature(Creature c) {
             PointData targetTile = null;
-            if (!c.IsPlayer) { targetTile = new PointData { X = ((BasicAI)c.AI).TargetTile.X, Y = ((BasicAI)c.AI).TargetTile.Y }; }
+            string name;
+            if (!c.IsPlayer) {
+                name = c.Name;
+                targetTile = new PointData { X = ((BasicAI)c.AI).TargetTile.X, Y = ((BasicAI)c.AI).TargetTile.Y };
+            } else {
+                name = "Player";
+            }
             return new CreatureData {
-                Name = c.Name,
+                Name = name,
                 Position = new PointData { X = c.X, Y = c.Y },
                 Health = c.HP,
                 Defense = c.Defense,

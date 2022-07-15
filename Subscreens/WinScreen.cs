@@ -22,7 +22,7 @@ namespace MonoRogue {
             Vector2 v = new Vector2(Constants.ScreenWidth / 2, 128);
             WriteCentered(spriteBatch, Font.Get(24), "Congratulations!", v, Color.White);
             v.Y += 64;
-            WriteCentered(spriteBatch, Font.Get(16), "The Blue Man escaped the dungeon!", v, Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), $"The {Constants.GetPlayerName()} escaped the dungeon!", v, Color.White);
             v.Y += 32;
             WriteCentered(spriteBatch, Font.Get(16), "Press [esc] to exit", v, Color.Gray);
 

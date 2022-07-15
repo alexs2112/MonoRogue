@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
+using Microsoft.Xna.Framework;
 
 namespace MonoRogue {
     public struct Constants {
@@ -37,47 +38,72 @@ namespace MonoRogue {
         public static string SettingsPath = "BlueMan.settings";     // Relative path to the settings file
         public static string SavegamePath = "BlueSave.savegame";    // Relative path to the currently saved game
         public static bool IndentedSave = false;                    // If the json of the save file should be formatted
+
+        public static int ColorIndex = 0;                   // Some player customization
+        public static string Gender = "Man";                //
+        public static Color[] Colors = new Color[] { Color.SkyBlue, Color.Yellow, Color.Red, Color.Chartreuse };
+        public static string[] ColorNames = new string[] { "Blue", "Yellow", "Red", "Green" };
+        public static string GetPlayerName() {
+            return $"{Constants.ColorNames[Constants.ColorIndex]} {Constants.Gender}";
+        }
+    }
+
+    public class SaveSettings {
+        public int ScreenWidth { get; set; }
+        public int ScreenHeight { get; set; }
+        public bool Fullscreen { get; set; }
+
+        public float MusicVolume { get; set; }
+        public float EffectVolume { get; set; }
+
+        public int PlayerColor { get; set; }
+        public string PlayerGender { get; set; }
+
+        public bool AllowAnimations { get; set; }
     }
 
     public class Settings {
         public static void SaveSettings() {
-            StreamWriter writer = new StreamWriter(Constants.SettingsPath);
+            SaveSettings data = new SaveSettings() {
+                ScreenWidth = Constants.ScreenWidth,
+                ScreenHeight = Constants.ScreenHeight,
+                Fullscreen = Constants.Fullscreen,
+                MusicVolume = Constants.MusicVolume,
+                EffectVolume = Constants.EffectVolume,
+                PlayerColor = Constants.ColorIndex,
+                PlayerGender = Constants.Gender,
+                AllowAnimations = Constants.AllowAnimations
+            };
 
-            writer.WriteLine($"ScreenWidth:{Constants.ScreenWidth}");
-            writer.WriteLine($"ScreenHeight:{Constants.ScreenHeight}");
-            writer.WriteLine($"Fullscreen:{Constants.Fullscreen}");
-
-            writer.WriteLine($"MusicVolume:{Constants.MusicVolume}");
-            writer.WriteLine($"EffectVolume:{Constants.EffectVolume}");
-
-            writer.Close();
+            string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(Constants.SettingsPath, json);
         }
 
         public static void LoadSettings() {
             if (!File.Exists(Constants.SettingsPath)) { return; }
 
-            Dictionary<string, string> settings = new Dictionary<string, string>();
-            StreamReader reader = new StreamReader(Constants.SettingsPath);
-
+            string json = File.ReadAllText(Constants.SettingsPath);
+            SaveSettings data;
             try {
-                do {
-                    string line = reader.ReadLine();
-                    string[] s = line.Split(':', 2);
-                    settings[s[0]] = s[1];
-                } while (reader.Peek() != -1);
-            } catch {
-                System.Console.WriteLine("Failed to load settings file.");
-            } finally {
-                reader.Close();
+                data = JsonSerializer.Deserialize<SaveSettings>(json);
+            } catch (System.Exception e) {
+                System.Console.WriteLine($"Broken settings data ({Constants.SettingsPath})");
+                System.Console.WriteLine(e.Message);
+                System.Console.WriteLine(e.StackTrace);
+                return;
             }
 
-            if (settings.ContainsKey("ScreenWidth")) { Constants.ScreenWidth = int.Parse(settings["ScreenWidth"]); }
-            if (settings.ContainsKey("ScreenHeight")) { Constants.ScreenHeight = int.Parse(settings["ScreenHeight"]); }
+            if (data.ScreenWidth > 0) { Constants.ScreenWidth = data.ScreenWidth; }
+            if (data.ScreenHeight > 0) { Constants.ScreenHeight = data.ScreenHeight; }
+            Constants.Fullscreen = data.Fullscreen;
+            Constants.MusicVolume = data.MusicVolume;
+            Constants.EffectVolume = data.EffectVolume;
+            
+            if (data.PlayerColor > -1 && data.PlayerColor < Constants.Colors.Length) { Constants.ColorIndex = data.PlayerColor; }
+            if (data.PlayerGender.Length > 0) { Constants.Gender = data.PlayerGender; }
 
-            if (settings.ContainsKey("Fullscreen")) { Constants.Fullscreen = bool.Parse(settings["Fullscreen"]); }
-
-            if (settings.ContainsKey("MusicVolume")) { Constants.MusicVolume = float.Parse(settings["MusicVolume"]); }
-            if (settings.ContainsKey("EffectVolume")) { Constants.EffectVolume = float.Parse(settings["EffectVolume"]); }
+            Constants.AllowAnimations = data.AllowAnimations;
+            System.Console.WriteLine(data.AllowAnimations);
         }
     }
 }

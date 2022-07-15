@@ -14,5 +14,12 @@ namespace MonoRogue {
             Vector2 place = new Vector2(center.X - origin.X, center.Y);
             spriteBatch.DrawString(font, text, place, color);
         }
+
+        protected static void WriteRight(SpriteBatch spriteBatch, SpriteFont font, string text, Vector2 rightEdge, Color color) {
+            Vector2 size = font.MeasureString(text);
+            Vector2 origin = size;
+            Vector2 place = new Vector2(rightEdge.X - origin.X, rightEdge.Y);
+            spriteBatch.DrawString(font, text, place, color);
+        }
     }
 }

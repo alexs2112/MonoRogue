@@ -4,7 +4,8 @@
     * Volume settings screen
     * Game settings screen
       * Changing player colour changes game name. Set gender as well. "Escape of the Yellow Person"
-        * Write "Blue Man" or whatever instead of player in main interface/creature screen
+        * Escape of the Yellow Person is too long for the main, end, stats screens...
+        * This needs to be able to save and load properly
       * Enable/Disable animations here
       * Save these settings, redo saving settings to use json
     * Let the start screen go to settings and help screens
@@ -16,6 +17,7 @@
 
  * Music and sound effects
     * Arcady sound effects for food, attacks, doors and stuff?
+    * Changing settings in various settings screens
 
  * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
    * Currently it is technically possible that the exit spawns in an impossible to reach location
@@ -42,6 +44,7 @@
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
    * Loading a game when the player has a key still allows them to win but does not show the correct exit glyph
    * Reimplement an fps cap, for animations and other systems. Add it to the settings. (Main.TargetElapsedTime)
+   * Items need to not be able to drop on the exit...
 
  * Release prep:
    * Fix all @todo tags

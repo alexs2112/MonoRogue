@@ -66,7 +66,7 @@ namespace MonoRogue
         public Creature NewPlayer(World world, int x, int y)
         {
             Texture2D glyph = PlayerGlyph.GetDefaultGlyph();
-            Creature c = new Creature("Player", glyph, Color.SkyBlue);
+            Creature c = new Creature(Constants.GetPlayerName(), glyph, Constants.Colors[Constants.ColorIndex]);
             c.SetStats(12, 0, (2, 3));
             c.SetDescription("A hapless adventurer.");
 
