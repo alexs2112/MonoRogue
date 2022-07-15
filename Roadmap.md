@@ -1,14 +1,6 @@
 ### **Roadmap:**
  * Other subscreens:
     * Similar to the fire screen, a way to view tiles without using the mouse
-    * Volume settings screen
-    * Game settings screen
-      * Changing player colour changes game name. Set gender as well. "Escape of the Yellow Person"
-        * Escape of the Yellow Person is too long for the main, end, stats screens...
-        * This needs to be able to save and load properly
-      * Enable/Disable animations here
-      * Save these settings, redo saving settings to use json
-    * Let the start screen go to settings and help screens
     * Actual game over screen
 
  * Game history and stats
