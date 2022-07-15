@@ -35,11 +35,11 @@ namespace MonoRogue {
         private Rectangle RightSide = new Rectangle(32,0,16,32);
         private Rectangle LeftSide = new Rectangle(48,0,16,32);
         private void DrawBorder(SpriteBatch spriteBatch) {
-            for (int i = 0; i < (Constants.ScreenWidth - 32) / 32 + 1; i++) {
+            for (int i = 0; i < (Constants.ScreenWidth + 31) / 32; i++) {
                 spriteBatch.Draw(BorderSides, new Vector2(i * 32, 0), TopSide, Color.LightGray);
                 spriteBatch.Draw(BorderSides, new Vector2(i * 32, Constants.ScreenHeight - 16), BotSide, Color.LightGray);
             }
-            for (int i = 0; i < (Constants.ScreenHeight - 32) / 32 + 1; i++) {
+            for (int i = 0; i < (Constants.ScreenHeight + 31) / 32; i++) {
                 spriteBatch.Draw(BorderSides, new Vector2(0, i * 32), LeftSide, Color.LightGray);
                 spriteBatch.Draw(BorderSides, new Vector2(Constants.ScreenWidth - 16, i * 32), RightSide, Color.LightGray);
             }

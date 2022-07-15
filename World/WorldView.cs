@@ -83,10 +83,10 @@ namespace MonoRogue {
         }
 
         public void UpdateScreenSize() {
-            Glyphs = new Texture2D[Constants.WorldViewWidth, Constants.WorldViewHeight];
-            Colors = new Color[Constants.WorldViewWidth, Constants.WorldViewHeight];
-            Width = Constants.WorldViewWidth;
-            Height = Constants.WorldViewHeight;
+            Width = (Constants.ScreenWidth - MainInterface.InterfaceWidth) / 32;
+            Height = (Constants.ScreenHeight) / 32;
+            Glyphs = new Texture2D[Width, Height];
+            Colors = new Color[Width, Height];
         }
     }
 }

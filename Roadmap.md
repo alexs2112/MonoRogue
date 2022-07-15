@@ -7,7 +7,6 @@
         * Write "Blue Man" or whatever instead of player in main interface/creature screen
       * Enable/Disable animations here
       * Save these settings, redo saving settings to use json
-    * Pretty up the window resize screen. Increase screen resolution options but limit it on detected screen size
     * Let the start screen go to settings and help screens
     * Actual game over screen
 
@@ -42,6 +41,7 @@
    * Have more enemies speak
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
    * Loading a game when the player has a key still allows them to win but does not show the correct exit glyph
+   * Reimplement an fps cap, for animations and other systems. Add it to the settings. (Main.TargetElapsedTime)
 
  * Release prep:
    * Fix all @todo tags

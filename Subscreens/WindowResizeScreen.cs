@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,19 +11,14 @@ namespace MonoRogue {
         private int Index;
         // Indices
         // 0 Back
-        // 1 Preset Size:
-        // 2 <preset selection list>
-        // 3 Custom Size:
-        // 4 <custom width>
-        // 5 <custom height>
-        // 6 Fullscreen
-        // 7 Reset
-        // 8 Save Changes
+        // 1 Screen Resolution
+        // 2 Fullscreen
+        // 3 Reset
+        // 4 Save Changes
 
         private int Width;
         private int Height;
         private int ResolutionIndex;
-        private bool UsePreset;
         private bool Fullscreen;
 
         private (int Width, int Height)[] Resolutions;
@@ -30,96 +26,48 @@ namespace MonoRogue {
         public WindowResizeScreen(ContentManager content, Main main, Subscreen lastScreen) : base(content) {
             Main = main;
             LastScreen = lastScreen;
-            Resolutions = new (int, int)[] { (800, 480), (1280, 800), (1920, 1056) };
+            Resolutions = new (int, int)[] { (800, 480), (1280, 720), (1366, 768), (1600, 900), (1920, 1080) };
 
             Fullscreen = Constants.Fullscreen;
-            
+
+            ResolutionIndex = LoadResolutionIndex();
+            SetLocalDimensions();
+        }
+
+        // Get the resolution index from Constants
+        private int LoadResolutionIndex() {
             for (int i = 0; i < Resolutions.Length; i++) {
                 if ((Constants.ScreenWidth, Constants.ScreenHeight) == Resolutions[i]) {
-                    ResolutionIndex = i;
-                    UsePreset = true;
+                    return i;
                 }
             }
-            Width = Constants.ScreenWidth / 32 - 10;
-            Height = Constants.ScreenHeight / 32;
+            return 0;
+        }
+
+        private void SetLocalDimensions() {
+            (Width, Height) = Resolutions[ResolutionIndex];
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { return LastScreen; }
-            else if (key == Keys.Down) {
-                if (Index == 0) {
-                    if (UsePreset) { Index += 2; }
-                    else { Index++; }
-                } else if (Index == 1) {
-                    if (UsePreset) { Index++; }
-                    else { Index += 2; }
-                } else if (Index == 3) {
-                    if (UsePreset) { Index = 6; }
-                    else { Index++; }
-                } else if (Index == 8) {
-                    // Do nothing
-                } else {
-                    Index++;
-                }
-            } else if (key == Keys.Up) {
-                if (Index == 0) {
-                    // Do nothing
-                } else if (Index == 2) {
-                    if (UsePreset) { Index = 0; }
-                    else { Index--; }
-                } else if (Index == 3) {
-                    if (UsePreset) { Index--; }
-                    else { Index -= 2; }
-                } else if (Index == 4) {
-                    if (UsePreset) { Index--; }
-                    else { Index -= 2; }
-                } else if (Index == 6) {
-                    if (UsePreset) { Index = 3; }
-                    else { Index--; }
-                } else {
-                    Index--;
-                }
-            } else if (key == Keys.Right) {
-                if (Index == 2) {
-                    if (ResolutionIndex == Resolutions.Length - 1) {
-                        ResolutionIndex = 0;
-                    } else {
-                        ResolutionIndex++;
-                    }
-                } else if (Index == 4) {
-                    if (Width < 50) { Width++; }
-                } else if (Index == 5) {
-                    if (Height < 33) { Height++; }
-                }
-            } else if (key == Keys.Left) {
-                if (Index == 2) {
-                    if (ResolutionIndex == 0) {
-                        ResolutionIndex = Resolutions.Length - 1;
-                    } else {
-                        ResolutionIndex--;
-                    }
-                } else if (Index == 4) {
-                    if (Width > 15) { Width--; }
-                } else if (Index == 5) {
-                    if (Height > 15) { Height--; }
-                }
-            } else if (key == Keys.Enter || key == Keys.Space) {
+            else if (key == Keys.Down) { if (Index < 4) { Index++; } }
+            else if (key == Keys.Up) { if (Index > 0) { Index--; } }
+            else if (key == Keys.Left) { if (Index == 1 && ResolutionIndex > 0) { ResolutionIndex--; }}
+            else if (key == Keys.Right) { if (Index == 1 && ResolutionIndex < Resolutions.Length - 1) { ResolutionIndex++; }}
+            else if (key == Keys.Enter) {
                 if (Index == 0) { return LastScreen; }
-                else if (Index == 1) { UsePreset = true; }
-                else if (Index == 2) {
-                    Width = Resolutions[ResolutionIndex].Width / 32 - 10;
-                    Height = Resolutions[ResolutionIndex].Height / 32;
-                    Index++;
-                } else if (Index == 3) { UsePreset = false; }
-                else if (Index == 6) { Fullscreen = !Fullscreen; }
-                else if (Index == 7) { Width = 15; Height = 15; Fullscreen = false; }
-                else if (Index == 8) {
-                    (int width, int height) next = GetResult();
-                    Constants.ScreenWidth = next.width;
-                    Constants.ScreenHeight = next.height;
-                    Constants.WorldViewWidth = Width;
-                    Constants.WorldViewHeight = Height;
+                else if (Index == 1) { SetLocalDimensions(); }
+                else if (Index == 2) { Fullscreen = !Fullscreen; }
+                else if (Index == 3) { ResolutionIndex = LoadResolutionIndex(); SetLocalDimensions(); Fullscreen = Constants.Fullscreen; }
+                else if (Index == 4) {
                     Constants.Fullscreen = Fullscreen;
+                    if (Constants.Fullscreen) {
+                        Constants.ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                        Constants.ScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                    }  else {
+                        Constants.ScreenWidth = Width;
+                        Constants.ScreenHeight = Height;
+                    }
                     Main.UpdateScreenSize();
                     Settings.SaveSettings();
                     return LastScreen;
@@ -134,53 +82,64 @@ namespace MonoRogue {
             int y = Constants.ScreenHeight / 2 - 218;
             Vector2 pos = new Vector2(x, y);
 
-            (int Width, int Height) result = GetResult();
-            WriteCentered(spriteBatch, Font.Get(24), $"Window Size: {result.Width}x{result.Height}", pos, Color.White);
+            WriteCentered(spriteBatch, Font.Get(24), "Display Settings", pos, Color.White);
             pos.Y += 64;
 
-            WriteCentered(spriteBatch, Font.Get(16), $"Back", pos, Index == 0 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "Back", pos, Index == 0 ? Color.LawnGreen : Color.White);
             pos.Y += 48;
 
-            WriteCentered(spriteBatch, Font.Get(16), $"Use Preset", pos, Index == 1 ? Color.LawnGreen : UsePreset ? Color.White : Color.Gray);
-            pos.Y += 32;
-
-            Vector2 posPreset = new Vector2(pos.X - (Resolutions.Length / 2) * 192 - 85, pos.Y);
-            for (int i = 0; i < Resolutions.Length; i++) {
-                (int Width, int Height) r = Resolutions[i];
-                string w;
-                string h;
-                if (r.Width < 1000) { w = $" {r.Width}"; }
-                else { w = $"{r.Width}"; }
-                if (r.Height < 1000) { h = $"{r.Height} "; }
-                else { h = $"{r.Height}"; }
-
-                spriteBatch.DrawString(Font.Get(14), $"{w}x{h}", posPreset, UsePreset ? (ResolutionIndex == i && Index == 2 ? Color.LawnGreen : Color.White) : Color.Gray);
-                posPreset.X += 192;
+            WriteCentered(spriteBatch, Font.Get(16), FormatDimension(ResolutionIndex), pos, Index == 1 ? Color.LawnGreen : Color.White);
+            if (ResolutionIndex > 0) {
+                WriteCentered(spriteBatch, Font.Get(16), FormatDimension(ResolutionIndex - 1), new Vector2(pos.X - 240, pos.Y), Color.LightGray);
             }
-
+            if (ResolutionIndex > 1) {
+                spriteBatch.DrawString(Font.Get(16), "<", new Vector2(pos.X - 360, pos.Y), Color.White);
+            }
+            if (ResolutionIndex < Resolutions.Length - 1) {
+                WriteCentered(spriteBatch, Font.Get(16), FormatDimension(ResolutionIndex + 1), new Vector2(pos.X + 240, pos.Y), Color.LightGray);
+            }
+            if (ResolutionIndex < Resolutions.Length - 2) {
+                spriteBatch.DrawString(Font.Get(16), ">", new Vector2(pos.X + 320, pos.Y), Color.White);
+            }
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Get(16), $"Use Custom", pos, Index == 3 ? Color.LawnGreen : UsePreset ? Color.Gray : Color.White);
-            pos.Y += 32;
-            WriteCentered(spriteBatch, Font.Get(14), $"Width: {Width}", pos, UsePreset ? Color.Gray : Index == 4 ? Color.LawnGreen : Color.White);
-            pos.Y += 32;
-            WriteCentered(spriteBatch, Font.Get(14), $"Height: {Height}", pos, UsePreset ? Color.Gray : Index == 5 ? Color.LawnGreen : Color.White);
 
+            WriteCentered(spriteBatch, Font.Get(16), $"Fullscreen: {Fullscreen}", pos, Index == 2 ? Color.LawnGreen : Color.White);
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Get(16), $"Fullscreen: {Fullscreen}", pos, Index == 6 ? Color.LawnGreen : Color.White);
 
+            WriteCentered(spriteBatch, Font.Get(16), "Reset", pos, Index == 3 ? Color.LawnGreen : Color.White);
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Get(16), "Reset", pos, Index == 7 ? Color.LawnGreen : Color.White);
 
+            WriteCentered(spriteBatch, Font.Get(16), "Continue", pos, Index == 4 ? Color.LawnGreen : Color.White);
             pos.Y += 48;
-            WriteCentered(spriteBatch, Font.Get(16), "Continue", pos, Index == 8 ? Color.LawnGreen : Color.White);
+
+            if (Fullscreen) {
+                List<string> warning = Font.Size14.SplitString("Note: Fullscreen will overwrite resolution to fit your screen.", Constants.ScreenWidth - 64);
+                pos.Y = Constants.ScreenHeight - 64 - 32 * warning.Count;
+                foreach (string s in warning) {
+                    WriteCentered(spriteBatch, Font.Get(14), s, pos, Color.Gray);
+                    pos.Y += 32;
+                }
+            }
         }
 
-        private (int Width, int Height) GetResult() {
-            if (UsePreset) {
-                return Resolutions[ResolutionIndex];
-            } else {
-                return ((Width + 10) * 32, Height * 32);
+        private string FormatDimension(int index) {
+            try {
+                return FormatDimension(Resolutions[index].Width, Resolutions[index].Height);
+            } catch {
+                throw new System.Exception(ResolutionIndex.ToString());
             }
+        }
+        private string FormatDimension(int width, int height) {
+            string s;
+            if (width < 1000) { s = $" {width}"; }
+            else { s = $"{width}"; }
+
+            s += "x";
+
+            if (height < 1000) { s += $"{height} "; }
+            else { s += $"{height}"; }
+
+            return s;
         }
     }
 }

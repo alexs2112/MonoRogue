@@ -306,12 +306,12 @@ namespace MonoRogue {
         }
 
         public void UpdateScreenSize() {
+            Graphics.IsFullScreen = Constants.Fullscreen;
             Graphics.PreferredBackBufferWidth = Constants.ScreenWidth;
             Graphics.PreferredBackBufferHeight = Constants.ScreenHeight;
-            Graphics.IsFullScreen = Constants.Fullscreen;
             Graphics.ApplyChanges();
-
-            MainInterface.StartX = 32 * Constants.WorldViewWidth;
+            
+            MainInterface.UpdateScreen();
             if (WorldView != null) { 
                 WorldView.UpdateScreenSize();
                 if (World != null) { WorldView.Update(World, Player); }

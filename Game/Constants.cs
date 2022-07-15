@@ -18,9 +18,6 @@ namespace MonoRogue {
         public static int DungeonIterations = 6;    // How many times we partition the dungeon, will result in up to 2^var rooms, default: 4
         public static int RoomMinSize = 4;          // Minimum Width and Height of a room
 
-        public static int WorldViewWidth = 15;      // How many tiles are displayed from the world at once
-        public static int WorldViewHeight = 15;     //
-
         public static long TickHoldRate = System.TimeSpan.TicksPerSecond / 8;   // How long you have to hold the same key for it to register again
 
         public static int Seed = -1;                // Randomization seed, -1 for a random seed
@@ -50,9 +47,6 @@ namespace MonoRogue {
             writer.WriteLine($"ScreenHeight:{Constants.ScreenHeight}");
             writer.WriteLine($"Fullscreen:{Constants.Fullscreen}");
 
-            writer.WriteLine($"WorldViewWidth:{Constants.WorldViewWidth}");
-            writer.WriteLine($"WorldViewHeight:{Constants.WorldViewHeight}");
-
             writer.WriteLine($"MusicVolume:{Constants.MusicVolume}");
             writer.WriteLine($"EffectVolume:{Constants.EffectVolume}");
 
@@ -81,9 +75,6 @@ namespace MonoRogue {
             if (settings.ContainsKey("ScreenHeight")) { Constants.ScreenHeight = int.Parse(settings["ScreenHeight"]); }
 
             if (settings.ContainsKey("Fullscreen")) { Constants.Fullscreen = bool.Parse(settings["Fullscreen"]); }
-
-            if (settings.ContainsKey("WorldViewWidth")) { Constants.WorldViewWidth = int.Parse(settings["WorldViewWidth"]); }
-            if (settings.ContainsKey("WorldViewHeight")) { Constants.WorldViewHeight = int.Parse(settings["WorldViewHeight"]); }
 
             if (settings.ContainsKey("MusicVolume")) { Constants.MusicVolume = float.Parse(settings["MusicVolume"]); }
             if (settings.ContainsKey("EffectVolume")) { Constants.EffectVolume = float.Parse(settings["EffectVolume"]); }

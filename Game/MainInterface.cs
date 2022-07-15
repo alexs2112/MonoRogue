@@ -6,12 +6,9 @@ using Microsoft.Xna.Framework.Content;
 namespace MonoRogue {
     public class MainInterface {
         // Storing the methods to draw the interface on the right side of the main screen
-        
-        // Where the interface starts from on the screen
-        public static int StartX = 32 * Constants.WorldViewWidth;
 
-        // @todo make this dynamic
-        public static int InterfaceWidth = 320;
+        public static int InterfaceWidth;
+        public static int StartX;
 
         public static Texture2D InterfaceDivider;
         public static Texture2D InterfaceLine;
@@ -29,6 +26,15 @@ namespace MonoRogue {
 
         // Cache messages so we aren't formatting all of the strings hundreds of times per second for no reason
         private List<string> Messages;
+
+        public MainInterface() {
+            UpdateScreen();
+        }
+
+        public static void UpdateScreen() {
+            InterfaceWidth = (Constants.ScreenWidth % 32) + 320;
+            StartX = Constants.ScreenWidth - InterfaceWidth;
+        }
 
         public static void LoadTextures(ContentManager content, GraphicsDevice graphics) {
             InterfaceDivider = content.Load<Texture2D>("Interface/InterfaceDivider");
