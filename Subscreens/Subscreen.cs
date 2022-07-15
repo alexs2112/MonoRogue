@@ -21,5 +21,18 @@ namespace MonoRogue {
             Vector2 place = new Vector2(rightEdge.X - origin.X, rightEdge.Y);
             spriteBatch.DrawString(font, text, place, color);
         }
+
+        public static bool IsUp(Keys k, bool includeNumbers = true) {
+            return k == Keys.Up || k == Keys.K || k == Keys.NumPad8 || k == Keys.D8 && includeNumbers;
+        }
+        public static bool IsDown(Keys k, bool includeNumbers = true) {
+            return k == Keys.Down || k == Keys.J || k == Keys.NumPad2 || k == Keys.D2 && includeNumbers;
+        }
+        public static bool IsLeft(Keys k, bool includeNumbers = true) {
+            return k == Keys.Left || k == Keys.H || k == Keys.NumPad4 || k == Keys.D4 && includeNumbers;
+        }
+        public static bool IsRight(Keys k, bool includeNumbers = true) {
+            return k == Keys.Right || k == Keys.L || k == Keys.NumPad6 || k == Keys.D6 && includeNumbers;
+        }
     }
 }

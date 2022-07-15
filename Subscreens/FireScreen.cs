@@ -41,10 +41,8 @@ namespace MonoRogue {
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape) { return null; }
             else if (mouse.RightClicked()) { return null; }
-
-            // @todo: For now only handle the arrow keys, fix this to use all "movement" commands later
-            else if (key == Keys.Up) { if (Index > 0) { Index--; }}
-            else if (key == Keys.Down) { if (Index < Enemies.Count - 1) { Index++; }}
+            else if (IsUp(key)) { if (Index > 0) { Index--; }}
+            else if (IsDown(key)) { if (Index < Enemies.Count - 1) { Index++; }}
             else if (key == Keys.Enter || key == Keys.Space) {
                 Creature target = GetCreature();
                 if (target != null) {

@@ -50,11 +50,11 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { return LastScreen; }
-            else if (key == Keys.Down) { if (Index < 4) { Index++; } }
-            else if (key == Keys.Up) { if (Index > 0) { Index--; } }
-            else if (key == Keys.Left) { if (Index == 1 && ResolutionIndex > 0) { ResolutionIndex--; }}
-            else if (key == Keys.Right) { if (Index == 1 && ResolutionIndex < Resolutions.Length - 1) { ResolutionIndex++; }}
-            else if (key == Keys.Enter) {
+            else if (IsDown(key)) { if (Index < 4) { Index++; } }
+            else if (IsUp(key)) { if (Index > 0) { Index--; } }
+            else if (IsLeft(key)) { if (Index == 1 && ResolutionIndex > 0) { ResolutionIndex--; }}
+            else if (IsRight(key)) { if (Index == 1 && ResolutionIndex < Resolutions.Length - 1) { ResolutionIndex++; }}
+            else if (key == Keys.Enter || key == Keys.Space) {
                 if (Index == 0) { return LastScreen; }
                 else if (Index == 1) { SetLocalDimensions(); }
                 else if (Index == 2) { Fullscreen = !Fullscreen; }

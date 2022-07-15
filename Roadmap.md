@@ -8,8 +8,12 @@
     * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
 
  * Music and sound effects
-    * Arcady sound effects for food, attacks, doors and stuff?
     * Changing settings in various settings screens
+    * Attacks (start of animations/attack if no animations)
+    * Doors
+    * Food
+    * Winning
+    * Things dying (maybe overwrite the attack sound)
 
  * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
    * Currently it is technically possible that the exit spawns in an impossible to reach location
@@ -26,7 +30,6 @@
 
  * Minor fixes
    * Have item notifications not stop auto movement
-   * Have KeyboardTrack compare keys with other keys to determine direction as a static method, instead of having it check to see if a directional key was pressed in itself (for subscreens)
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
    * Turns out we don't need to overload every constructor, we can set default arguments
    * Have the fire screen automatically select the last guy you targeted

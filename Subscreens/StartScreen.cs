@@ -32,6 +32,7 @@ namespace MonoRogue {
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             switch (key) {
                 case Keys.Escape: Main.Exit(); break;
+                case Keys.Space:
                 case Keys.Enter:
                     if (Index == 0) {
                         Main.CreateWorld(true);
@@ -60,8 +61,6 @@ namespace MonoRogue {
                         Main.Exit();
                         break;
                     }
-                case Keys.Up: Decrement(); break;
-                case Keys.Down: Increment(); break;
                 case Keys.D0: AddSeedChar('0'); break;
                 case Keys.D1: AddSeedChar('1'); break;
                 case Keys.D2: AddSeedChar('2'); break;
@@ -76,6 +75,8 @@ namespace MonoRogue {
                     if (Seed.Length > 0) { Seed = Seed.Remove(Seed.Length - 1); }
                     break;
             }
+            if (IsUp(key, false)) { Decrement(); }
+            else if (IsDown(key, false)) { Increment(); }
             return this;
         }
 

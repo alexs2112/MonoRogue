@@ -103,7 +103,6 @@ namespace MonoRogue {
             if (data.PlayerGender.Length > 0) { Constants.Gender = data.PlayerGender; }
 
             Constants.AllowAnimations = data.AllowAnimations;
-            System.Console.WriteLine(data.AllowAnimations);
         }
     }
 }

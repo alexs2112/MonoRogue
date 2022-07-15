@@ -91,10 +91,10 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { base.CloseSubscreen(); return null; }
-            else if (key == Keys.Left) { MX--; }
-            else if (key == Keys.Right) { MX++; }
-            else if (key == Keys.Up) { MY--; }
-            else if (key == Keys.Down) { MY++; }
+            else if (IsLeft(key)) { MX--; }
+            else if (IsRight(key)) { MX++; }
+            else if (IsUp(key)) { MY--; }
+            else if (IsDown(key)) { MY++; }
             else if (key == Keys.Space) { 
                 MX = World.Player.X;
                 MY = World.Player.Y;

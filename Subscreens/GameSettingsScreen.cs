@@ -54,9 +54,9 @@ namespace MonoRogue {
         
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { return LastScreen; }
-            else if (key == Keys.Down) { if (Index < 7) { Index++; } }
-            else if (key == Keys.Up) { if (Index > 0) { Index--; } }
-            else if (key == Keys.Left) {
+            else if (IsDown(key)) { if (Index < 7) { Index++; } }
+            else if (IsUp(key)) { if (Index > 0) { Index--; } }
+            else if (IsLeft(key)) {
                 if (Index == 1) {
                     ColorIndex--;
                     if (ColorIndex < 0) { ColorIndex = Constants.Colors.Length - 1; }
@@ -69,7 +69,7 @@ namespace MonoRogue {
                 } else if (Index == 5) {
                     if (EffectVolume > 0) { EffectVolume -= 0.05f; UpdateAudio(); }
                 }
-            } else if (key == Keys.Right || key == Keys.Enter) {
+            } else if (IsRight(key) || key == Keys.Enter || key == Keys.Space) {
                 if (Index == 1) {
                     ColorIndex++;
                     if (ColorIndex >= Constants.Colors.Length) { ColorIndex = 0; }
@@ -81,7 +81,7 @@ namespace MonoRogue {
                     if (MusicVolume < 0.5) { MusicVolume += 0.05f; UpdateAudio(); }
                 } else if (Index == 5) {
                     if (EffectVolume < 0.5) { EffectVolume += 0.05f; UpdateAudio(); }
-                } else if (key == Keys.Enter) {
+                } else if (key == Keys.Enter || key == Keys.Space) {
                     if (Index == 0) { return LastScreen; }
                     else if (Index == 6) { ResetDefaults(); }
                     else if (Index == 7) { SaveChanges(); return LastScreen; }

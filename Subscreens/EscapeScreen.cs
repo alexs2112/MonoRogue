@@ -13,23 +13,19 @@ namespace MonoRogue {
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
-            switch(key) {
-                case Keys.Escape: base.CloseSubscreen(); return null;
-                case Keys.Space:
-                case Keys.Enter:
-                    if (Index == 0) { base.CloseSubscreen(); return null; }
-                    else if (Index == 1) { return new WindowResizeScreen(Content, Main, this); }
-                    else if (Index == 2) { return new GameSettingsScreen(Content, Main, this); }
-                    else if (Index == 3) { return new HelpMenuScreen(Content, this); }
-                    else if (Index == 4) {
-                        Main.SaveGame();
-                        Main.Exit();
-                    }
-                    break;
-
-                case Keys.Up: if (Index > 0) { Index--; } break;
-                case Keys.Down: if (Index < 4) { Index++; } break;
+            if (key == Keys.Escape) { base.CloseSubscreen(); return null; }
+            else if (key == Keys.Enter || key == Keys.Space) {
+                if (Index == 0) { base.CloseSubscreen(); return null; }
+                else if (Index == 1) { return new WindowResizeScreen(Content, Main, this); }
+                else if (Index == 2) { return new GameSettingsScreen(Content, Main, this); }
+                else if (Index == 3) { return new HelpMenuScreen(Content, this); }
+                else if (Index == 4) {
+                    Main.SaveGame();
+                    Main.Exit();
+                }
             }
+            else if (IsUp(key)) { if (Index > 0) { Index--; } }
+            else if (IsDown(key)) { if (Index < 4) { Index++; } }
             return this;
         }
         

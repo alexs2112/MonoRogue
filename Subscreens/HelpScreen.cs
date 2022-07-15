@@ -88,10 +88,10 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { CloseSubscreen(); return LastScreen; }
-            else if (key == Keys.Down) { if (LastY() - Y > EndY - 8) { 
+            else if (IsDown(key)) { if (LastY() - Y > EndY - 8) { 
                 Y += YIncrement;
             } }
-            else if (key == Keys.Up) { if (Y > 0) { Y -= YIncrement; } }
+            else if (IsUp(key)) { if (Y > 0) { Y -= YIncrement; } }
             return this;
         }
 
@@ -128,8 +128,8 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { CloseSubscreen(); return LastScreen; }
-            else if (key == Keys.Down) { if (Index < 6) { Index++; } }
-            else if (key == Keys.Up) { if (Index > 0) { Index--; } }
+            else if (IsDown(key)) { if (Index < 6) { Index++; } }
+            else if (IsUp(key)) { if (Index > 0) { Index--; } }
             else if (key == Keys.Enter || key == Keys.Space) {
                 switch(Index) {
                     case 0: return new HelpControlsScreen(Content, this);
