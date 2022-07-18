@@ -33,6 +33,7 @@ namespace MonoRogue {
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            TargetElapsedTime = System.TimeSpan.FromSeconds(1) / Constants.FPS;
 
             Settings.LoadSettings();
             ParseParameters(args);

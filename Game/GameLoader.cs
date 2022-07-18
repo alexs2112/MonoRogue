@@ -81,7 +81,12 @@ namespace MonoRogue {
             }
 
             c.TurnTimer = creature.TurnTimer;
-            if (c.IsPlayer) { c.HasKey = playerData.HasKey; }
+            if (c.IsPlayer) {
+                if (playerData.HasKey) {
+                    c.HasKey = true;
+                    world.Tiles[world.Exit.X, world.Exit.Y] = Feature.ExitOpen;
+                }
+            }
             return c;
         }
 

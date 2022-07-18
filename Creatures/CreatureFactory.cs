@@ -67,11 +67,8 @@ namespace MonoRogue
         {
             Texture2D glyph = PlayerGlyph.GetDefaultGlyph();
             Creature c = new Creature(Constants.GetPlayerName(), glyph, Constants.Colors[Constants.ColorIndex]);
-            c.SetStats(12, 0, (2, 3));
+            c.SetStats(12, 0, (2, 3), 0, Constants.Difficulty == 1 ? 1 : 0);
             c.SetDescription("A hapless adventurer.");
-
-            // It is possible for this to overflow the screen with 5 hearts and wardens armor
-            if (Constants.Difficulty == 1) { c.ModifyDefense(4); }
             c.AI = new PlayerAI(c);
             c.IsPlayer = true;
             c.World = world;

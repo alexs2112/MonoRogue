@@ -8,6 +8,7 @@ namespace MonoRogue {
         public static bool Invincible = false;      // If the player is invincible
         public static bool WriteMessagesToConsole = true;   // Default to writing messages to the console, turn this off if it is annoying
         public static int Difficulty = 3;           // Hard = 3, Medium = 2, Easy = 1
+        public static int FPS = 45;                 // Frames per second
 
         public static int ScreenWidth = 800;        // Size of the screen in pixels, default is 800 x 480 
         public static int ScreenHeight = 480;

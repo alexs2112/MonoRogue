@@ -31,10 +31,12 @@ namespace MonoRogue {
 
             if (Item.IsFood) {
                 Food food = (Food)Item;
-                spriteBatch.DrawString(Font.Get(14), $"Food Value: {food.Value}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Get(14), $"Food Value:", new Vector2(x, y), Color.White);
+                MainInterface.DrawHearts(spriteBatch, food.Value, food.Value, x + 216, y - 8, Color.Yellow);
             } else if (Item.IsArmor) {
                 Armor armor = (Armor)Item;
-                spriteBatch.DrawString(Font.Get(14), $"Defense: {armor.Defense}/{armor.MaxDefense}", new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Get(14), $"Defense:", new Vector2(x, y), Color.White);
+                MainInterface.DrawHearts(spriteBatch, armor.MaxDefense, armor.Defense, x + 160, y - 8, Color.LightSkyBlue);
                 if (armor.Block > 0) {
                     y += 32;
                     spriteBatch.DrawString(Font.Get(14), $"Block: {armor.Block}", new Vector2(x, y), Color.White);

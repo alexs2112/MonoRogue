@@ -412,8 +412,9 @@ namespace MonoRogue {
                 List<Point> valid = new List<Point>();
                 for (int mx = -1; mx <= 1; mx++) {
                     for (int my = -1; my <= 1; my++) {
-                        if (World.IsFloor(X + mx, Y + my) && World.GetItemAt(X + mx, Y + my) == null) {
-                            valid.Add(new Point(X + mx, Y + my));
+                        Point p0 = new Point(X + mx, Y + my);
+                        if (World.IsFloor(p0) && World.GetItemAt(p0) == null && World.Exit != p0) {
+                            valid.Add(p0);
                         }
                     }
                 }
