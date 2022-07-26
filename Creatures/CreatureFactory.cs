@@ -122,7 +122,7 @@ namespace MonoRogue
             c.ModifyMovementDelay(-2);
             c.SetDescription("A large, aggressive, and very dirty rodent. It moves and attacks quite quickly.");
             c.SetAttackText("bite");
-            c.AI = new BasicAI(c, Player);
+            c.AI = new RatAI(c, Player);
             c.World = world;
             c.Difficulty = 1;
             world.Creatures.Add(c);
@@ -168,7 +168,7 @@ namespace MonoRogue
             Creature c = new Creature("Undead", Glyphs["Undead"], Color.PaleGreen);
             c.SetStats(8, 4, (2, 3), 5);
             c.SetDescription("A decaying corpse of something long deceased. It is animate and angry, however very slow.");
-            c.AI = new BasicAI(c, Player);
+            c.AI = new NoShoutAI(c, Player);
             c.World = world;
             c.Difficulty = 2;
             c.Bleeds = false;
@@ -213,7 +213,7 @@ namespace MonoRogue
             c.SetStats(2, 6, (2, 3), 3);
             c.SetBaseRange(4);
             c.SetDescription("A mystical creature that can hover in the air. It casts spells that can inflict pain from a distance.");
-            c.AI = new BasicAI(c, Player);
+            c.AI = new ImpAI(c, Player);
             c.World = world;
             c.Difficulty = 3;
             c.Bleeds = false;
@@ -279,7 +279,7 @@ namespace MonoRogue
             c.SetStats(4, 8, (2, 4), 3, 1);
             c.SetDescription("An amorphous being, it slowly floats through the air. It hurls spectral fire from a distance.");
             c.SetBaseRange(5);
-            c.AI = new BasicAI(c, Player);
+            c.AI = new NoShoutAI(c, Player);
             c.World = world;
             c.Difficulty = 5;
             c.Bleeds = false;

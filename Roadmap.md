@@ -1,8 +1,4 @@
 ### **Roadmap:**
- * AI Improvements:
-    * Have enemies "shout" when they see you or when you hit them, alerting other nearby enemies of your position (including through walls)
-    * Have more enemies speak and interact with the player, change it from "Pig: Oink" to "The pig oinks"
-
  * Other subscreens:
     * Similar to the fire screen, a way to view tiles without using the mouse
     * Actual game over screen
@@ -13,7 +9,7 @@
     * Keep track of score, time taken, difficulty
     * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
 
- * Music and sound effects
+ * Sound effects
     * Changing settings in various settings screens
     * Attacks (start of animations/attack if no animations)
     * Doors
@@ -24,6 +20,7 @@
  * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
    * Currently it is technically possible that the exit spawns in an impossible to reach location
    * A hack is just making a wall tile that looks like a floor tile, to block movement and things spawning in (but the player should never be able to move here anyway)
+     * This won't work properly, it will show up wrong on the minimap
 
  * Interface bugs
    * Text in the creature screen can overlap on small screen sizes, 3+ lines of description and critical/parry chance will overlap.
@@ -31,6 +28,7 @@
    * Warden's plate has the icon overlap the side of the screen
    * Target screen should give priority to targetable enemies, right now it is just by distance. Can also overlap the bottom of the screen
    * A long player name breaks a lot of subscreens in the smallest screen size.
+   * Messages are overflowing on small screen sizes again
 
  * Minor fixes
    * Have item notifications not stop auto movement

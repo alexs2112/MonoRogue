@@ -109,20 +109,6 @@ namespace MonoRogue {
         }
     }
 
-    public class TalkNotification : Notification {
-        private Creature Creature;
-        private string Message;
-        public TalkNotification(Creature creature, string message) {
-            Creature = creature;
-            Message = message;
-        }
-
-        public override string Parse(Creature player) {
-            if (Creature == player) { return $"You: {Message}"; }
-            else { return $"{Creature.Name}: {Message}"; }
-        }
-    }
-
     public class FoodNotification : Notification {
         private Creature Creature;
         private Food Food;
@@ -134,6 +120,19 @@ namespace MonoRogue {
         public override string Parse(Creature player) {
             if (Creature == player) { return $"You eat the {Food.Name}."; }
             else { return $"The {Creature.Name} eats the {Food.Name}."; }
+        }
+    }
+
+    public class ShoutNotification : Notification {
+        private Creature Creature;
+        private string Verb;
+        public ShoutNotification(Creature creature, string verb) {
+            Creature = creature;
+            Verb = verb;
+        }
+
+        public override string Parse(Creature player) {
+            return $"The {Creature.Name} {Verb}.";
         }
     }
 }

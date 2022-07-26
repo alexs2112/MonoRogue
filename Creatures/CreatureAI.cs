@@ -7,6 +7,8 @@ namespace MonoRogue {
 
         public CreatureAI(Creature creature) {
             Host = creature;
+            ShoutVerb = "shouts";
+            ShoutRadius = creature.Vision;
         }
 
         // Store messages in the players AI, ignore this for everything else
@@ -22,6 +24,7 @@ namespace MonoRogue {
         public virtual void OnHit(World world, Creature attacker) { }
 
         // For specifically the Warden, to tell each other creature where the player is
+        public Point TargetTile;
         public virtual void GiveTargetTile(Point p) { }
 
         // Some bools that are useful for saving/loading the game
@@ -51,6 +54,20 @@ namespace MonoRogue {
             Host.TurnTimer = Host.GetMovementDelay();
         }
 
+        protected string ShoutVerb;
+        protected int ShoutRadius;
+        protected bool NoShout;
+        protected bool NoHear;
+        protected void Shout() {
+            if (NoShout) { return; }
+            foreach(Creature c in Host.World.Creatures) {
+                if (c.AI.NoHear) { continue; }
+                if ((Host.X-c.X)*(Host.X-c.X) + (Host.Y-c.Y)*(Host.Y-c.Y) > ShoutRadius * ShoutRadius) { continue; }
+                c.Notify(new ShoutNotification(Host, ShoutVerb));
+                c.AI.GiveTargetTile(new Point(Host.X, Host.Y));
+            }
+        }
+
         // Some vision methods
         public Creature CreatureInView(World world) { 
             foreach (Creature c in world.Creatures) {
@@ -68,7 +85,6 @@ namespace MonoRogue {
 
         // If the creature has seen the player but the player is out of sight, move towards
         // where the player was last seen
-        public Point TargetTile;
         public override void GiveTargetTile(Point p) { TargetTile = p; }
 
         public BasicAI(Creature creature, Creature player) : base(creature) {
@@ -78,6 +94,9 @@ namespace MonoRogue {
 
         public override void TakeTurn(World world) {
             if (Host.CanSee(Player.X, Player.Y)) {
+                if (TargetTile.X == -1) {
+                    if (new System.Random().Next(3) == 0) { Shout(); }  // 33% chance to shouts
+                }
                 TargetTile = new Point(Player.X, Player.Y);
                 TryToAttack(Player);
             } else if (TargetTile.X != -1) {
@@ -119,6 +138,9 @@ namespace MonoRogue {
         }
 
         public override void OnHit(World world, Creature attacker) {
+            if (TargetTile.X == -1) {
+                if (new System.Random().Next(2) == 0) { Shout(); }  // 50% chance to shout on being hit out of view
+            }
             TargetTile = new Point(attacker.X, attacker.Y);
         }
     }
@@ -129,12 +151,14 @@ namespace MonoRogue {
         // Oinks periodically
         private bool Hostile;
 
-        public PigAI(Creature creature, Creature player) : base(creature, player) { }
+        public PigAI(Creature creature, Creature player) : base(creature, player) {
+            NoShout = true;
+            NoHear = true;
+        }
 
         public override void TakeTurn(World world) {
             if (new System.Random().Next(10) < 2) {
-                if (Hostile) { Host.NotifyWorld(new TalkNotification(Host, "Angry oink")); } 
-                else { Host.NotifyWorld(new TalkNotification(Host, "Oink")); }
+                Host.NotifyWorld(new ShoutNotification(Host, "oinks"));
             }
             if (Hostile) {
                 base.TakeTurn(world);
@@ -322,6 +346,7 @@ namespace MonoRogue {
         // The final boss, it can notify nearby enemies where the player is, and drops a golden key when he dies
         public WardenAI(Creature creature, Creature player) : base(creature, player) {
             IsWarden = true;
+            NoShout = true;
         }
 
         public bool PlayerInSight;
@@ -345,7 +370,6 @@ namespace MonoRogue {
         private static int Radius = 30;
         private void Alarm(World world) {
             Host.TurnTimer = 10;
-            Host.NotifyWorld(new TalkNotification(Host, "Brethren, come to me."));
             Host.NotifyWorld(new BasicNotification($"The {Host.Name} glows bright red."));
             foreach (Creature c in world.Creatures) {
                 if ((c.X - Host.X) * (c.X - Host.X) + (c.Y - Host.Y) * (c.Y - Host.Y) > Radius * Radius) { continue; }
@@ -359,6 +383,24 @@ namespace MonoRogue {
 
         public override void OnDeath(World world) {
             Host.DropItem(GoldenKey.GetKey());
+        }
+    }
+
+    // Extra Basic AIs to reflavour shouting
+    public class RatAI : BasicAI {
+        public RatAI(Creature creature, Creature player) : base(creature, player) {
+            NoHear = true;
+            ShoutVerb = "squeaks";
+        }
+    }
+    public class ImpAI : BasicAI {
+        public ImpAI(Creature creature, Creature player) : base(creature, player) {
+            ShoutVerb = "shrieks profanity";
+        }
+    }
+    public class NoShoutAI : BasicAI {
+        public NoShoutAI(Creature creature, Creature player) : base(creature, player) {
+            NoShout = true;
         }
     }
 }
