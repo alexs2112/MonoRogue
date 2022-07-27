@@ -30,6 +30,7 @@ namespace MonoRogue {
         
         public override string Parse(Creature player) {
             string s = "";
+            EffectPlayer.PlaySoundEffect(EffectType.Hit);
             if (Attacker == player) { s += $"You {AttackText} "; }
             else { 
                 string name;
@@ -80,6 +81,7 @@ namespace MonoRogue {
         }
 
         public override string Parse(Creature player) {
+            EffectPlayer.PlaySoundEffect(EffectType.Death);
             if (Creature == player) { return "You die."; }
             else {
                 if (player.CanSee(Creature.X, Creature.Y)) {
@@ -98,6 +100,7 @@ namespace MonoRogue {
         }
 
         public override string Parse(Creature player) {
+            EffectPlayer.PlaySoundEffect(EffectType.Door);
             if (Creature == player) { return "You break down the door."; }
             else { 
                 if (player.CanSee(Creature.X, Creature.Y)) {
@@ -118,8 +121,54 @@ namespace MonoRogue {
         }
 
         public override string Parse(Creature player) {
+            EffectPlayer.PlaySoundEffect(EffectType.Eat);
             if (Creature == player) { return $"You eat the {Food.Name}."; }
             else { return $"The {Creature.Name} eats the {Food.Name}."; }
+        }
+    }
+
+    public class EquipNotification : Notification {
+        private Creature Creature;
+        private Item Item;
+        public EquipNotification(Creature creature, Item item) {
+            Creature = creature;
+            Item = item;
+        }
+
+        public override string Parse(Creature player) {
+            EffectPlayer.PlaySoundEffect(EffectType.Equip);
+            if (Creature == player) { return $"You equip the {Item.Name}."; }
+            else { return $"The {Creature.Name} eats the {Item.Name}."; }
+        }
+    }
+
+    public class HeartstoneNotification : Notification {
+        private Creature Creature;
+        public HeartstoneNotification(Creature creature) {
+            Creature = creature;
+        }
+
+        public override string Parse(Creature player) {
+            if (Creature == player) {
+                EffectPlayer.PlaySoundEffect(EffectType.HeartCrystal);
+                return $"You consume the heartstone. Max health increased!";
+            }
+            return "";
+        }
+    }
+
+    public class GoldenKeyNotification : Notification {
+        private Creature Creature;
+        public GoldenKeyNotification(Creature creature) {
+            Creature = creature;
+        }
+
+        public override string Parse(Creature player) {
+            if (Creature == player) {
+                EffectPlayer.PlaySoundEffect(EffectType.GoldenKey);
+                return $"You pick up the Golden Key!";
+            }
+            return "";
         }
     }
 
@@ -132,6 +181,7 @@ namespace MonoRogue {
         }
 
         public override string Parse(Creature player) {
+            EffectPlayer.PlaySoundEffect(EffectType.Alarm);
             return $"The {Creature.Name} {Verb}.";
         }
     }

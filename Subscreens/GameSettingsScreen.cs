@@ -54,37 +54,43 @@ namespace MonoRogue {
         
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { return LastScreen; }
-            else if (IsDown(key)) { if (Index < 7) { Index++; } }
-            else if (IsUp(key)) { if (Index > 0) { Index--; } }
+            else if (IsDown(key)) { if (Index < 7) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsUp(key)) { if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
             else if (IsLeft(key)) {
                 if (Index == 1) {
                     ColorIndex--;
                     if (ColorIndex < 0) { ColorIndex = Constants.Colors.Length - 1; }
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuMove);
                 } else if (Index == 2) {
                     Gender = ChangeGender(false);
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuMove);
                 } else if (Index == 3) {
                     Animations = !Animations;
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuMove);
                 } else if (Index == 4) {
-                    if (MusicVolume > 0) { MusicVolume -= 0.05f; UpdateAudio(); }
+                    if (MusicVolume > 0) { MusicVolume -= 0.05f; UpdateAudio(); EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
                 } else if (Index == 5) {
-                    if (EffectVolume > 0) { EffectVolume -= 0.05f; UpdateAudio(); }
+                    if (EffectVolume > 0) { EffectVolume -= 0.05f; UpdateAudio(); EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
                 }
             } else if (IsRight(key) || key == Keys.Enter || key == Keys.Space) {
                 if (Index == 1) {
                     ColorIndex++;
                     if (ColorIndex >= Constants.Colors.Length) { ColorIndex = 0; }
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuMove);
                 } else if (Index == 2) {
                     Gender = ChangeGender(true);
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuMove);
                 } else if (Index == 3) {
                     Animations = !Animations;
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuMove);
                 } else if (Index == 4) {
-                    if (MusicVolume < 0.5) { MusicVolume += 0.05f; UpdateAudio(); }
+                    if (MusicVolume < 0.5) { MusicVolume += 0.05f; UpdateAudio(); EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
                 } else if (Index == 5) {
-                    if (EffectVolume < 0.5) { EffectVolume += 0.05f; UpdateAudio(); }
+                    if (EffectVolume < 0.5) { EffectVolume += 0.05f; UpdateEffects(); EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
                 } else if (key == Keys.Enter || key == Keys.Space) {
-                    if (Index == 0) { return LastScreen; }
-                    else if (Index == 6) { ResetDefaults(); }
-                    else if (Index == 7) { SaveChanges(); return LastScreen; }
+                    if (Index == 0) { EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return LastScreen; }
+                    else if (Index == 6) { ResetDefaults(); EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); }
+                    else if (Index == 7) { SaveChanges(); EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return LastScreen; }
                 }
             }
             return this;
@@ -174,6 +180,10 @@ namespace MonoRogue {
 
         private void UpdateAudio() {
             MediaPlayer.Volume = MusicVolume;
+        }
+
+        private void UpdateEffects() {
+            Constants.EffectVolume = EffectVolume;
         }
     }
 }

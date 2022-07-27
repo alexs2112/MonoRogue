@@ -128,17 +128,17 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { CloseSubscreen(); return LastScreen; }
-            else if (IsDown(key)) { if (Index < 6) { Index++; } }
-            else if (IsUp(key)) { if (Index > 0) { Index--; } }
+            else if (IsDown(key)) { if (Index < 6) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsUp(key)) { if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
             else if (key == Keys.Enter || key == Keys.Space) {
                 switch(Index) {
-                    case 0: return new HelpControlsScreen(Content, this);
-                    case 1: return new HelpIntroductionScreen(Content, this);
-                    case 2: return new HelpStatsScreen(Content, this);
-                    case 3: return new HelpItemsScreen(Content, this);
-                    case 4: return new HelpSavingScreen(Content, this);
-                    case 5: return new HelpCreditsScreen(Content, this);
-                    default: return LastScreen;
+                    case 0: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return new HelpControlsScreen(Content, this);
+                    case 1: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return new HelpIntroductionScreen(Content, this);
+                    case 2: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return new HelpStatsScreen(Content, this);
+                    case 3: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return new HelpItemsScreen(Content, this);
+                    case 4: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return new HelpSavingScreen(Content, this);
+                    case 5: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return new HelpCreditsScreen(Content, this);
+                    default: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return LastScreen;
                 }
             }
 

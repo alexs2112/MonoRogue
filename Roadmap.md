@@ -9,14 +9,6 @@
     * Keep track of score, time taken, difficulty
     * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
 
- * Sound effects
-    * Changing settings in various settings screens
-    * Attacks (start of animations/attack if no animations)
-    * Doors
-    * Food
-    * Winning
-    * Things dying (maybe overwrite the attack sound)
-
  * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
    * Currently it is technically possible that the exit spawns in an impossible to reach location
    * A hack is just making a wall tile that looks like a floor tile, to block movement and things spawning in (but the player should never be able to move here anyway)
@@ -36,6 +28,7 @@
    * Have the fire screen automatically select the last guy you targeted
      * Display this creature in the main interface as though you are mousing over it
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
+   * It becomes really slow later and laggy in the game after sound effects were added, not sure what is up. They are all stored in memory but total < 600KB, way less than a single music file
 
  * Release prep:
    * Fix all @todo tags

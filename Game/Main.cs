@@ -53,6 +53,7 @@ namespace MonoRogue {
             GoldenKey.LoadKey(Content);
             PlayerGlyph.LoadGlyphs(Content);
             EnemyGlyph.LoadGlyphs(Content);
+            EffectPlayer.LoadSoundEffects(Content);
             Vault.LoadVaults();
             KeyTrack = new KeyboardTrack();
             Mouse = new MouseHandler();

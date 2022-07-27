@@ -50,16 +50,18 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { return LastScreen; }
-            else if (IsDown(key)) { if (Index < 4) { Index++; } }
-            else if (IsUp(key)) { if (Index > 0) { Index--; } }
-            else if (IsLeft(key)) { if (Index == 1 && ResolutionIndex > 0) { ResolutionIndex--; }}
-            else if (IsRight(key)) { if (Index == 1 && ResolutionIndex < Resolutions.Length - 1) { ResolutionIndex++; }}
+            else if (IsDown(key)) { if (Index < 4) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsUp(key)) { if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsLeft(key)) { if (Index == 1 && ResolutionIndex > 0) { ResolutionIndex--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }}
+            else if (IsRight(key)) { if (Index == 1 && ResolutionIndex < Resolutions.Length - 1) { ResolutionIndex++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }}
             else if (key == Keys.Enter || key == Keys.Space) {
-                if (Index == 0) { return LastScreen; }
-                else if (Index == 1) { SetLocalDimensions(); }
-                else if (Index == 2) { Fullscreen = !Fullscreen; }
-                else if (Index == 3) { ResolutionIndex = LoadResolutionIndex(); SetLocalDimensions(); Fullscreen = Constants.Fullscreen; }
+                if (Index == 0) { EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return LastScreen; }
+                else if (Index == 1) { EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); SetLocalDimensions(); }
+                else if (Index == 2) { EffectPlayer.PlaySoundEffect(EffectType.MenuMove); Fullscreen = !Fullscreen; }
+                else if (Index == 3) { EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); ResolutionIndex = LoadResolutionIndex(); SetLocalDimensions(); Fullscreen = Constants.Fullscreen; }
                 else if (Index == 4) {
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuSelect);
+                    SetLocalDimensions();
                     Constants.Fullscreen = Fullscreen;
                     if (Constants.Fullscreen) {
                         Constants.ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;

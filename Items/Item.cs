@@ -126,8 +126,7 @@ namespace MonoRogue {
         public void Consume(Creature player) {
             player.MaxHP += 4;
             player.HP += 4;
-            player.AddMessage("You consume the bloodstone.");
-            player.AddMessage("Max health increased!");
+            player.Notify(new HeartstoneNotification(player));
         }
     }
 

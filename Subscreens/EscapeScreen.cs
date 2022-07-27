@@ -15,6 +15,7 @@ namespace MonoRogue {
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape) { base.CloseSubscreen(); return null; }
             else if (key == Keys.Enter || key == Keys.Space) {
+                if (Index > -1 && Index < 5) { EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); }
                 if (Index == 0) { base.CloseSubscreen(); return null; }
                 else if (Index == 1) { return new WindowResizeScreen(Content, Main, this); }
                 else if (Index == 2) { return new GameSettingsScreen(Content, Main, this); }
@@ -24,8 +25,8 @@ namespace MonoRogue {
                     Main.Exit();
                 }
             }
-            else if (IsUp(key)) { if (Index > 0) { Index--; } }
-            else if (IsDown(key)) { if (Index < 4) { Index++; } }
+            else if (IsUp(key)) { if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsDown(key)) { if (Index < 4) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
             return this;
         }
         

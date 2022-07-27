@@ -34,6 +34,7 @@ namespace MonoRogue {
                 case Keys.Escape: Main.Exit(); break;
                 case Keys.Space:
                 case Keys.Enter:
+                    EffectPlayer.PlaySoundEffect(EffectType.MenuSelect);
                     if (Index == 0) {
                         Main.CreateWorld(true);
                         base.CloseSubscreen();
@@ -75,8 +76,8 @@ namespace MonoRogue {
                     if (Seed.Length > 0) { Seed = Seed.Remove(Seed.Length - 1); }
                     break;
             }
-            if (IsUp(key, false)) { Decrement(); }
-            else if (IsDown(key, false)) { Increment(); }
+            if (IsUp(key, false)) { Decrement(); EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
+            else if (IsDown(key, false)) { Increment(); EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
             return this;
         }
 

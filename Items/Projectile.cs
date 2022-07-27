@@ -99,6 +99,9 @@ namespace MonoRogue {
                     lastPoint = p;
                 }
             }
+            if (line.Count > 0) {
+                EffectPlayer.PlaySoundEffect(EffectType.Arrow);
+            }
             AddHitFlash(target);
         }
 
@@ -137,6 +140,9 @@ namespace MonoRogue {
                 foreach (Point p in line) {
                     Steps.Add((p, Spell, Color));
                 }
+            }
+            if (line.Count > 0) {
+                EffectPlayer.PlaySoundEffect(EffectType.Spell);
             }
             AddHitFlash(target);
         }

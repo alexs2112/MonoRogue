@@ -13,6 +13,294 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/Effects/Alarm0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Alarm0.wav
+
+#begin Audio/Effects/Alarm0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Alarm0.wav
+
+#begin Audio/Effects/Alarm1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Alarm1.wav
+
+#begin Audio/Effects/Alarm1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Alarm1.wav
+
+#begin Audio/Effects/Arrow0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Arrow0.wav
+
+#begin Audio/Effects/Arrow0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Arrow0.wav
+
+#begin Audio/Effects/Arrow1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Arrow1.wav
+
+#begin Audio/Effects/Arrow1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Arrow1.wav
+
+#begin Audio/Effects/Arrow2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Arrow2.wav
+
+#begin Audio/Effects/Arrow2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Arrow2.wav
+
+#begin Audio/Effects/Death0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Death0.wav
+
+#begin Audio/Effects/Death0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Death0.wav
+
+#begin Audio/Effects/Death1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Death1.wav
+
+#begin Audio/Effects/Death1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Death1.wav
+
+#begin Audio/Effects/Door0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Door0.wav
+
+#begin Audio/Effects/Door0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Door0.wav
+
+#begin Audio/Effects/Door1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Door1.wav
+
+#begin Audio/Effects/Door1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Door1.wav
+
+#begin Audio/Effects/Eat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Eat.wav
+
+#begin Audio/Effects/Eat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Eat.wav
+
+#begin Audio/Effects/Equip.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Equip.wav
+
+#begin Audio/Effects/Equip.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Equip.wav
+
+#begin Audio/Effects/GoldenKey.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/GoldenKey.wav
+
+#begin Audio/Effects/GoldenKey.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/GoldenKey.wav
+
+#begin Audio/Effects/HeartCrystal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/HeartCrystal.wav
+
+#begin Audio/Effects/HeartCrystal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/HeartCrystal.wav
+
+#begin Audio/Effects/Hit0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit0.wav
+
+#begin Audio/Effects/Hit0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit0.wav
+
+#begin Audio/Effects/Hit1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit1.wav
+
+#begin Audio/Effects/Hit1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit1.wav
+
+#begin Audio/Effects/Hit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit2.wav
+
+#begin Audio/Effects/Hit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit2.wav
+
+#begin Audio/Effects/Hit3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit3.wav
+
+#begin Audio/Effects/Hit3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit3.wav
+
+#begin Audio/Effects/Hit4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit4.wav
+
+#begin Audio/Effects/Hit4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Hit4.wav
+
+#begin Audio/Effects/MenuMove.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/MenuMove.wav
+
+#begin Audio/Effects/MenuMove.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/MenuMove.wav
+
+#begin Audio/Effects/MenuSelect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/MenuSelect.wav
+
+#begin Audio/Effects/MenuSelect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/MenuSelect.wav
+
+#begin Audio/Effects/Spell0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Spell0.wav
+
+#begin Audio/Effects/Spell0.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Spell0.wav
+
+#begin Audio/Effects/Spell1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Spell1.wav
+
+#begin Audio/Effects/Spell1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Spell1.wav
+
+#begin Audio/Effects/Spell2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Spell2.wav
+
+#begin Audio/Effects/Spell2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Spell2.wav
+
+#begin Audio/Effects/Victory.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Victory.wav
+
+#begin Audio/Effects/Victory.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Effects/Victory.wav
+
 #begin Audio/FinalBattle.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

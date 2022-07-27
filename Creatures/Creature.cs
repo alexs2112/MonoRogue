@@ -380,7 +380,7 @@ namespace MonoRogue {
                 World.Items.Remove(p);
                 HasKey = true;
                 World.Tiles[World.Exit.X, World.Exit.Y] = Feature.ExitOpen;
-                AddMessage("You pick up the Golden Key!");
+                Notify(new GoldenKeyNotification(this));
             }
             TurnTimer = 10;
         }
@@ -389,14 +389,12 @@ namespace MonoRogue {
             if (item.IsArmor) {
                 Armor temp = Armor;
                 Armor = (Armor)item;
-                AddMessage($"You equip the {item.Name}.");
 
                 if (temp != null) { DropItem(temp); }
             } else if (item.IsWeapon) {
                 Weapon temp = Weapon;
                 Weapon = (Weapon)item;
 
-                AddMessage($"You equip the {item.Name}.");
                 if (temp != null) { DropItem(temp); }
 
                 if (!IsPlayer) {
@@ -404,7 +402,10 @@ namespace MonoRogue {
                     if (next != null) { Glyph = next; }
                 }
             }
-            if (IsPlayer) { Glyph = PlayerGlyph.GetUpdatedGlyph(this); }
+            if (IsPlayer) { 
+                Notify(new EquipNotification(this, item));
+                Glyph = PlayerGlyph.GetUpdatedGlyph(this);
+            }
         }
         public void DropItem(Item item) {
             if (World.GetItemAt(X, Y) == null) { World.Items[new Point(X, Y)] = item; }
