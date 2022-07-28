@@ -8,11 +8,7 @@
     * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
     * Keep this in World as creatures can reference it when they die
 
- * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
-   * Currently it is technically possible that the exit spawns in an impossible to reach location
-   * A hack is just making a wall tile that looks like a floor tile, to block movement and things spawning in (but the player should never be able to move here anyway)
-     * This won't work properly, it will show up wrong on the minimap
-   * We can also just get rid of this single stupid vault that can break it...
+ * Go back to the start screen after game end instead of just exiting the game.
 
  * Interface bugs
    * Text in the creature screen can overlap on small screen sizes, 3+ lines of description and critical/parry chance will overlap.

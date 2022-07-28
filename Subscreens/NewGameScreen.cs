@@ -44,7 +44,7 @@ namespace MonoRogue {
                     EffectPlayer.PlaySoundEffect(EffectType.MenuSelect);
                     if (Seed.Length > 0) {
                         try {
-                            Constants.Seed = System.Int32.Parse(Seed); 
+                            Constants.Seed = int.Parse(Seed); 
                         } catch (System.OverflowException) {
                             SeedError = "Max seed value is 2147483647";
                             Seed = "";

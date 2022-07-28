@@ -32,9 +32,11 @@ namespace MonoRogue {
             Vaults.Add(Campfire());
             Vaults.Add(Bones());
             Vaults.Add(SmallLibrary());
+            Vaults.Add(MediumLibrary());
             Vaults.Add(CollapsedMine());
             Vaults.Add(CeilingCollapse());
             Vaults.Add(TreeSmall());
+            Vaults.Add(TreeMedium());
             Vaults.Add(Prison());
         }
         public static Vault GetVault(System.Random random, int maxWidth, int maxHeight) {
@@ -177,6 +179,20 @@ namespace MonoRogue {
             map.Add('S', Feature.Bookshelf);
             return new Vault(tiles, map);
         }
+        private static Vault MediumLibrary() {
+            string[] tiles = new string[6] {
+                ".......",
+                ".SS.SS.",
+                ".......",
+                ".......",
+                ".SS.SS.",
+                "......."
+            };
+            Dictionary<char, Tile> map = new Dictionary<char, Tile>();
+            map.Add('S', Feature.Bookshelf);
+            map.Add('s', Feature.BookshelfSmall);
+            return new Vault(tiles, map);
+        }
         private static Vault CollapsedMine() {
             string[] tiles = new string[5] {
                 "......",
@@ -206,7 +222,6 @@ namespace MonoRogue {
             map.Add('b', Feature.Bones);
             return new Vault(tiles, map);
         }
-
         private static Vault TreeSmall() {
             string[] tiles = new string[5] {
                 "..,..",
@@ -219,14 +234,27 @@ namespace MonoRogue {
             map.Add('T', Feature.Tree);
             return new Vault(tiles, map);
         }
-
+        private static Vault TreeMedium() {
+            string[] tiles = new string[6] {
+                "..,...",
+                ".,,,T.",
+                ".,T,,.",
+                ".,,T..",
+                ".,b.,.",
+                "......"
+            };
+            Dictionary<char, Tile> map = new Dictionary<char, Tile>();
+            map.Add('T', Feature.Tree);
+            map.Add('b', Feature.Bones);
+            return new Vault(tiles, map);
+        }
         private static Vault Prison() {
             string[] tiles = new string[7] {
                 ".........",
                 "..#####..",
-                "..Br#,b..",
+                "...r#,b..",
                 "..#####..",
-                "..b,#,B..",
+                "..b,#,...",
                 "..#####..",
                 "........."
             };
