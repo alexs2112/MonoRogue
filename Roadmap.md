@@ -2,17 +2,17 @@
  * Other subscreens:
     * Similar to the fire screen, a way to view tiles without using the mouse
     * Actual game over screen
-    * A help screen that details the different difficulties
-    * Ability to select difficulty in the main menu
 
  * Game history and stats
     * Keep track of score, time taken, difficulty
     * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
+    * Keep this in World as creatures can reference it when they die
 
  * Add ways for vaults to specify tiles to force extra enemies and items to spawn. Can add tiles to prevent enemies and items from spawning.
    * Currently it is technically possible that the exit spawns in an impossible to reach location
    * A hack is just making a wall tile that looks like a floor tile, to block movement and things spawning in (but the player should never be able to move here anyway)
      * This won't work properly, it will show up wrong on the minimap
+   * We can also just get rid of this single stupid vault that can break it...
 
  * Interface bugs
    * Text in the creature screen can overlap on small screen sizes, 3+ lines of description and critical/parry chance will overlap.
@@ -28,7 +28,9 @@
    * Have the fire screen automatically select the last guy you targeted
      * Display this creature in the main interface as though you are mousing over it
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
-   * It becomes really slow later and laggy in the game after sound effects were added, not sure what is up. They are all stored in memory but total < 600KB, way less than a single music file
+   * It becomes really slow later and laggy in the game after sound effects were added, not sure what is up. They are all stored in memory but total < 600KB, way less than a single music file. Seems to come up after a shout is issued to a lot of enemies
+   * Add diagonal controls for map screen
+   * Have pigs and mice not play the alarm sound effect when they make noises
 
  * Release prep:
    * Fix all @todo tags
