@@ -14,6 +14,7 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape) { Main.Exit(); }
+            else if (key == Keys.Enter || key == Keys.Space) { return new StartScreen(Main, Content); }
             return this;
         }
 
@@ -25,7 +26,9 @@ namespace MonoRogue {
             v.Y += 64;
             WriteCentered(spriteBatch, Font.Get(16), $"The {Constants.GetPlayerName()} escaped the dungeon!", v, Color.White);
             v.Y += 32;
-            WriteCentered(spriteBatch, Font.Get(16), "Press [esc] to exit", v, Color.Gray);
+            WriteCentered(spriteBatch, Font.Get(16), "[space] to return to the main menu", v, Color.Gray);
+            v.Y += 32;
+            WriteCentered(spriteBatch, Font.Get(16), "[esc] to exit", v, Color.Gray);
 
             v.Y = Constants.ScreenHeight - 64;
             WriteCentered(spriteBatch, Font.Get(14), $"Seed: {Main.Seed}", v, Color.Gray);

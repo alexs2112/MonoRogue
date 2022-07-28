@@ -57,13 +57,12 @@ namespace MonoRogue {
             Vault.LoadVaults();
             KeyTrack = new KeyboardTrack();
             Mouse = new MouseHandler();
-            WorldView = new WorldView();
             MainInterface = new MainInterface();
 
             Audio = new AudioPlayer(Content);
             
             if (!Constants.Debug) { 
-                Subscreen = new StartScreen(this, Content); 
+                Subscreen = new StartScreen(this, Content);
             } else {
                 CreateWorld();
             }
@@ -87,10 +86,10 @@ namespace MonoRogue {
             if (loadFromSave) {
                 Constants.WorldWidth = GameLoader.WorldData.Width;
                 Constants.WorldHeight = GameLoader.WorldData.Height;
-                WorldView = new WorldView();
             }
             WorldBuilder worldBuilder = new WorldBuilder(Random, Constants.WorldWidth, Constants.WorldHeight);
             World = worldBuilder.GenerateDungeon(Constants.DungeonIterations, CreatureFactory, EquipmentFactory);
+            WorldView = new WorldView();
 
             if (loadFromSave) {
                 GameLoader.LoadGame(World, WorldView, EquipmentFactory, CreatureFactory);
@@ -141,8 +140,13 @@ namespace MonoRogue {
                     Player.AI.ClearMessages();
                 }
 
-                if (KeyTrack.KeyJustPressed(Keys.Escape)) {
-                    if (Player.IsDead()) { Exit(); }
+                if (Player.IsDead()) {
+                    // @todo: Change this to a Death screen to recap score once we get that far
+                    if (KeyTrack.KeyJustPressed(Keys.Escape)) { Exit(); }
+                    else if (KeyTrack.KeyJustPressed(Keys.Enter) || KeyTrack.KeyJustPressed(Keys.Space)) {
+                        Subscreen = new StartScreen(this, Content);
+                    }
+                } else if (KeyTrack.KeyJustPressed(Keys.Escape)) {
                     Subscreen = new EscapeScreen(this, Content);
                 } else if (!Player.IsDead()) {
                     if (!((PlayerAI)Player.AI).PathNullOrEmpty()) {

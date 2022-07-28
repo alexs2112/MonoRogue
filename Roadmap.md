@@ -8,8 +8,6 @@
     * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
     * Keep this in World as creatures can reference it when they die
 
- * Go back to the start screen after game end instead of just exiting the game.
-
  * Interface bugs
    * Text in the creature screen can overlap on small screen sizes, 3+ lines of description and critical/parry chance will overlap.
    * Gatekeeper icon will overlap with equipment in creature screen due to long name
