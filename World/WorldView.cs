@@ -23,9 +23,12 @@ namespace MonoRogue {
         }
 
         public void Update(World world, Creature player) {
+            Update(world, player, player.X, player.Y);
+        }
+        public void Update(World world, Creature player, int sx, int sy) {
             // First prepare the grid of tiles in the world
-            OffsetX = Max(0, Min(player.X - Width / 2, world.Width - Width));
-            OffsetY = Max(0, Min(player.Y - Height / 2, world.Height - Height));
+            OffsetX = Max(0, Min(sx - Width / 2, world.Width - Width));
+            OffsetY = Max(0, Min(sy - Height / 2, world.Height - Height));
 
             for (int x = 0; x < Width; x++) {
                 for (int y = 0; y < Height; y++) {

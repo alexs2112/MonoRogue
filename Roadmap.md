@@ -1,6 +1,5 @@
 ### **Roadmap:**
  * Other subscreens:
-    * Similar to the fire screen, a way to view tiles without using the mouse
     * Actual game over screen
 
  * Game history and stats
@@ -23,8 +22,8 @@
      * Display this creature in the main interface as though you are mousing over it
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
    * It becomes really slow later and laggy in the game after sound effects were added, not sure what is up. They are all stored in memory but total < 600KB, way less than a single music file. Seems to come up after a shout is issued to a lot of enemies
-   * Add diagonal controls for map screen
    * Have pigs and mice not play the alarm sound effect when they make noises
+   * It appears loading is broken if you attempt to load after returning to the main menu (game end, probably not a problem since the save should be deleted here)
 
  * Release prep:
    * Fix all @todo tags

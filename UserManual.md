@@ -13,6 +13,7 @@ Your goal is to explore the randomly generated world, collecting items, defeatin
  - `[.]` to wait one turn
  - `[f]` to fire your weapon at visible enemies in range
  - `[m]` to view your world map, regions are colour coded by difficulty
+ - `[x]` to examine specific tiles without using the mouse
  - `[/]` or `[?]` to show the help menu
  - `[esc]` to quit the game or exit subscreens
 

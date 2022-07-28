@@ -198,6 +198,7 @@ namespace MonoRogue {
                 " - Right click creatures or items to see their stats",
                 " - [s] to see your own stats",
                 " - [m] to view your world map",
+                " - [x] to examine a tile without using the mouse",
                 " - [esc] to quit the game or exit menus",
                 " - [?] to show this menu"
             };

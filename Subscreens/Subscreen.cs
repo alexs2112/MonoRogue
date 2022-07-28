@@ -34,5 +34,18 @@ namespace MonoRogue {
         public static bool IsRight(Keys k) {
             return k == Keys.Right || k == Keys.L || k == Keys.NumPad6 || k == Keys.D6;
         }
+
+        public static bool IsNE(Keys k) {
+            return k == Keys.U || k == Keys.NumPad9 || k == Keys.D9;
+        }
+        public static bool IsNW(Keys k) {
+            return k == Keys.Y || k == Keys.NumPad7 || k == Keys.D7;
+        }
+        public static bool IsSW(Keys k) {
+            return k == Keys.B || k == Keys.NumPad1 || k == Keys.D1;
+        }
+        public static bool IsSE(Keys k) {
+            return k == Keys.N || k == Keys.NumPad3 || k == Keys.D3;
+        }
     }
 }

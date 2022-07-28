@@ -95,6 +95,10 @@ namespace MonoRogue {
             else if (IsRight(key)) { MX++; }
             else if (IsUp(key)) { MY--; }
             else if (IsDown(key)) { MY++; }
+            else if (IsNE(key)) { MX++; MY--; }
+            else if (IsNW(key)) { MX--; MY--; }
+            else if (IsSE(key)) { MX++; MY++; }
+            else if (IsSW(key)) { MX--; MY++; }
             else if (key == Keys.Space) { 
                 MX = World.Player.X;
                 MY = World.Player.Y;

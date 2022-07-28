@@ -195,7 +195,7 @@ namespace MonoRogue {
             }
         }
 
-        public int DrawItems(SpriteBatch spriteBatch, Item floorItem, Item mouseItem, int y) {
+        public static int DrawItems(SpriteBatch spriteBatch, Item floorItem, Item mouseItem, int y) {
             int x = StartX + 24;
             if (floorItem == mouseItem) { mouseItem = null; }
             // Don't need to draw the top bar as there will always be one there from a creature
@@ -259,7 +259,7 @@ namespace MonoRogue {
             return y + 36;
         }
 
-        private static int DrawTileHeader(SpriteBatch spriteBatch, Tile tile, int x, int y) {
+        public static int DrawTileHeader(SpriteBatch spriteBatch, Tile tile, int x, int y) {
             if (!tile.IsFeature) { return y; }
             spriteBatch.DrawString(Font.Get(14), ((Feature)tile).Name, new Vector2(x, y + 12), Color.LightGray);
             spriteBatch.Draw(InterfaceLine, new Vector2(StartX + 8, y + 40), Color.Gray);
