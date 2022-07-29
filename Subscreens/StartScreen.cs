@@ -15,7 +15,8 @@ namespace MonoRogue {
         *  2: Display
         *  3: Settings
         *  4: Help
-        *  5: Quit
+        *  5: History
+        *  6: Quit
         */
         
         public StartScreen(Main main, ContentManager content) : base(content) { 
@@ -43,6 +44,8 @@ namespace MonoRogue {
                         return new GameSettingsScreen(Content, Main, this);
                     } else if (Index == 4) {
                         return new HelpMenuScreen(Content, this);
+                    } else if (Index == 5) {
+                        return new HistoryScreen(Content, this);
                     } else {
                         Main.Exit();
                         break;
@@ -70,7 +73,9 @@ namespace MonoRogue {
             y += 32;
             WriteCentered(spriteBatch, Font.Get(16), "Help", new Vector2(x, y), Index == 4 ? Color.LawnGreen : Color.White);
             y += 32;
-            WriteCentered(spriteBatch, Font.Get(16), "Exit", new Vector2(x, y), Index == 5 ? Color.LawnGreen : Color.White);
+            WriteCentered(spriteBatch, Font.Get(16), "History", new Vector2(x, y), Index == 5 ? Color.LawnGreen : Color.White);
+            y += 32;
+            WriteCentered(spriteBatch, Font.Get(16), "Exit", new Vector2(x, y), Index == 6 ? Color.LawnGreen : Color.White);
             y += 32;
         }
 
@@ -81,7 +86,7 @@ namespace MonoRogue {
         }
         private void Increment() {
             Index++;
-            if (Index > 5) {
+            if (Index > 6) {
                 if (CanContinue) { Index = 0; }
                 else { Index = 1; }
             }

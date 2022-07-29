@@ -56,9 +56,11 @@ There are three types of armor:
 * Heavy Armor: Has the greatest weight, but the highest defense. Lowers the amount of damage enemies will deal to you with Block. Best used with axes and maces as heavy hitting melee weapons that benefit the most from being in close combat.
 
 ## Saving the Game and Settings:
-Settings can be set through the `[escape]` menu and will save once you press `Continue`. These will be saved in a file called `BlueMan.settings` that should be in the same folder as the game executable.
+Settings can be set through the `[escape]` menu and will save once you press `Continue`. These will be saved in a file called `BlueSettings.settings` that should be in the same folder as the game executable.
 
 The game will be saved on exit. This will also be in the same folder as the game executable in a file called `BlueSave.savegame`.
+
+Game history will be saved in a file called `BlueHistory.morgue`. This keeps track of certain stats from previous games, to record your scores.
 
 If you move the game executable somewhere where it is not in the same folder as the save file and the settings file, it will replace each one with a fresh file.
 

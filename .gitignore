@@ -4,5 +4,6 @@ Content/bin/
 Content/obj/
 .vscode/
 .VSCodeCounter/
-BlueMan.settings
+BlueSettings.settings
+BlueHistory.morgue
 BlueSave.savegame

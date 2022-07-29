@@ -9,6 +9,7 @@ namespace MonoRogue {
         private CreatureFactory Creature;
         private SaveData Data;
         public int Seed;
+        public long Time;
         public int Difficulty;
         public WorldData WorldData;
         public World World;
@@ -17,6 +18,7 @@ namespace MonoRogue {
             string json = File.ReadAllText(Constants.SavegamePath);
             Data = JsonSerializer.Deserialize<SaveData>(json);
             Seed = Data.Seed;
+            Time = Data.Time;
             Difficulty = Data.Difficulty;
             WorldData = Data.World;
         }
@@ -53,6 +55,8 @@ namespace MonoRogue {
                     worldView.HasSeen[x, y] = WorldData.HasSeen[x].Map[y];
                 }
             }
+
+            world.Score = Data.Score;
 
             World = world;
         }

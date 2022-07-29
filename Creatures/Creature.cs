@@ -131,17 +131,24 @@ namespace MonoRogue {
             if (IsPlayer && Constants.Invincible) { return; }
             HP += value;
             if (HP <= 0) {
-                NotifyWorld(new DeathNotification(this));
-                AI.OnDeath(World);
-                World.Creatures.Remove(this);
-
-                if (Bleeds) { World.Bloodstains[X, Y] = true; }
-                if (Armor != null) { DropItem(Armor); }
-                if (Weapon != null) { DropItem(Weapon); }
+                Die();
             } else if (HP > MaxHP) {
                 HP = MaxHP;
             }
         }
+        
+        public void Die() {
+            NotifyWorld(new DeathNotification(this));
+            AI.OnDeath(World);
+            World.Creatures.Remove(this);
+
+            if (Bleeds) { World.Bloodstains[X, Y] = true; }
+            if (Armor != null) { DropItem(Armor); }
+            if (Weapon != null) { DropItem(Weapon); }
+
+            World.Score += (int)(Difficulty * (126 - Difficulty * 2) * (0.2 * Constants.Difficulty + 0.4));
+        }
+
         public void TakeDamage(int value) {
             if (Armor != null) {
                 if (Armor.Defense > value) {

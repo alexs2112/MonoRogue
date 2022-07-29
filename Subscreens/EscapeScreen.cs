@@ -48,6 +48,9 @@ namespace MonoRogue {
 
             v.Y = Constants.ScreenHeight - 64;
             WriteCentered(spriteBatch, Font.Get(14), $"Seed: {Main.Seed}", v, Color.Gray);
+
+            v = new Vector2(64, 64);
+            spriteBatch.DrawString(Font.Get(14), $"{new System.DateTime(Main.Time.Ticks).ToString("HH:mm:ss")}", v, Color.Gray);
         }
     }
 }

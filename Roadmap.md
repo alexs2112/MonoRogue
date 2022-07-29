@@ -1,11 +1,6 @@
 ### **Roadmap:**
- * Other subscreens:
-    * Actual game over screen
-
- * Game history and stats
-    * Keep track of score, time taken, difficulty
-    * Score can simply be increased by the difficulty of enemies defeated multiplied by some value, with an addition if you escape or not
-    * Keep this in World as creatures can reference it when they die
+ * Actual game over screen
+   * Display your place in game history at game over and victory screen (your position, score, stats, and then the next few adjacent ones)
 
  * Interface bugs
    * Text in the creature screen can overlap on small screen sizes, 3+ lines of description and critical/parry chance will overlap.

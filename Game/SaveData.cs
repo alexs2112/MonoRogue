@@ -4,6 +4,8 @@ namespace MonoRogue {
     public class SaveData {
         public int Seed { get; set; }
         public int Difficulty { get; set; }
+        public int Score { get; set; }
+        public long Time { get; set; }
         public WorldData World { get; set; }
         public PlayerData PlayerData { get; set; }
         public List<CooldownData> Cooldowns { get; set; }

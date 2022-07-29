@@ -341,6 +341,12 @@ namespace MonoRogue {
                 }
             ));
 
+            AddTextArea("Game History", SplitText(
+                new string[] {
+                $"Game history will be saved in a file called \"{Constants.HistoryPath}.\" This keeps track of certain stats from previous games, to record your scores.",
+                }
+            ));
+
             AddTextArea(null, SplitString(
                 "If you move the game executable somewhere where it is not in the same folder as the save file and the settings file, it will replace each one with a fresh file."
             ));

@@ -28,6 +28,9 @@ namespace MonoRogue {
         // Keep track of whos turn it is
         private int CurrentIndex;
 
+        // Keep track of how long the player has been in game for
+        public System.TimeSpan Time;
+
         public Main(string[] args) {
             Graphics = new GraphicsDeviceManager(this);
 
@@ -73,6 +76,7 @@ namespace MonoRogue {
             Seed = Constants.Seed;
             if (loadFromSave && GameLoader != null) { 
                 Seed = GameLoader.Seed;
+                Time = new System.TimeSpan(GameLoader.Time);
                 Constants.Difficulty = GameLoader.Difficulty;
             }
             else if (Seed == -1) { Seed = new System.Random().Next(); }
@@ -111,6 +115,8 @@ namespace MonoRogue {
         }
 
         protected override void Update(GameTime gameTime) {
+            if (Player != null && !Player.IsDead()) { Time += gameTime.ElapsedGameTime; }
+
             Audio.Update(gameTime.ElapsedGameTime);
             Mouse.Update();
             KeyboardState kState = Keyboard.GetState();
@@ -142,8 +148,12 @@ namespace MonoRogue {
 
                 if (Player.IsDead()) {
                     // @todo: Change this to a Death screen to recap score once we get that far
-                    if (KeyTrack.KeyJustPressed(Keys.Escape)) { Exit(); }
+                    if (KeyTrack.KeyJustPressed(Keys.Escape)) {
+                        GameHistory.AddHistory(new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks));
+                        Exit();
+                    }
                     else if (KeyTrack.KeyJustPressed(Keys.Enter) || KeyTrack.KeyJustPressed(Keys.Space)) {
+                        GameHistory.AddHistory(new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks));
                         Subscreen = new StartScreen(this, Content);
                     }
                 } else if (KeyTrack.KeyJustPressed(Keys.Escape)) {
@@ -376,7 +386,7 @@ namespace MonoRogue {
         }
 
         public void SaveGame() {
-            new GameSaver(Seed, World, WorldView).SaveGame();
+            new GameSaver(this, World, WorldView).SaveGame();
         }
 
         protected override void OnExiting(object sender, System.EventArgs args) {

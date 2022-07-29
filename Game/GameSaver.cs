@@ -6,12 +6,14 @@ using Microsoft.Xna.Framework;
 namespace MonoRogue {
     public class GameSaver {
         private int Seed;
+        private Main Main;
         private World World;
         private Creature Player;
         private bool[,] HasSeen;
 
-        public GameSaver(int seed, World world, WorldView worldView) {
-            Seed = seed;
+        public GameSaver(Main main, World world, WorldView worldView) {
+            Main = main;
+            Seed = main.Seed;
             World = world;
             Player = world.Player;
             HasSeen = worldView.HasSeen;
@@ -20,7 +22,9 @@ namespace MonoRogue {
         public void SaveGame() {
             SaveData data = new SaveData {
                 Seed = Seed,
-                Difficulty = Constants.Difficulty
+                Difficulty = Constants.Difficulty,
+                Score = World.Score,
+                Time = Main.Time.Ticks
             };
 
             List<CooldownData> cooldowns = new List<CooldownData>();

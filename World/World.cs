@@ -16,6 +16,8 @@ namespace MonoRogue {
 
         public Point Exit;
 
+        public int Score;
+
         // How hard this given tile should be displayed, calculated by region and depth
         public int[,] Difficulty;
 
