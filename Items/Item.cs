@@ -134,7 +134,7 @@ namespace MonoRogue {
     public class GoldenKey : Item {
         private GoldenKey(Texture2D glyph) : base("Golden Key", glyph, Color.Yellow) {
             SetType(Type.Key);
-            ItemInfo = Font.Size12.SplitString("You need this to unlock the exit to the dungeon.", MainInterface.InterfaceWidth - 16);
+            ItemInfo = Font.Size12.SplitString("A hefty key made of solid gold. It has a protective sheen to it and it glows with an internal warmth.", MainInterface.InterfaceWidth - 16);
             IsKey = true;
         }
 

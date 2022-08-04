@@ -88,7 +88,7 @@ namespace MonoRogue {
                 spriteBatch.DrawString(Font.Get(14), $"{mi + 1}", new Vector2(place, y), c);
                 spriteBatch.DrawString(Font.Get(14), $"{d.Score}", new Vector2(score, y), c);
                 spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Time)).ToString("HH:mm:ss")}", new Vector2(time, y), c);
-                spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Date)).ToString("dd/MM/yyyy")}", new Vector2(date, y), c);
+                spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Date)).ToString("MM/dd/yyyy")}", new Vector2(date, y), c);
                 y += 24;
             }
 

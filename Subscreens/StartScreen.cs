@@ -60,9 +60,8 @@ namespace MonoRogue {
             base.Draw(gameTime, spriteBatch, mouseHandler);
 
             int x = Constants.ScreenWidth / 2;
-            int y = Constants.ScreenHeight / 2 - 96;
-            WriteCentered(spriteBatch, Font.Get(24), $"Escape of the {Constants.GetPlayerName()}", new Vector2(x, y), Color.White);
-            y += 48;
+            int y = Constants.ScreenHeight / 2 - 112;
+            y = WriteTitle(spriteBatch, x, y);
             WriteCentered(spriteBatch, Font.Get(16), "Continue", new Vector2(x, y), CanContinue ? Index == 0 ? Color.LawnGreen : Color.White : Color.Gray);
             y += 32;
             WriteCentered(spriteBatch, Font.Get(16), "New Game", new Vector2(x, y), Index == 1 ? Color.LawnGreen : Color.White);
@@ -77,6 +76,18 @@ namespace MonoRogue {
             y += 32;
             WriteCentered(spriteBatch, Font.Get(16), "Exit", new Vector2(x, y), Index == 6 ? Color.LawnGreen : Color.White);
             y += 32;
+        }
+
+        private int WriteTitle(SpriteBatch spriteBatch, int x, int y) {
+            string s = $"Escape of the {Constants.GetPlayerName()}";
+            if (Font.Size24.Width * s.Length > Constants.ScreenWidth - 64) {
+                WriteCentered(spriteBatch, Font.Get(24), "Escape of the", new Vector2(x, y - 48), Color.White);
+                WriteCentered(spriteBatch, Font.Get(24), Constants.GetPlayerName(), new Vector2(x, y), Color.White);
+            } else {
+                WriteCentered(spriteBatch, Font.Get(24), s, new Vector2(x, y), Color.White);
+            }
+            y += 48;
+            return y;
         }
 
         private void Decrement() {

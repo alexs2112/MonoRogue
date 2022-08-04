@@ -339,7 +339,7 @@ namespace MonoRogue
             Creature c = new Creature("Cultist", Glyphs["Cultist"], Color.Violet);
             c.SetStats(6, 12, (3, 5), 3);
             c.SetDescription("A cloaked figure. Its bone faceplate peers from under its hood, etched in glowing runes.");
-            c.SetAbilityText("Can summon imps.");
+            c.SetAbilityText("Can summon multiple imps.");
             c.AI = new CultistAI(c, Player, this);
             c.World = world;
             c.Difficulty = 6;
@@ -380,7 +380,6 @@ namespace MonoRogue
                 break;    
             }
             c.SetDescription("The warden of the dungeon. It is fully armed and armored in red, runic metal. From its belt you can see a dangling golden key.");
-            c.SetAbilityText("Will raise the alarm in the dungeon.");
             c.Equip(e);
             c.Equip(Equipment.NewWardensPlate());
             c.AI = new WardenAI(c, Player);

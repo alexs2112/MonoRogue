@@ -81,7 +81,7 @@ namespace MonoRogue {
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, MouseHandler mouseHandler) {
             base.Draw(gameTime, spriteBatch, mouseHandler);
             int x = Constants.ScreenWidth / 2;
-            int y = Constants.ScreenHeight / 2 - 218;
+            int y = Constants.ScreenHeight / 2 - 154;
             Vector2 pos = new Vector2(x, y);
 
             WriteCentered(spriteBatch, Font.Get(24), "Display Settings", pos, Color.White);
@@ -117,6 +117,7 @@ namespace MonoRogue {
             if (Fullscreen) {
                 List<string> warning = Font.Size14.SplitString("Note: Fullscreen will overwrite resolution to fit your screen.", Constants.ScreenWidth - 64);
                 pos.Y = Constants.ScreenHeight - 64 - 32 * warning.Count;
+                if (Constants.ScreenHeight < 1000) { pos.Y += 32; }
                 foreach (string s in warning) {
                     WriteCentered(spriteBatch, Font.Get(14), s, pos, Color.Gray);
                     pos.Y += 32;

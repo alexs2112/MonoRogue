@@ -16,7 +16,7 @@ namespace MonoRogue {
             History = GameHistory.LoadHistory();
             LastScreen = lastScreen;
 
-            TotalLines = (Constants.ScreenHeight - 164) / 24;
+            TotalLines = (Constants.ScreenHeight - 164) / 32;
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
@@ -54,7 +54,7 @@ namespace MonoRogue {
                 spriteBatch.DrawString(Font.Get(14), $"{j + 1}", new Vector2(place, y), Color.LightGray);
                 spriteBatch.DrawString(Font.Get(14), $"{d.Score}", new Vector2(score, y), Color.LightGray);
                 spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Time)).ToString("HH:mm:ss")}", new Vector2(time, y), Color.LightGray);
-                spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Date)).ToString("dd/MM/yyyy")}", new Vector2(date, y), Color.LightGray);
+                spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Date)).ToString("MM/dd/yyyy")}", new Vector2(date, y), Color.LightGray);
                 y += 32;
             }
         }

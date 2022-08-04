@@ -100,7 +100,7 @@ namespace MonoRogue {
             base.Draw(gameTime, spriteBatch, mouseHandler);
 
             int x = Constants.ScreenWidth / 2;
-            int y = Constants.ScreenHeight / 2 - 218;
+            int y = Constants.ScreenHeight / 2 - 154;
 
             WriteCentered(spriteBatch, Font.Get(24), "Game Settings", new Vector2(x, y), Color.White);
             y += 64;

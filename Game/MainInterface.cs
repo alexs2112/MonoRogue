@@ -120,13 +120,14 @@ namespace MonoRogue {
             spriteBatch.Draw(creature.Glyph, new Vector2(x, y), creature.Color);
             spriteBatch.DrawString(Font.Get(14), creature.Name, new Vector2(x + 36, y + 8), nameColor);
             if (!creature.IsPlayer) {
-                int skullX = x + 48 + Font.Size14.Width * creature.Name.Length;
+                int skullX = x + 32 + (int)(Font.Size14.Width * creature.Name.Length);
+                if (creature.Name.Length < 10) { skullX += 16; }
                 for (int i = 0; i < creature.Difficulty; i += 2) {
                     spriteBatch.Draw(FlameGlyph, new Vector2(skullX, y), Color.Orange);
-                    skullX += 32;
+                    skullX += 24;
                 }
             } else if (creature.HasKey) {
-                int keyX = x + 48 + Font.Size14.Width * creature.Name.Length;
+                int keyX = x + 48 + (int)(Font.Size14.Width * creature.Name.Length);
                 spriteBatch.Draw(GoldenKey.KeyGlyph, new Vector2(keyX, y), Color.Yellow);
             }
             return y + 32;
@@ -253,7 +254,8 @@ namespace MonoRogue {
             return y;
         }
         private static int DrawItemHeader(SpriteBatch spriteBatch, Item item, int x, int y) {
-            int iconX = x + Font.Size14.Width * item.Name.Length + 16;
+            int iconX = x + (int)(Font.Size14.Width * item.Name.Length) + 16;
+            if (iconX > Constants.ScreenWidth - 40) { iconX = Constants.ScreenWidth - 40; }
             spriteBatch.DrawString(Font.Get(14), item.Name, new Vector2(x, y + 8), Color.White);
             spriteBatch.Draw(item.Glyph, new Vector2(iconX, y), item.Color);
             return y + 36;
@@ -304,8 +306,8 @@ namespace MonoRogue {
         public void UpdateMessages(List<string> messages) {
             Messages = new List<string>();
             foreach (string m in messages) {
-                if (m.Length * Font.Size10.Width > InterfaceWidth) {
-                    Messages.AddRange(Font.Size10.SplitString(m, InterfaceWidth - 48));
+                if (m.Length * Font.Size10.Width > InterfaceWidth - 40) {
+                    Messages.AddRange(Font.Size10.SplitString(m, InterfaceWidth - 40));
                 } else {
                     Messages.Add(m);
                 }

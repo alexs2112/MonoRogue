@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoRogue {
     public class Font {
         public int Size;
-        public int Height;
-        public int Width;
+        public float Height;
+        public float Width;
         private SpriteFont SpriteFont;
         public SpriteFont Get() { return SpriteFont; }
 
@@ -16,8 +16,8 @@ namespace MonoRogue {
 
             // The SDS font is monospaced, so each char should be the same size
             (float height, float width) = spriteFont.MeasureString("A");
-            Height = (int)System.Math.Ceiling(height);
-            Width = (int)System.Math.Ceiling(width);
+            Height = height;
+            Width = width;
         }
 
         // Width here is the max screen width of the string you are splitting

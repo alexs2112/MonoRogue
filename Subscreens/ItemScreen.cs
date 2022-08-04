@@ -27,7 +27,7 @@ namespace MonoRogue {
             int y = 32;
             spriteBatch.DrawString(Font.Get(24), Item.Name, new Vector2(x - 16, y), Color.White);
             spriteBatch.Draw(Item.Glyph, new Vector2(x + Font.Size24.Width * Item.Name.Length, y), Item.Color);
-            y += 48;
+            y += 64;
 
             if (Item.IsFood) {
                 Food food = (Food)Item;
@@ -50,6 +50,10 @@ namespace MonoRogue {
                 spriteBatch.DrawString(Font.Get(14), $"Range: {weapon.Range}", new Vector2(x, y), Color.White);
                 y += 32;
                 spriteBatch.DrawString(Font.Get(14), $"Attack Delay: {weapon.Delay}", new Vector2(x, y), Color.White);
+            } else if (Item.IsKey) {
+                spriteBatch.DrawString(Font.Get(14), "Unlocks the exit from the dungeon.", new Vector2(x, y), Color.White);
+            } else if (Item.IsHeartstone) {
+                spriteBatch.DrawString(Font.Get(14), "Grants you another red heart.", new Vector2(x, y), Color.White);
             }
             y += 48;
             DrawDescription(spriteBatch, 32, y);
