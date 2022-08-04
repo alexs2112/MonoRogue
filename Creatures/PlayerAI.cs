@@ -73,7 +73,7 @@ namespace MonoRogue {
         public override void ClearMessages() { Messages.Clear(); }
 
         public override void OnDeath(World world) { 
-            AddMessage("Press ESC to quit or SPACE to restart.");
+            AddMessage("Press SPACE to continue.");
             Main.Audio.ChangeSong(SongHandler.DeathSong);
         }
     }

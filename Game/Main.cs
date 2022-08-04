@@ -147,14 +147,10 @@ namespace MonoRogue {
                 }
 
                 if (Player.IsDead()) {
-                    // @todo: Change this to a Death screen to recap score once we get that far
-                    if (KeyTrack.KeyJustPressed(Keys.Escape)) {
-                        GameHistory.AddHistory(new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks));
-                        Exit();
-                    }
-                    else if (KeyTrack.KeyJustPressed(Keys.Enter) || KeyTrack.KeyJustPressed(Keys.Space)) {
-                        GameHistory.AddHistory(new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks));
-                        Subscreen = new StartScreen(this, Content);
+                    if (KeyTrack.KeyJustPressed(Keys.Escape) || KeyTrack.KeyJustPressed(Keys.Enter) || KeyTrack.KeyJustPressed(Keys.Space)) {
+                        HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks);
+                        List<HistoryData> history = GameHistory.AddHistory(data);
+                        Subscreen = new EndScreen(this, Content, false, data, history);
                     }
                 } else if (KeyTrack.KeyJustPressed(Keys.Escape)) {
                     Subscreen = new EscapeScreen(this, Content);
@@ -316,7 +312,9 @@ namespace MonoRogue {
 
         private void TryToWinGame() {
             if (Player.HasKey) {
-                Subscreen = new WinScreen(this, Content);
+                HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks);
+                List<HistoryData> history = GameHistory.AddHistory(data);
+                Subscreen = new EndScreen(this, Content, true, data, history);
             } else {
                 Player.AddMessage("You need the Golden Key to unlock the exit to the dungeon!");
             }

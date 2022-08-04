@@ -1,6 +1,6 @@
 ### **Roadmap:**
- * Actual game over screen
-   * Display your place in game history at game over and victory screen (your position, score, stats, and then the next few adjacent ones)
+ * Keep track of the last enemy you attacked. Should display them in the main interface unless you mouse over a different creature
+   * Target screen should start with them selected
 
  * Interface bugs
    * Text in the creature screen can overlap on small screen sizes, 3+ lines of description and critical/parry chance will overlap.
@@ -13,16 +13,18 @@
  * Minor fixes
    * Have item notifications not stop auto movement
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
-   * Have the fire screen automatically select the last guy you targeted
-     * Display this creature in the main interface as though you are mousing over it
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
    * It becomes really slow later and laggy in the game after sound effects were added, not sure what is up. They are all stored in memory but total < 600KB, way less than a single music file. Seems to come up after a shout is issued to a lot of enemies
    * Have pigs and mice not play the alarm sound effect when they make noises
    * It appears loading is broken if you attempt to load after returning to the main menu (game end, probably not a problem since the save should be deleted here)
+   * Messages arent cleared if you start a new game from the end screen
+   * Index in history screen doesnt work
 
  * Release prep:
    * Fix all @todo tags
+   * Make sure that scrolling through game history actually works
    * Make sure closing the game saves it
+    * If you are at 0 HP, save history and delete the game save
    * Dying or winning the game should delete your save
    * See if we can clean up app builds to include no unnecessary dlls without breaking
    * Test persistent settings and savegames across different devices

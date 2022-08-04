@@ -82,7 +82,7 @@ namespace MonoRogue {
         private void Decrement() {
             Index--;
             if (Index == 0 && !CanContinue) { Index = 5; }
-            else if (Index < 0) { Index = 5; }
+            else if (Index < 0) { Index = 6; }
         }
         private void Increment() {
             Index++;
