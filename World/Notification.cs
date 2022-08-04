@@ -175,13 +175,15 @@ namespace MonoRogue {
     public class ShoutNotification : Notification {
         private Creature Creature;
         private string Verb;
-        public ShoutNotification(Creature creature, string verb) {
+        private bool Noise;
+        public ShoutNotification(Creature creature, string verb, bool noise = true) {
             Creature = creature;
             Verb = verb;
+            Noise = noise;
         }
 
         public override string Parse(Creature player) {
-            EffectPlayer.PlaySoundEffect(EffectType.Alarm);
+            if (Noise) { EffectPlayer.PlaySoundEffect(EffectType.Alarm); }
             return $"The {Creature.Name} {Verb}.";
         }
     }

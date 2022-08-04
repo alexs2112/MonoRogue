@@ -11,11 +11,10 @@
    * Messages are overflowing on small screen sizes again
 
  * Minor fixes
-   * Have item notifications not stop auto movement
    * See if you can fix `AL lib: (EE) alc_cleanup: 1 device not closed`, it looks like its not an issue though?
    * Do we want PlayerGlyph loading all of the possible glyphs into memory and leaving them all there, or do we want to load them when it changes?
-   * It becomes really slow later and laggy in the game after sound effects were added, not sure what is up. They are all stored in memory but total < 600KB, way less than a single music file. Seems to come up after a shout is issued to a lot of enemies
-   * Have pigs and mice not play the alarm sound effect when they make noises
+     * The `Player` directory is like 6.5 KB, shouldn't be an issue to store them in memory
+   * A shout being issued to a lot of enemies makes the game super slow. I think it has to do with a bunch of creatures doing impossible pathfinding. AI changes have been made to hopefully fix this, keep an eye on it just in case.
    * It appears loading is broken if you attempt to load after returning to the main menu (game end, probably not a problem since the save should be deleted here)
    * Messages arent cleared if you start a new game from the end screen
    * Index in history screen doesnt work

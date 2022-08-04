@@ -64,8 +64,11 @@ namespace MonoRogue {
         }
 
         public override void AddMessage(string message) {
-            Resting = false;
-            Path = null;
+            if (!message.Contains("You see here")) {
+                // A bit of a hack to stop walking over items from stopping autopilot
+                Resting = false;
+                Path = null;
+            }
             Messages.Add(message);
             if (Constants.WriteMessagesToConsole) { System.Console.WriteLine(message); }
         }

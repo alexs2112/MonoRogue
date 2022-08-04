@@ -81,11 +81,13 @@ namespace MonoRogue {
     }
 
     public class BasicAI : CreatureAI {
-        protected Creature Player;
-
         // If the creature has seen the player but the player is out of sight, move towards
         // where the player was last seen
-        public override void GiveTargetTile(Point p) { TargetTile = p; }
+        protected Creature Player;
+        public override void GiveTargetTile(Point p) {
+            List<Point> path = Pathfinder.FindPath(Host, p.X, p.Y);
+            if (path != null && path.Count > 0) { TargetTile = p; }
+        }
 
         public BasicAI(Creature creature, Creature player) : base(creature) {
             Player = player;
@@ -158,7 +160,7 @@ namespace MonoRogue {
 
         public override void TakeTurn(World world) {
             if (new System.Random().Next(10) < 2) {
-                Host.NotifyWorld(new ShoutNotification(Host, "oinks"));
+                Host.NotifyWorld(new ShoutNotification(Host, "oinks", false));
             }
             if (Hostile) {
                 base.TakeTurn(world);
