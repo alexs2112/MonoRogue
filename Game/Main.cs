@@ -210,7 +210,7 @@ namespace MonoRogue {
                         } else if (target != null) {
                             Player.MoveTo(target.X, target.Y);
                             Player.TurnTimer = Player.GetAttackDelay();
-                        } else if (WorldView.HasSeen[tile.X, tile.Y] && Player.CanEnter(tile)) {
+                        } else if (tile.X != -1 && WorldView.HasSeen[tile.X, tile.Y] && Player.CanEnter(tile)) {
                             // If the player has seen the tile and is not clicking a creature, give them a path to automatically follow
                             List<Point> path = Pathfinder.FindPath(Player, tile.X, tile.Y);
                             if (path.Count > 0) { Player.MoveTo(path[0]); path.RemoveAt(0); }

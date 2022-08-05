@@ -27,15 +27,19 @@ namespace MonoRogue {
         }
         public void Update(World world, Creature player, int sx, int sy) {
             // First prepare the grid of tiles in the world
-            OffsetX = Max(0, Min(sx - Width / 2, world.Width - Width));
-            OffsetY = Max(0, Min(sy - Height / 2, world.Height - Height));
+            OffsetX = sx - Width / 2;
+            OffsetY = sy - Height / 2;
 
             for (int x = 0; x < Width; x++) {
                 for (int y = 0; y < Height; y++) {
                     int tileX = x + OffsetX;
                     int tileY = y + OffsetY;
                     Point point = new Point(tileX, tileY);
-                    if (!world.InBounds(point)) { continue; }
+
+                    if (!world.InBounds(point)) {
+                        Glyphs[x, y] = null;
+                        continue;
+                    }
 
                     bool canSee = player.CanSee(tileX, tileY);
                     Texture2D tile = world.Tiles[tileX, tileY].Glyph;
@@ -75,6 +79,9 @@ namespace MonoRogue {
                 }
             }
         }
+
+        public bool InBounds(Point p) { return InBounds(p.X, p.Y); }
+        public bool InBounds(int x, int y) { return x >= 0 && x < Constants.WorldWidth && y >= 0 && y < Constants.WorldHeight; }
 
         public void Draw(SpriteBatch spriteBatch) {
             for (int x = 0; x < Width; x++) {

@@ -37,6 +37,7 @@ namespace MonoRogue {
             if (p.X == -1) { return p; }
             p.X += world.OffsetX;
             p.Y += world.OffsetY;
+            if (!world.InBounds(p)) { return new Point(-1); }
             return p;
         }
 

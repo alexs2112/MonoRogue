@@ -1,7 +1,4 @@
 ### **Roadmap:**
- * Center the main display on the player, don't let them move to the far left or right of the screen based on world size
-   * Gives away your relative position in the dungeon and looks really bad on bigger screen sizes
-
  * Flavour Changes:
    * Change colour of Thug once they start to run away to make it more clear
    * Set summoned imps to have the "ability" that they die when their summoner is killed
