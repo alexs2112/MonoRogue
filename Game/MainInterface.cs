@@ -275,7 +275,7 @@ namespace MonoRogue {
             if (p.X == -1) { return; }
 
             p.X += world.OffsetX; p.Y += world.OffsetY;
-            if (p.X >= Constants.WorldWidth || p.Y >= Constants.WorldHeight) { return; }
+            if (!world.InBounds(p)) { return; }
             if (!world.HasSeen[p.X, p.Y]) { return; }
 
             spriteBatch.Draw(TileHighlight, new Vector2((p.X - world.OffsetX) * 32, (p.Y - world.OffsetY) * 32), color);

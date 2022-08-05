@@ -113,16 +113,16 @@ namespace MonoRogue {
 
         private int DrawEquipment(SpriteBatch spriteBatch, int x, int y) {
             if (Creature.Weapon == null) {
-                spriteBatch.DrawString(Font.Get(14), "Unarmed", new Vector2(x + 16, y), Color.Gray);
+                spriteBatch.DrawString(Font.Get(14), "Unarmed", new Vector2(x, y), Color.Gray);
                 y += 32;
             } else {
-                y = DrawWeapon(spriteBatch, x + 48, y, Creature.Weapon);
+                y = DrawWeapon(spriteBatch, x + 32, y, Creature.Weapon);
             }
             if (Creature.Armor == null) {
-                spriteBatch.DrawString(Font.Get(14), "No Armor", new Vector2(x + 16, y), Color.Gray);
+                spriteBatch.DrawString(Font.Get(14), "No Armor", new Vector2(x, y), Color.Gray);
                 y += 32;
             } else {
-                y = DrawArmor(spriteBatch, x + 48, y, Creature.Armor);
+                y = DrawArmor(spriteBatch, x + 32, y, Creature.Armor);
             }
             return y + BreakHeight;
         }
@@ -156,11 +156,11 @@ namespace MonoRogue {
         private int DrawAbilities(SpriteBatch spriteBatch, int x, int y) {
             if (AbilityText == null) { return y; }
 
-            spriteBatch.DrawString(Font.Get(16), "Abilities", new Vector2(x - 16, y), Color.White);
+            spriteBatch.DrawString(Font.Get(16), "Abilities", new Vector2(x, y), Color.White);
             y += 32;
 
             foreach (string s in AbilityText) {
-                spriteBatch.DrawString(Font.Get(14), s, new Vector2(x, y), Color.White);
+                spriteBatch.DrawString(Font.Get(14), s, new Vector2(x + 16, y), Color.White);
                 y += 32;
             }
 

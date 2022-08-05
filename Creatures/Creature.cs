@@ -29,7 +29,7 @@ namespace MonoRogue {
         private (int Min, int Max) Damage { get; set; }
         private int BaseRange { get; set; }
         private string BaseAttackText { get; set; }
-        public string AbilityText { get; private set; }
+        public string AbilityText { get; set; }
 
         // How many game ticks it takes to recover after taking an action, default 10
         public int TurnTimer { get; set; }
@@ -421,8 +421,9 @@ namespace MonoRogue {
             }
         }
         public void DropItem(Item item) {
-            if (World.GetItemAt(X, Y) == null) { World.Items[new Point(X, Y)] = item; }
-            else {
+            if (World.GetItemAt(X, Y) == null && World.Exit.X != X && World.Exit.Y != Y) { 
+                World.Items[new Point(X, Y)] = item; 
+            } else {
                 List<Point> valid = new List<Point>();
                 for (int mx = -1; mx <= 1; mx++) {
                     for (int my = -1; my <= 1; my++) {
@@ -434,13 +435,14 @@ namespace MonoRogue {
                 }
 
                 // If the tile and all surrounding tiles are full, the item vanishes into the void
-                if (valid.Count == 0) { return; }
-                Point p = valid[new System.Random().Next(valid.Count)];
-                World.Items[p] = item;
+                if (valid.Count == 0) { 
+                    // Failsafe, if the key can't drop the game becomes unwinnable
+                    if (item.IsKey) { World.Items[new Point(X, Y)] = item; }
+                } else {
+                    Point p = valid[new System.Random().Next(valid.Count)];
+                    World.Items[p] = item;
+                }
             }
-
-            // Failsafe, if the key can't drop the game becomes unwinnable
-            if (item.IsKey) { World.Items[new Point(X, Y)] = item; }
         }
     }
 }

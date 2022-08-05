@@ -24,6 +24,8 @@ Each creature has several stats that are important to understand.
 * Attack Delay: How many in-game ticks it takes before you can make another action after attacking. The higher the value, the slower your attacks.
 * Movement Delay: Same as attack delay, but how long it takes to make another action after moving. A creature with movement delay 5 will get to move two tiles for every one tile of a creature with movement delay 10.
 
+Enemies also have a difficulty rating, depicted by a flame icon next to their name when you mouse over them. The difficulty of the dungeon increases as you progress deeper into it.
+
 ## Food:
 Food is an item type that can be found in the dungeon, or dropped by pigs. Pressing `[space]` or clicking your character when standing on food will consume it, regenerating your Health equal to the Yellow Heart value of the food.
 

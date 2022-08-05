@@ -209,6 +209,8 @@ namespace MonoRogue {
 
         public override void TakeTurn(World world) {
             if (Host.GetDefense().Current <= 0 && Host.CanSee(Player.X, Player.Y) && Player.GetWeaponType() != Weapon.Type.Bow) {
+                Host.SetColor(Color.LightSeaGreen);
+
                 int dx = Host.X - Player.X;
                 int dy = Host.Y - Player.Y;
                 int mx = dx >= dy ? (dx > 0 ? 1 : -1) : 0;
@@ -249,6 +251,7 @@ namespace MonoRogue {
                     Host.TurnTimer = Host.GetMovementDelay();
                 }
             } else {
+                Host.SetColor(Color.SeaGreen);
                 base.TakeTurn(world);
             }
         }
@@ -330,6 +333,7 @@ namespace MonoRogue {
                     Creature summon = Factory.NewImp(world, tile.X, tile.Y, color);
                     summon.AI.GiveTargetTile(TargetTile);
                     summon.TurnTimer = 10;
+                    summon.AbilityText = "Summoned by a cultist.";
                     Host.TurnTimer = 20;
                     SummonsLeft--;
                     Host.NotifyWorld(new BasicNotification($"The {Host.Name} summons a new {summon.Name}."));

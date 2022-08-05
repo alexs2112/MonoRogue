@@ -52,7 +52,7 @@ namespace MonoRogue {
                 if (j >= History.Count) { break; }
                 HistoryData d = History[j];
                 spriteBatch.DrawString(Font.Get(14), $"{j + 1}", new Vector2(place, y), Color.LightGray);
-                spriteBatch.DrawString(Font.Get(14), $"{d.Score}", new Vector2(score, y), Color.LightGray);
+                spriteBatch.DrawString(Font.Get(14), $"{d.Score}{(d.Victory ? '+' : ' ')}", new Vector2(score, y), Color.LightGray);
                 spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Time)).ToString("HH:mm:ss")}", new Vector2(time, y), Color.LightGray);
                 spriteBatch.DrawString(Font.Get(14), $"{(new System.DateTime(d.Date)).ToString("MM/dd/yyyy")}", new Vector2(date, y), Color.LightGray);
                 y += 32;

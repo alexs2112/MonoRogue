@@ -12,12 +12,14 @@ namespace MonoRogue {
         public int Score { get; set; }
         public long Time { get; set; }      // To be converted to a TimeSpan
         public long Date { get; set; }      // To be converted to a DateTime
+        public bool Victory { get; set; }
 
         public HistoryData() { }
-        public HistoryData(int score, long time, long date) {
+        public HistoryData(int score, long time, long date, bool victory) {
             Score = score;
             Time = time;
             Date = date;
+            Victory = victory;
         }
     }
 

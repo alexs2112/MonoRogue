@@ -148,7 +148,7 @@ namespace MonoRogue {
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, MouseHandler mouseHandler) {
             base.Draw(gameTime, spriteBatch, mouseHandler);
 
-            Vector2 v = new Vector2(Constants.ScreenWidth / 2, 128);
+            Vector2 v = new Vector2(Constants.ScreenWidth / 2, Constants.ScreenHeight / 2 - 154);
             WriteCentered(spriteBatch, Font.Get(24), "Help Menu", v, Color.White);
             v.Y += 64;
             WriteCentered(spriteBatch, Font.Get(16), "Controls", v, Index == 0 ? Color.LawnGreen : Color.White);
@@ -262,6 +262,10 @@ namespace MonoRogue {
                 " - Critical Chance: Granted by Daggers, the percentage chance to deal double damage on attack.",
                 " - Parry Chance: Granted by Swords, the percentage chance to take no damage upon being attacked."
                 }
+            ));
+
+            AddTextArea(null, SplitString(
+                "Enemies also have a difficulty rating, depicted by a flame icon next to their name when you mouse over them. The difficulty of the dungeon increases as you progress deeper into it."
             ));
         }
     }

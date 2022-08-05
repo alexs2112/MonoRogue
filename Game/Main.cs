@@ -148,7 +148,7 @@ namespace MonoRogue {
 
                 if (Player.IsDead()) {
                     if (KeyTrack.KeyJustPressed(Keys.Escape) || KeyTrack.KeyJustPressed(Keys.Enter) || KeyTrack.KeyJustPressed(Keys.Space)) {
-                        HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks);
+                        HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks, false);
                         List<HistoryData> history = GameHistory.AddHistory(data);
                         Subscreen = new EndScreen(this, Content, false, data, history);
                     }
@@ -312,7 +312,8 @@ namespace MonoRogue {
 
         private void TryToWinGame() {
             if (Player.HasKey) {
-                HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks);
+                World.Score += 500;
+                HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks, true);
                 List<HistoryData> history = GameHistory.AddHistory(data);
                 Subscreen = new EndScreen(this, Content, true, data, history);
             } else {
