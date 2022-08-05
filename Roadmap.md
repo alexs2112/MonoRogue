@@ -2,11 +2,6 @@
  * Center the main display on the player, don't let them move to the far left or right of the screen based on world size
    * Gives away your relative position in the dungeon and looks really bad on bigger screen sizes
 
- * Keep track of the last enemy you attacked. Should display them in the main interface unless you mouse over a different creature
-   * Target screen should start with them selected
-   * Minimize an item that you are standing on if you have an enemy you are targeting
-     * Minimize the enemy as well if you mouse over an item
-
  * Flavour Changes:
    * Change colour of Thug once they start to run away to make it more clear
    * Set summoned imps to have the "ability" that they die when their summoner is killed
@@ -19,6 +14,7 @@
    * It appears loading is broken if you attempt to load after returning to the main menu (game end, probably not a problem since the save should be deleted here)
    * Messages arent cleared if you start a new game from the end screen
    * If the player tries to pathfind far away the game crashes due to the pathfinding limits, disable the pathfinding max for the player
+   * Let all menus wrap around
 
  * Release prep:
    * Fix all @todo tags

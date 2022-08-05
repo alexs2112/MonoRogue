@@ -16,6 +16,9 @@ namespace MonoRogue {
         public virtual List<string> GetMessages() { return null; }
         public virtual void ClearMessages() { }
 
+        // Keep track of the last creature the host attacked
+        public Creature LastAttacked;
+
         // Override this
         public virtual void TakeTurn(World world) { }
 

@@ -25,7 +25,12 @@ namespace MonoRogue {
                     else { Enemies.Add((e, false)); }
                 }
             }
-            Enemies = Enemies.OrderBy(e => Player.GetLineToPoint(e.Creature.X, e.Creature.Y).Count).ThenBy(e => e.Creature.HP).ToList<(Creature Creature, bool Valid)>();
+            Enemies = Enemies.OrderBy(e => !e.Valid).ThenBy(e => Player.GetLineToPoint(e.Creature.X, e.Creature.Y).Count).ThenBy(e => e.Creature.HP).ToList<(Creature Creature, bool Valid)>();
+
+            if (player.AI.LastAttacked != null) {
+                Index = Enemies.IndexOf((player.AI.LastAttacked, true));
+                if (Index < 0) { Index = 0; }
+            }
         }
 
         public static bool CanEnter(Creature player) {

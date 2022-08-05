@@ -316,6 +316,12 @@ namespace MonoRogue {
                 target.GetAttacked(this);
             }
 
+            if (IsPlayer) { 
+                // It is impossible for a creature to die outside of us attacking it
+                if (target.HP > 0) { AI.LastAttacked = target; }
+                else { AI.LastAttacked = null; }
+            }
+
             TurnTimer = GetAttackDelay();
         }
 

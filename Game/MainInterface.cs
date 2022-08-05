@@ -76,6 +76,8 @@ namespace MonoRogue {
 
             if (mouseCreature != null && mouseCreature != player) {
                 y = DrawCreatureStats(spriteBatch, mouseCreature, x, y);
+            } else if (player.AI.LastAttacked != null) {
+                y = DrawCreatureStats(spriteBatch, player.AI.LastAttacked, x, y);
             }
             return y;
         }

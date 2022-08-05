@@ -12,6 +12,7 @@ namespace MonoRogue {
         }
 
         public override void TakeTurn(World world) {
+            if (LastAttacked != null && !Host.CanSee(LastAttacked.X, LastAttacked.Y)) { LastAttacked = null; }
             if (Resting) { 
                 Creature c = CreatureInView(world);
                 if (c != null) {

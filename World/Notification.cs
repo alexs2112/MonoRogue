@@ -184,7 +184,13 @@ namespace MonoRogue {
 
         public override string Parse(Creature player) {
             if (Noise) { EffectPlayer.PlaySoundEffect(EffectType.Alarm); }
-            return $"The {Creature.Name} {Verb}.";
+            string name;
+            if (player.CanSee(Creature.X, Creature.Y)) {
+                 name = $"The {Creature.Name}";
+            } else {
+                name = "Something";
+            }
+            return $"{name} {Verb}.";
         }
     }
 }
