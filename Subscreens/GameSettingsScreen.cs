@@ -54,8 +54,14 @@ namespace MonoRogue {
         
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { return LastScreen; }
-            else if (IsDown(key)) { if (Index < 7) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
-            else if (IsUp(key)) { if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsDown(key)) {
+                if (Index < 7) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
+                else { Index = 0; }
+            }
+            else if (IsUp(key)) {
+                if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
+                else { Index = 7; }
+            }
             else if (IsLeft(key)) {
                 if (Index == 1) {
                     ColorIndex--;

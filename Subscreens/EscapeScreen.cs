@@ -25,8 +25,14 @@ namespace MonoRogue {
                     Main.Exit();
                 }
             }
-            else if (IsUp(key)) { if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
-            else if (IsDown(key)) { if (Index < 4) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsUp(key)) { 
+                if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
+                else { Index = 4; }
+            }
+            else if (IsDown(key)) { 
+                if (Index < 4) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
+                else { Index = 0; }
+            }
             return this;
         }
         

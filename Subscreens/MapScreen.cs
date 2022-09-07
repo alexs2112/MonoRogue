@@ -111,8 +111,8 @@ namespace MonoRogue {
                 if (World.InBounds(pos)) {
                     if (WorldView.HasSeen[pos.X, pos.Y]) {
                         if (Player.AI.CreatureInView(World) == null) {
-                            List<Point> path = Pathfinder.FindPath(Player, pos.X, pos.Y);
-                            if (path.Count > 0) { ((PlayerAI)Player.AI).SetPath(path); }
+                            List<Point> path = Pathfinder.FindPath(Player, pos.X, pos.Y, 1000);
+                            if (path != null && path.Count > 0) { ((PlayerAI)Player.AI).SetPath(path); }
                         } else {
                             Player.Notify(new BasicNotification("Enemies in sight."));
                         }

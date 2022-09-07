@@ -104,7 +104,8 @@ namespace MonoRogue {
 
             Player = World.Player;
             WorldView.Update(World, Player);
-            
+            MainInterface.UpdateMessages(new List<string>());
+
             if (Constants.Debug) { World.PrintToTerminal(); }
         }
 
@@ -212,11 +213,11 @@ namespace MonoRogue {
                             Player.TurnTimer = Player.GetAttackDelay();
                         } else if (tile.X != -1 && WorldView.HasSeen[tile.X, tile.Y] && Player.CanEnter(tile)) {
                             // If the player has seen the tile and is not clicking a creature, give them a path to automatically follow
-                            List<Point> path = Pathfinder.FindPath(Player, tile.X, tile.Y);
-                            if (path.Count > 0) { Player.MoveTo(path[0]); path.RemoveAt(0); }
+                            List<Point> path = Pathfinder.FindPath(Player, tile.X, tile.Y, 1000);
+                            if (path != null && path.Count > 0) { Player.MoveTo(path[0]); path.RemoveAt(0); }
 
                             if (Player.AI.CreatureInView(World) == null) {
-                                if (path.Count > 0) { ((PlayerAI)Player.AI).SetPath(path); }
+                                if (path != null && path.Count > 0) { ((PlayerAI)Player.AI).SetPath(path); }
                             }
                         }
                     } else {     

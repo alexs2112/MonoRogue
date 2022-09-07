@@ -135,9 +135,9 @@ namespace MonoRogue {
             return null;
         }
 
-        public static List<Point> FindPath(Creature c, int x, int y) { 
+        public static List<Point> FindPath(Creature c, int x, int y, int maxTries = 150) { 
             Pathfinder pf = new Pathfinder(c);
-            return pf.FindPath(new Point(c.X, c.Y), new Point(x, y), 150);
+            return pf.FindPath(new Point(c.X, c.Y), new Point(x, y), maxTries);
         }
     }
 }

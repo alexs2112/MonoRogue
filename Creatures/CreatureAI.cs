@@ -8,7 +8,7 @@ namespace MonoRogue {
         public CreatureAI(Creature creature) {
             Host = creature;
             ShoutVerb = "shouts";
-            ShoutRadius = creature.Vision;
+            ShoutRadius = creature.Vision - 3;
         }
 
         // Store messages in the players AI, ignore this for everything else

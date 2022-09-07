@@ -128,8 +128,14 @@ namespace MonoRogue {
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
             if (key == Keys.Escape || mouse.RightClicked()) { CloseSubscreen(); return LastScreen; }
-            else if (IsDown(key)) { if (Index < 6) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
-            else if (IsUp(key)) { if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); } }
+            else if (IsDown(key)) {
+                if (Index < 6) { Index++; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
+                else { Index = 0; }
+            }
+            else if (IsUp(key)) {
+                if (Index > 0) { Index--; EffectPlayer.PlaySoundEffect(EffectType.MenuMove); }
+                else { Index = 6; }
+            }
             else if (key == Keys.Enter || key == Keys.Space) {
                 switch(Index) {
                     case 0: EffectPlayer.PlaySoundEffect(EffectType.MenuSelect); return new HelpControlsScreen(Content, this);
