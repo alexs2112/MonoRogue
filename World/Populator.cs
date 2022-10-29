@@ -30,7 +30,11 @@ namespace MonoRogue {
             // The starting room should contain a weak item and no enemies
             Point p = start.GetEmptyTile(Random, World);
             Item item = Equipment.WeakItem(Random);
-            World.Items.Add(p, item); 
+            World.Items.Add(p, item);
+
+            p = start.GetEmptyTile(Random, World);
+            Food startFood = Food.Apple;
+            World.Items.Add(p, startFood);
 
             if (Constants.Difficulty < 3) {
                 p = start.GetEmptyTile(Random, World);
@@ -61,15 +65,7 @@ namespace MonoRogue {
                     continue;
                 }
 
-                int increment; 
-                if (Constants.Difficulty == 1) { increment = Constants.RoomMinSize * Constants.RoomMinSize; }
-                else if (Constants.Difficulty == 2) { increment = (int)(Constants.RoomMinSize * Constants.RoomMinSize / 1.5); }
-                else {increment = Constants.RoomMinSize * Constants.RoomMinSize / 2; }
-
-                int enemies = r.Size() / increment;
-                if (enemies > 3) { enemies--; }
-                if (enemies > 5) { enemies--; }
-                if (enemies > 7) { enemies--; }
+                int enemies = (int)(System.Math.Ceiling(System.Math.Log(r.Size(), 2))) - 5 + Constants.Difficulty;
                 for (int i = 0; i < enemies; i++) {
                     Point tile = r.GetEmptyTile(Random, World);
                     if (tile.X == -1) { break; }

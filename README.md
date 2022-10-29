@@ -1,15 +1,21 @@
 # MonoRogue
 A work in progress simple turn based roguelike written in monogame to learn how to use C#
 
-![Main Gameplay](https://i.imgur.com/X2hmCbT.png)
+![Main Gameplay](https://imgur.com/7lbtB25)
 
-![Early Combat](https://i.imgur.com/IDCYjjs.png)
+![Combat](https://imgur.com/r0yw8Yz)
+
+![Kicking Down the Door](https://imgur.com/npbSL2I)
+
+![Bow Targeting Screen](https://imgur.com/mzG8e1d)
 
 ![Map Screen](https://i.imgur.com/9GDEJE7.png)
 
-![Death](https://i.imgur.com/0CttPEq.png)
+![Enemy Stat Screen](https://imgur.com/bQ9TTtJ)
 
-## Run Instructions:
+![Death](https://imgur.com/FFCLeu4)
+
+## Command Line Instructions:
  - `dotnet run Program.cs` in the terminal will compile and run the game for testing.
  - Optional Parameters:
     - `--debug` option to enter debug mode

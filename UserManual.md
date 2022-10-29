@@ -2,7 +2,7 @@
 
 **Welcome to the dungeon!**
 
-Your goal is to explore the randomly generated world, collecting items, defeating enemies, and eventually making it to the exit. This user manual is a help document to explain some of the concepts that you will need to know in order to survive. The game is meant to be short and simple, with a reasonable amount of depth to it.
+Escape of the Blue Man is a lightweight and short classic roguelike. Your goal is to explore the randomly generated world, collecting items, defeating enemies, and eventually making it to the exit. This user manual is a help document to explain some of the concepts that you will need to know in order to survive. The game is meant to be short and simple, for beginners of the roguelike genre.
 
 ## Controls:
  - Arrow keys, Left Click, Numpad, or Vi Keys to move and attack
@@ -134,6 +134,9 @@ Late game enemy that can summon up to two imps. Killing it will kill off its sum
 <summary>Warden</summary>
 Holds the golden key and guards the exit of the dungeon. When he sees you he can alert nearby dungeon enemies of your location, drawing them to stop your escape.
 </details>
+
+## Known Bugs
+Occasionally the soundtrack will go silent when it changes songs. This can be fixed by entering a menu with `esc` before returning to the main game screen.
 
 ## Credits:
 Developed by myself, Urist2112. https://urist2112.itch.io

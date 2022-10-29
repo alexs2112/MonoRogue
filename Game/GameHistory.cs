@@ -46,7 +46,7 @@ namespace MonoRogue {
         public static List<HistoryData> AddHistory(HistoryData newHistory) {
             List<HistoryData> data = LoadHistory();
             data.Add(newHistory);
-            data = data.OrderBy(h => -h.Score).ToList<HistoryData>();
+            data = data.OrderBy(h => -h.Score ).ThenByDescending(h => h.Victory ? 1 : 0).ToList<HistoryData>();
             SaveHistory(data);
             return data;
         }
