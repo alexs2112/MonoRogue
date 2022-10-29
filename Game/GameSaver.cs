@@ -19,6 +19,10 @@ namespace MonoRogue {
             HasSeen = worldView.HasSeen;
         }
 
+        public static void DeleteSave() {
+            File.Delete(Constants.SavegamePath);
+        }
+
         public void SaveGame() {
             SaveData data = new SaveData {
                 Seed = Seed,

@@ -96,10 +96,15 @@ namespace MonoRogue {
 
         private void ParseCooldown(CooldownData cooldown, World world) {
             Creature c = world.GetCreatureAt(cooldown.Location.X, cooldown.Location.Y);
-            if (c.AI.IsTank) {
-                ((TankAI)c.AI).Cooldown = cooldown.Value;
-            } else if (c.AI.IsWarden) {
-                ((WardenAI)c.AI).AlarmCooldown = cooldown.Value;
+            try {
+                if (c.AI.IsTank) {
+                    ((TankAI)c.AI).Cooldown = cooldown.Value;
+                } else if (c.AI.IsWarden) {
+                    ((WardenAI)c.AI).AlarmCooldown = cooldown.Value;
+                }
+            } catch(System.Exception e) {
+                System.Console.WriteLine(c.ToString());
+                throw e;
             }
         }
 

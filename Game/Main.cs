@@ -152,6 +152,7 @@ namespace MonoRogue {
                         HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks, false);
                         List<HistoryData> history = GameHistory.AddHistory(data);
                         Subscreen = new EndScreen(this, Content, false, data, history);
+                        if (!Constants.Debug) { GameSaver.DeleteSave(); Player = null; }
                     }
                 } else if (KeyTrack.KeyJustPressed(Keys.Escape)) {
                     Subscreen = new EscapeScreen(this, Content);
@@ -230,7 +231,7 @@ namespace MonoRogue {
                 }
 
                 // If input has been given, update the world
-                if (inputGiven && !Player.IsDead() && World.Projectiles.Count == 0) {
+                if (inputGiven && Player != null && !Player.IsDead() && World != null && World.Projectiles.Count == 0) {
                     TakeTurns();
                 }
             }
@@ -317,6 +318,7 @@ namespace MonoRogue {
                 HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks, true);
                 List<HistoryData> history = GameHistory.AddHistory(data);
                 Subscreen = new EndScreen(this, Content, true, data, history);
+                if (!Constants.Debug) { GameSaver.DeleteSave(); Player = null; }
             } else {
                 Player.AddMessage("You need the Golden Key to unlock the exit to the dungeon!");
             }
@@ -391,6 +393,15 @@ namespace MonoRogue {
 
         protected override void OnExiting(object sender, System.EventArgs args) {
             base.OnExiting(sender, args);
+            if (Player != null && !Constants.Debug) {
+                if (Player.IsDead()) {
+                    HistoryData data = new HistoryData(World.Score, Time.Ticks, System.DateTime.Now.Ticks, true);
+                    List<HistoryData> history = GameHistory.AddHistory(data);
+                    GameSaver.DeleteSave();
+                } else {
+                    SaveGame();
+                }
+            }
         }
     }
 }
