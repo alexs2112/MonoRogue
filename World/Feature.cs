@@ -14,7 +14,10 @@ namespace MonoRogue {
         public static Feature ExitOpen;
 
         public static Feature DoorClosed;
-        public static Feature DoorOpen;
+        public static Feature DoorOpen0;
+        public static Feature DoorOpen1;
+        public static Feature DoorOpen2;
+        public static Feature DoorOpen3;
         public static Feature Bookshelf;
         public static Feature BookshelfSmall;
         public static Feature Table;
@@ -41,7 +44,10 @@ namespace MonoRogue {
 
             DoorClosed = new Feature("Door", false, false, content.Load<Texture2D>("Tiles/DoorClosed"), Color.Brown);
             DoorClosed.Breakable = true;
-            DoorOpen = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen"), Color.Brown);
+            DoorOpen0 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen0"), Color.Brown);
+            DoorOpen1 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen1"), Color.Brown);
+            DoorOpen2 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen2"), Color.Brown);
+            DoorOpen3 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen3"), Color.Brown);
 
             Bookshelf = new Feature("Bookshelf", false, false, content.Load<Texture2D>("Tiles/Bookshelf"), Color.RosyBrown);
             BookshelfSmall = new Feature("Bookshelf", false, true, content.Load<Texture2D>("Tiles/BookshelfSmall"), Color.RosyBrown);
@@ -69,7 +75,18 @@ namespace MonoRogue {
             return DoorClosed;
         }
         public static Feature GetOpenDoor() {
-            return DoorOpen;
+            switch(new System.Random().Next(4)) {
+                case 0: return DoorOpen0;
+                case 1: return DoorOpen1;
+                case 2: return DoorOpen2;
+                default: return DoorOpen3;
+            }
+        }
+        public static bool IsOpenDoor(Tile f) {
+            return f == DoorOpen0 ||
+                   f == DoorOpen1 ||
+                   f == DoorOpen2 ||
+                   f == DoorOpen3;
         }
 
         // Movement blocking features

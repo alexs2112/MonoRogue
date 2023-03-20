@@ -186,7 +186,7 @@ namespace MonoRogue {
 
         public override void OnDeath(World world) {
             System.Random random = new System.Random();
-            if (random.NextDouble() < 0.5) {
+            if (random.NextDouble() < 0.35) {
                 Host.DropItem(Food.PigMeat);
             }
         }

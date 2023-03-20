@@ -19,29 +19,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/Alarm0.wav
 
-#begin Audio/Effects/Alarm0.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Alarm0.wav
-
 #begin Audio/Effects/Alarm1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/Alarm1.wav
-
-#begin Audio/Effects/Alarm1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Alarm1.wav
-
-#begin Audio/Effects/Arrow0.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Arrow0.wav
 
 #begin Audio/Effects/Arrow0.wav
 /importer:WavImporter
@@ -55,29 +37,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/Arrow1.wav
 
-#begin Audio/Effects/Arrow1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Arrow1.wav
-
 #begin Audio/Effects/Arrow2.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/Arrow2.wav
-
-#begin Audio/Effects/Arrow2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Arrow2.wav
-
-#begin Audio/Effects/Death0.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Death0.wav
 
 #begin Audio/Effects/Death0.wav
 /importer:WavImporter
@@ -91,29 +55,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/Death1.wav
 
-#begin Audio/Effects/Death1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Death1.wav
-
 #begin Audio/Effects/Door0.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/Door0.wav
-
-#begin Audio/Effects/Door0.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Door0.wav
-
-#begin Audio/Effects/Door1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Door1.wav
 
 #begin Audio/Effects/Door1.wav
 /importer:WavImporter
@@ -127,29 +73,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/Eat.wav
 
-#begin Audio/Effects/Eat.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Eat.wav
-
 #begin Audio/Effects/Equip.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/Equip.wav
-
-#begin Audio/Effects/Equip.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Equip.wav
-
-#begin Audio/Effects/GoldenKey.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/GoldenKey.wav
 
 #begin Audio/Effects/GoldenKey.wav
 /importer:WavImporter
@@ -163,29 +91,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/HeartCrystal.wav
 
-#begin Audio/Effects/HeartCrystal.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/HeartCrystal.wav
-
 #begin Audio/Effects/Hit0.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/Hit0.wav
-
-#begin Audio/Effects/Hit0.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Hit0.wav
-
-#begin Audio/Effects/Hit1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Hit1.wav
 
 #begin Audio/Effects/Hit1.wav
 /importer:WavImporter
@@ -199,29 +109,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/Hit2.wav
 
-#begin Audio/Effects/Hit2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Hit2.wav
-
 #begin Audio/Effects/Hit3.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/Hit3.wav
-
-#begin Audio/Effects/Hit3.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Hit3.wav
-
-#begin Audio/Effects/Hit4.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Hit4.wav
 
 #begin Audio/Effects/Hit4.wav
 /importer:WavImporter
@@ -235,29 +127,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/MenuMove.wav
 
-#begin Audio/Effects/MenuMove.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/MenuMove.wav
-
 #begin Audio/Effects/MenuSelect.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/MenuSelect.wav
-
-#begin Audio/Effects/MenuSelect.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/MenuSelect.wav
-
-#begin Audio/Effects/Spell0.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Spell0.wav
 
 #begin Audio/Effects/Spell0.wav
 /importer:WavImporter
@@ -271,29 +145,11 @@
 /processorParam:Quality=Best
 /build:Audio/Effects/Spell1.wav
 
-#begin Audio/Effects/Spell1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Spell1.wav
-
 #begin Audio/Effects/Spell2.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Effects/Spell2.wav
-
-#begin Audio/Effects/Spell2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Spell2.wav
-
-#begin Audio/Effects/Victory.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Effects/Victory.wav
 
 #begin Audio/Effects/Victory.wav
 /importer:WavImporter
@@ -2052,7 +1908,7 @@
 /processorParam:TextureFormat=Color
 /build:Tiles/DoorClosed.png
 
-#begin Tiles/DoorOpen.png
+#begin Tiles/DoorOpen0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -2062,7 +1918,43 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Tiles/DoorOpen.png
+/build:Tiles/DoorOpen0.png
+
+#begin Tiles/DoorOpen1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tiles/DoorOpen1.png
+
+#begin Tiles/DoorOpen2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tiles/DoorOpen2.png
+
+#begin Tiles/DoorOpen3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tiles/DoorOpen3.png
 
 #begin Tiles/Floor0.png
 /importer:TextureImporter

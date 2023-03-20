@@ -85,7 +85,7 @@ namespace MonoRogue {
             for (int x = 0; x < World.Width; x++) {
                 bool[] nextColumn = new bool[World.Height];
                 for (int y = 0; y < World.Height; y++) {
-                    if (World.GetTile(x, y) == Feature.DoorOpen) {
+                    if (Feature.IsOpenDoor(World.GetTile(x, y))) {
                         doors.Add(new PointData { X = x, Y = y });
                     }
                     if (World.Bloodstains[x,y]) {

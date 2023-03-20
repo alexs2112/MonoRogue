@@ -196,8 +196,7 @@ namespace MonoRogue {
             foreach (Region r in regions) {
                 List<Point> tiles = new List<Point>(r.Tiles);
 
-                for (int i = 0; i < r.Size() / (Constants.RoomMinSize * Constants.RoomMinSize / 2) - 1; i++) {
-
+                for (int i = 0; i < System.Math.Ceiling(System.Math.Log(r.Size(), 2)) - 3; i++) {
                     Point p = new Point(0);
                     do {
                         if (tiles.Count == 0) { break; }

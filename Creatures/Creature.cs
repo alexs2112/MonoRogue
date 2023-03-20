@@ -30,6 +30,8 @@ namespace MonoRogue {
         private int BaseRange { get; set; }
         private string BaseAttackText { get; set; }
         public string AbilityText { get; set; }
+        public int DamageModifier { get; set; } // Enemies with weapons are dealing too much damage
+        public int DamageMark { get; set; }     // Bonus damage that will be consumed on next hit
 
         // How many game ticks it takes to recover after taking an action, default 10
         public int TurnTimer { get; set; }
@@ -82,21 +84,25 @@ namespace MonoRogue {
         public void ModifyDamage(int amount) { ModifyDamage(amount, amount); }
         public void ModifyDamage(int min, int max) { Damage = (Damage.Min + min, Damage.Max + max); }
         public (int Min, int Max) GetDamage() {
+            int v1, v2;
             if (Weapon != null) {
-                return (Weapon.Damage.Min, Weapon.Damage.Max);
+                v1 = Weapon.Damage.Min;
+                v2 = Weapon.Damage.Max;
             } else {
-                return Damage;
+                v1 = Damage.Min;
+                v2 = Damage.Max;
             }
+            return (v1 + DamageModifier, v2 + DamageModifier);
         }
         public int GetArmorWeight() {
             if (Armor == null) { return 0; }
             return Armor.Weight;
         }
         public int GetCritChance() {
-            return GetWeaponType() == Weapon.Type.Dagger ? System.Math.Max(1, 15 - 3 * (GetArmorWeight() + BaseWeight)) : 0;
+            return GetWeaponType() == Weapon.Type.Dagger ? (IsPlayer ? 50 - 8 * (GetArmorWeight() + BaseWeight) : 15 - 3 * (GetArmorWeight() + BaseWeight)) : 0;
         }
         public int GetParryChance() {
-            return GetWeaponType() == Weapon.Type.Sword ? 30 - 5 * (GetArmorWeight() + BaseWeight) : 0;
+            return GetWeaponType() == Weapon.Type.Sword ? (IsPlayer ? 50 - 6 * (GetArmorWeight() + BaseWeight) : 30 - 5 * (GetArmorWeight() + BaseWeight)) : 0;
         }
         public int GetBlock() {
             return BaseBlock + (Armor != null ? Armor.Block : 0);
@@ -193,14 +199,19 @@ namespace MonoRogue {
                     TurnTimer = GetAttackDelay();
                 } else {
                     if (GetWeaponType() == Item.Type.Axe && IsPlayer) {
-                        // Axes hit all enemies adjacent to you
+                        // Axes hit all enemies adjacent to you and deal bonus damage per hit
+                        List<Creature> adjacent = new List<Creature>();
                         for (int mx = -1; mx <= 1; mx++) {
                             for (int my = -1; my <= 1; my++) {
                                 if (mx == 0 && my == 0) { continue; }
-                                Creature adj = World.GetCreatureAt(X + mx, Y + my);
-                                if (adj == null) { continue; }
-                                Attack(adj);
+                                if (World.GetCreatureAt(X + mx, Y + my) != null) adjacent.Add(World.GetCreatureAt(X + mx, Y + my));
                             }
+                        }
+                        int bonus = 0;
+                        if (adjacent.Count > 1) bonus = (adjacent.Count - 1) * ((Weapon.Damage.Max + 1) / 2);
+                        foreach (Creature adj in adjacent) {
+                            adj.DamageMark = bonus;
+                            Attack(adj);
                         }
                     } else {
                         Attack(c);
@@ -213,7 +224,7 @@ namespace MonoRogue {
                 Y = y;
                 TurnTimer = GetMovementDelay();
 
-                // Spears get a free lunge attack if you move towards an enemy and end up in range
+                // Spears get 2 free lunge attack if you move towards an enemy and end up in range
                 if (GetWeaponType() == Item.Type.Spear) {
                     int dx = X - oldX;
                     int dy = Y - oldY;
@@ -223,7 +234,11 @@ namespace MonoRogue {
                         Creature poke = World.GetCreatureAt(X + dx * r, Y + dy * r);
                         if (poke == null) { continue; }
                         else if (poke.IsPlayer != IsPlayer) { 
-                            Attack(poke); 
+                            Attack(poke);
+                            if (IsPlayer) { 
+                                AddMessage($"You lunge at the {poke.Name}.");
+                                Attack(poke);
+                            }
                             break;
                         }
                     }
@@ -286,6 +301,12 @@ namespace MonoRogue {
 
         public void FinishAttack(Creature target) {
             int damage = new System.Random().Next(GetDamage().Min, GetDamage().Max + 1);
+
+            if (target.DamageMark > 0) {
+                damage += target.DamageMark;
+                target.DamageMark = 0;
+            }
+
             string action;
             if (Weapon != null && Weapon.AttackText != null) {
                 action = Weapon.AttackText;
@@ -297,13 +318,16 @@ namespace MonoRogue {
             if (GetWeaponType() == Weapon.Type.Dagger) {
                 // Daggers can critically hit, dealing double damage
                 int chance = new System.Random().Next(100);
-                if (chance < GetCritChance()) { damage = damage * 2; isCrit = true; }
+                if (chance < GetCritChance()) { damage = damage * (IsPlayer ? 3 : 2); isCrit = true; }
             } else if (GetWeaponType() == Weapon.Type.Mace) {
                 // Maces deal additional damage to armor
                 if (target.GetDefense().Current > 0) {
                     int bonus = System.Math.Min(target.GetDefense().Current, Weapon.MaceDamage);
                     damage += bonus;
                 }
+
+                // Maces also deal bonus damage on subsequent attacks
+                if (IsPlayer) target.DamageMark += Weapon.MaceDamage;
             }
 
             if (target.GetWeaponType() == Weapon.Type.Sword && new System.Random().Next(100) < target.GetParryChance()) {

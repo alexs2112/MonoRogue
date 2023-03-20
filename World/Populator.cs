@@ -65,7 +65,8 @@ namespace MonoRogue {
                     continue;
                 }
 
-                int enemies = (int)(System.Math.Ceiling(System.Math.Log(r.Size(), 2))) - 5 + Constants.Difficulty;
+                int enemies = (int)(System.Math.Ceiling(System.Math.Log(r.Size(), 1.8))) - 5 + Constants.Difficulty;
+                if (r.Depth == 1) { enemies--; }
                 for (int i = 0; i < enemies; i++) {
                     Point tile = r.GetEmptyTile(Random, World);
                     if (tile.X == -1) { break; }
@@ -130,9 +131,9 @@ namespace MonoRogue {
 
                 int divisor;
                 // Converting total difficulty to number of items
-                if (i <= LowDepth) { divisor = 7 - (Constants.Difficulty - 3); }
-                else if (i <= MedDepth) { divisor = 15 - 2 * (Constants.Difficulty - 3); }
-                else { divisor = 22 - 3 * (Constants.Difficulty - 3); }
+                if (i <= LowDepth) { divisor = 12 - (Constants.Difficulty - 3); }
+                else if (i <= MedDepth) { divisor = 17 - 2 * (Constants.Difficulty - 3); }
+                else { divisor = 26 - 3 * (Constants.Difficulty - 3); }
                 
                 int num = current / divisor;
                 mod = current % divisor;

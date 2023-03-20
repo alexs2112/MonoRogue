@@ -199,6 +199,7 @@ namespace MonoRogue
                         c.Equip(Equipment.NewShortbow());
                         break;
                 }
+                c.DamageModifier = -1;
             }
             world.Creatures.Add(c);
             c.MoveTo(x, y);
@@ -242,6 +243,7 @@ namespace MonoRogue
             c.AI = new ThugAI(c, Player);
             c.World = world;
             c.Difficulty = 4;
+            c.DamageModifier = -1;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
             return c;
@@ -267,6 +269,7 @@ namespace MonoRogue
                         c.Equip(Equipment.NewWarAxe());
                         break;
                 }
+                c.DamageModifier = -1;
             }
             world.Creatures.Add(c);
             c.MoveTo(x, y);
@@ -315,6 +318,7 @@ namespace MonoRogue
             c.AI = new BasicAI(c, Player);
             c.World = world;
             c.Difficulty = 5;
+            c.DamageModifier = -1;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
             return c;
@@ -354,6 +358,7 @@ namespace MonoRogue
                         c.ModifyAttackDelay(2);
                         break;
                 }
+                c.DamageModifier = -3;
             }
             world.Creatures.Add(c);
             c.MoveTo(x, y);
@@ -385,6 +390,7 @@ namespace MonoRogue
             c.AI = new WardenAI(c, Player);
             c.World = world;
             c.Difficulty = 7;
+            c.DamageModifier = 1;
             world.Creatures.Add(c);
             c.MoveTo(x, y);
             return c;

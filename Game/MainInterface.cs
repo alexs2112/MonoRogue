@@ -90,6 +90,15 @@ namespace MonoRogue {
             // Draw creature health and defense
             DrawHearts(spriteBatch, creature.MaxHP, creature.HP, x, y, Color.Red);
             DrawHearts(spriteBatch, creature.GetDefense().Max, creature.GetDefense().Current, x + 32 * ((creature.MaxHP + 3) / 4), y, Color.LightSkyBlue);
+
+            // Write rest tooltip when the player is damaged
+            if (creature.IsPlayer && creature.GetDefense().Current < creature.GetDefense().Max) {
+                int width = (int)Font.Get(12).MeasureString("[r]").X;
+                int restX = x + 32 * ((creature.MaxHP + 3) / 4) + 32 * ((creature.GetDefense().Max + 3) / 4) + 8;
+                if (restX + width < Constants.ScreenWidth - 8) {
+                    spriteBatch.DrawString(Font.Get(12), "[r]", new Vector2(restX, y + 8), Color.Gray);
+                }
+            }
             y += 32;
 
             // Draw creature damage, attack delay, movement delay

@@ -158,7 +158,7 @@ namespace MonoRogue {
         }
         public Weapon NewClub() {
             Weapon w = new Weapon("Club", Glyphs["Club"], Color.IndianRed);
-            w.SetWeaponStats((3, 4), 10, 1);
+            w.SetWeaponStats((3, 4), 10, 2);
             w.SetType(Item.Type.Mace);
             w.SetDescription("A makeshift weapon constructed from a piece of hardwood and the strength to swing it.");
             w.SetAttackText("club");
@@ -210,7 +210,7 @@ namespace MonoRogue {
         }
         public Weapon NewWarhammer() {
             Weapon w = new Weapon("Warhammer", Glyphs["Warhammer"], Color.LightCoral);
-            w.SetWeaponStats((4, 6), 10, 2);
+            w.SetWeaponStats((4, 6), 10, 3);
             w.SetType(Item.Type.Mace);
             w.SetDescription("A large hammer, blunt and heavy that can strike with maximum impact.");
             w.SetAttackText("crush");
@@ -262,7 +262,7 @@ namespace MonoRogue {
         }
         public Weapon NewMorningstar() {
             Weapon w = new Weapon("Morningstar", Glyphs["Morningstar"], Color.MediumVioletRed);
-            w.SetWeaponStats((5, 7), 10, 3);
+            w.SetWeaponStats((5, 7), 10, 4);
             w.SetType(Item.Type.Mace);
             w.SetDescription("A large mace with the head covered in protruding spikes.");
             w.SetAttackText("crush");
@@ -296,7 +296,7 @@ namespace MonoRogue {
         public Weapon NewRecurveBow() {
             Weapon w = new Weapon("Recurve Bow", Glyphs["RecurveBow"], Color.SaddleBrown);
             w.SetWeaponStats((5, 7), 12);
-            w.SetRange(6);
+            w.SetRange(7);
             w.SetType(Item.Type.Bow);
             w.SetDescription("A bow with limbs that curve away from the user, offering more power and speed to the fired arrow.");
             w.SetAttackText("shoot");

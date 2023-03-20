@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -37,7 +38,7 @@ namespace MonoRogue {
             OpenDoors(world);
             Bloodstains(world);
 
-            foreach (CreatureData c in Data.World.Creatures) {
+            foreach (CreatureData c in WorldData.Creatures) {
                 ParseCreature(c, world, Data.PlayerData);
             }
             foreach (CooldownData c in Data.Cooldowns) {
@@ -96,15 +97,10 @@ namespace MonoRogue {
 
         private void ParseCooldown(CooldownData cooldown, World world) {
             Creature c = world.GetCreatureAt(cooldown.Location.X, cooldown.Location.Y);
-            try {
-                if (c.AI.IsTank) {
-                    ((TankAI)c.AI).Cooldown = cooldown.Value;
-                } else if (c.AI.IsWarden) {
-                    ((WardenAI)c.AI).AlarmCooldown = cooldown.Value;
-                }
-            } catch(System.Exception e) {
-                System.Console.WriteLine(c.ToString());
-                throw e;
+            if (c.AI.IsTank) {
+                ((TankAI)c.AI).Cooldown = cooldown.Value;
+            } else if (c.AI.IsWarden) {
+                ((WardenAI)c.AI).AlarmCooldown = cooldown.Value;
             }
         }
 
@@ -124,7 +120,7 @@ namespace MonoRogue {
 
         private void OpenDoors(World world) {
             foreach (PointData p in Data.World.OpenDoors) {
-                world.Tiles[p.X, p.Y] = Feature.DoorOpen;
+                world.Tiles[p.X, p.Y] = Feature.GetOpenDoor();
             }
         }
 

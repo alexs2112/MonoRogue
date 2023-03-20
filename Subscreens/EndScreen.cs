@@ -30,9 +30,13 @@ namespace MonoRogue {
         }
 
         public override Subscreen RespondToInput(Keys key, MouseHandler mouse) {
-            if (key == Keys.Escape) { Main.Exit(); }
-            else if (key == Keys.Enter || key == Keys.Space) { return new StartScreen(Main, Content); }
-            return this;
+            //if (key == Keys.Escape) { Main.Exit(); }
+            //else if (key == Keys.Enter || key == Keys.Space) { return new StartScreen(Main, Content); }
+            //return this;
+
+            // See the Seed Bug at the end of the roadmap
+            Main.Exit();
+            return null;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, MouseHandler mouseHandler) {
@@ -54,9 +58,10 @@ namespace MonoRogue {
             v.Y = DrawHistory(spriteBatch, (int)v.Y);
             v.Y += SectionIncrement;
 
-            WriteCentered(spriteBatch, Font.Get(16), "[space] to return to the main menu", v, Color.Gray);
-            v.Y += 32;
-            WriteCentered(spriteBatch, Font.Get(16), "[esc] to exit", v, Color.Gray);
+            //WriteCentered(spriteBatch, Font.Get(16), "[space] to return to the main menu", v, Color.Gray);
+            //v.Y += 32;
+            //WriteCentered(spriteBatch, Font.Get(16), "[esc] to exit", v, Color.Gray);
+            WriteCentered(spriteBatch, Font.Get(16), "Press any key to exit", v, Color.Gray);
 
             v.Y = Constants.ScreenHeight - 64;
             WriteCentered(spriteBatch, Font.Get(14), $"Seed: {Main.Seed}", v, Color.Gray);

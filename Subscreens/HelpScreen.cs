@@ -290,8 +290,8 @@ namespace MonoRogue {
                 new string[] {
                 ".There are 6 different weapon types in the game. Each functions differently to promote different builds and strategies.",
                 " - Swords have a chance to parry incoming attacks. Parry chance decreased by armor weight.",
-                " - Spears have increased range. Moving towards an enemy let you \"lunge\" and get a free attack.",
-                " - Axes hit all enemies adjacent to you whenever you attack.",
+                " - Spears have increased range. Moving towards an enemy lets you \"lunge\" and attack them twice.",
+                " - Axes hit all enemies adjacent to you whenever you attack, dealing additional damage if you hit multiple enemies.",
                 " - Daggers lower your attack delay and can critically hit. Critical hit chance decreased by armor weight.",
                 " - Maces deal bonus damage to blue hearts.",
                 " - Bows have extended range but have increased attack delay."

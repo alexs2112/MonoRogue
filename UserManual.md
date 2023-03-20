@@ -34,11 +34,11 @@ Food is the only way to heal your character's health in the dungeon.
 ## Weapons:
 There are 6 different weapon types that you can equip. Each functions slightly differently to add some variety to gameplay.
 * Swords have a chance to parry incoming attacks. Parry chance decreased by armor weight.
-* Spears have increased range. Moving towards an enemy lets you "lunge" and get a free attack
-* Axes hit all enemies adjacent to you whenever you attack
+* Spears have increased range. Moving towards an enemy lets you "lunge" and attack them twice.
+* Axes hit all enemies adjacent to you whenever you attack, dealing large amounts of additional damage if you attack multiple enemies at once.
 * Daggers lower your attack delay and can critically hit. Critical hit chance decreased by armor weight.
-* Maces deal bonus damage to defense
-* Bows have extended range but deal a little less damage
+* Maces deal bonus damage to enemies with defense and deal bonus damage on subsequent attacks.
+* Bows have extended range but attack slower than other weapons.
 
 ## Armor:
 Armor has three stats: Defense, Weight, and Block. 
