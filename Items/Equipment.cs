@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRogue {
     public class Armor : Item {
+        public int Strength { get; private set; }
         public int Defense;
         public int MaxDefense { get; private set; }
         private int Timer;
@@ -14,9 +15,10 @@ namespace MonoRogue {
             IsWeapon = false;
         }
 
-        public void SetArmorStats(int defense) { SetArmorStats(defense, 0, 0); }
-        public void SetArmorStats(int defense, int weight) { SetArmorStats(defense, weight, 0); }
-        public void SetArmorStats(int defense, int weight, int block) {
+        public void SetArmorStats(int strength, int defense) { SetArmorStats(strength, defense, 0, 0); }
+        public void SetArmorStats(int strength, int defense, int weight) { SetArmorStats(strength, defense, weight, 0); }
+        public void SetArmorStats(int strength, int defense, int weight, int block) {
+            Strength = strength;
             MaxDefense = defense;
             Defense = defense;
             Weight = weight;
@@ -41,6 +43,7 @@ namespace MonoRogue {
     }
 
     public class Weapon : Item {
+        public int Strength { get; private set; }
         public (int Min, int Max) Damage { get; private set; }
         public int Delay { get; private set; }
         public int Range { get; private set; }
@@ -54,7 +57,8 @@ namespace MonoRogue {
             Range = 1;
         }
 
-        public void SetWeaponStats((int, int) damage, int attackDelay = 10, int maceDamage = 0) {
+        public void SetWeaponStats(int strength, (int, int) damage, int attackDelay = 10, int maceDamage = 0) {
+            Strength = strength;
             Damage = damage;
             Delay = attackDelay;
             MaceDamage = maceDamage;

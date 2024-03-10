@@ -14,6 +14,7 @@ namespace MonoRogue {
         public static Texture2D InterfaceLine;
         private static Texture2D HeartsFull;
         public static Texture2D TileHighlight;
+        private static Texture2D DifficultyBadge;
 
         // A bunch of creature specific textures
         private static Texture2D FlameGlyph;
@@ -45,6 +46,7 @@ namespace MonoRogue {
             AttackDelayGlyph = content.Load<Texture2D>("Interface/AttackDelay");
             MoveDelayGlyph = content.Load<Texture2D>("Interface/MoveDelay");
             UnarmedGlyph = content.Load<Texture2D>("Interface/Unarmed");
+            DifficultyBadge = content.Load<Texture2D>("Interface/Difficulty");
 
             BorderRect = new Texture2D(graphics, 1, 1);
             BorderRect.SetData(new[] { Color.White });
@@ -298,6 +300,28 @@ namespace MonoRogue {
             List<Point> line = start.GetLineToPoint(new Point(end.X, end.Y));
             foreach (Point point in line) {
                 spriteBatch.Draw(TileHighlight, new Vector2((point.X - world.OffsetX) * 32, (point.Y - world.OffsetY) * 32), color);
+            }
+        }
+
+        public static void DrawRelativeCreatureDiffulty(SpriteBatch spriteBatch, WorldView wv, Creature player, World world) {
+            int strength = 0;
+            if (player.Weapon != null) { strength += player.Weapon.Strength; }
+            if (player.Armor != null) { strength += player.Armor.Strength; }
+
+            for (int x = 0; x < wv.Width; x++) {
+                for (int y = 0; y < wv.Height; y++) {
+                    Point tile = new Point(x + wv.OffsetX, y + wv.OffsetY);
+                    if (!player.CanSee(tile)) { continue; }
+                    Creature c = world.GetCreatureAt(tile);
+                    if (c == null || c.IsPlayer) { continue; }
+
+                    Color color = Color.White;
+                    if (c.Difficulty == strength + 2) { color = Color.Yellow; }
+                    if (c.Difficulty >= strength + 3) { color = Color.Red; }
+                    if (color != Color.White) {
+                        spriteBatch.Draw(DifficultyBadge, new Vector2(x * 32, y * 32), color);
+                    }
+                }
             }
         }
 

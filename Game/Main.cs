@@ -291,6 +291,7 @@ namespace MonoRogue {
                     p.Draw(SpriteBatch, WorldView);
                 }
 
+                MainInterface.DrawRelativeCreatureDiffulty(SpriteBatch, WorldView, Player, World);
                 MainInterface.DrawInterface(SpriteBatch, Player, mouseCreature, floorItem, mouseItem, mouseTile);
                 SpriteBatch.End();
             }
