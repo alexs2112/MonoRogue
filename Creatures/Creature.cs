@@ -369,7 +369,12 @@ namespace MonoRogue {
         public Creature GetCreatureInRange(int sx, int sy, Creature target, int range) {
             // Return the first creature in a line to the target that is in range
             if (target == null) { return null; }
-            Creature c = GetCreatureFromLine(GetLineToPoint(sx, sy, target.X, target.Y));
+            return GetCreatureInRange(sx, sy, target.X, target.Y, range);
+        }
+        public Creature GetCreatureInRange(int tx, int ty, int range) { return GetCreatureInRange(X, Y, tx, ty, range); }
+        public Creature GetCreatureInRange(int sx, int sy, int x, int y, int range) {
+            // Return the first creature in a line to the point that is in range
+            Creature c = GetCreatureFromLine(GetLineToPoint(sx, sy, x, y));
             if (c == null) { return null; }
             if (GetLineToPoint(sx, sy, c.X, c.Y).Count > range) { c = null; }
             return c;

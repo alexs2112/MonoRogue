@@ -4,6 +4,7 @@ Content/bin/
 Content/obj/
 .vscode/
 .VSCodeCounter/
+*.bat
 *.settings
 *.morgue
 *.savegame

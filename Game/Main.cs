@@ -282,6 +282,9 @@ namespace MonoRogue {
                     Creature target = Player.GetCreatureInRange(mouseCreature);
                     if (target != null) { MainInterface.DrawLineToCreature(SpriteBatch, Mouse, WorldView, Player, target, Color.Red); }
                     else { MainInterface.DrawTileHighlight(SpriteBatch, Mouse, WorldView, Color.Yellow); }
+                } else {
+                    Creature target = Player.GetCreatureInRange(tile.X, tile.Y, 1);
+                    if (target != null) { MainInterface.DrawLineToCreature(SpriteBatch, Mouse, WorldView, Player, target, Color.Red); }
                 }
 
                 foreach (Projectile p in World.Projectiles) {
