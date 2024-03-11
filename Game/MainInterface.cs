@@ -295,7 +295,8 @@ namespace MonoRogue {
         public static void DrawLineToCreature(SpriteBatch spriteBatch, MouseHandler mouse, WorldView world, Creature start, Creature end, Color color) {
             Point p = mouse.GetViewTile(world);
             Point tile = new Point(p.X + world.OffsetX, p.Y + world.OffsetY);
-            if (p.X == -1 || !world.HasSeen[tile.X, tile.Y]) { return; }
+            if (p.X == -1 || p.X + world.OffsetX >= Constants.WorldWidth ||
+                p.Y + world.OffsetY >= Constants.WorldHeight || !world.HasSeen[tile.X, tile.Y]) { return; }
 
             List<Point> line = start.GetLineToPoint(new Point(end.X, end.Y));
             foreach (Point point in line) {

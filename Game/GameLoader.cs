@@ -119,8 +119,11 @@ namespace MonoRogue {
         }
 
         private void OpenDoors(World world) {
+            foreach (PointData p in Data.World.BrokenDoors) {
+                world.Tiles[p.X, p.Y] = Feature.GetBrokenDoor();
+            }
             foreach (PointData p in Data.World.OpenDoors) {
-                world.Tiles[p.X, p.Y] = Feature.GetOpenDoor();
+                world.Tiles[p.X, p.Y] = Feature.DoorOpen;
             }
         }
 

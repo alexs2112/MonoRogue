@@ -187,6 +187,8 @@ namespace MonoRogue {
                             inputGiven = false;
                             TryToWinGame();
                         }
+                    } else if (KeyTrack.KeyJustPressed(Keys.C)) {
+                        inputGiven = Player.CloseDoors();
                     } else if (Mouse.RightClicked()) {
                         Point tile = Mouse.GetTile(WorldView);
                         Creature mouseCreature = GetMouseCreature(tile);

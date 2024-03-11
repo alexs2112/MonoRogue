@@ -17,6 +17,7 @@ namespace MonoRogue {
         public int Height { get; set; }
         public List<CreatureData> Creatures { get; set; }
         public List<ItemData> Items { get; set; }
+        public List<PointData> BrokenDoors { get; set; }
         public List<PointData> OpenDoors { get; set; }
         public List<PointData> Bloodstains { get; set; }
         public List<ColumnData> HasSeen { get; set; }

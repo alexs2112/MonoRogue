@@ -295,7 +295,7 @@ namespace MonoRogue
         private Creature NewGatekeeper(World world, int x, int y)
         {
             Creature c = new Creature("Gatekeeper", Glyphs["Gatekeeper"], Color.MediumTurquoise);
-            c.SetStats(12, 0, (4, 6), 2);
+            c.SetStats(12, 0, (3, 5), 2);
             Item e;
             string w;
             switch(Random.Next(4)) {
@@ -327,7 +327,7 @@ namespace MonoRogue
         private Creature NewTank(World world, int x, int y)
         {
             Creature c = new Creature("Tank", Glyphs["Tank"], Color.SkyBlue);
-            c.SetStats(12, 12, (3, 6), 5, 2);
+            c.SetStats(12, 12, (2, 5), 5, 2);
             c.SetDescription("A large, heavily armored creature with long, grasping arms.");
             c.SetAbilityText("Can grab you and pull you adjacent.");
             c.AI = new TankAI(c, Player);
@@ -341,7 +341,7 @@ namespace MonoRogue
         private Creature NewCultist(World world, int x, int y)
         {
             Creature c = new Creature("Cultist", Glyphs["Cultist"], Color.Violet);
-            c.SetStats(6, 12, (3, 5), 3);
+            c.SetStats(6, 12, (2, 4), 3);
             c.SetDescription("A cloaked figure. Its bone faceplate peers from under its hood, etched in glowing runes.");
             c.SetAbilityText("Can summon multiple imps.");
             c.AI = new CultistAI(c, Player, this);

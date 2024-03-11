@@ -7,7 +7,7 @@ namespace MonoRogue {
     public class Tile {
         public bool Walkable;
         public bool SeeThrough;
-        public bool Breakable;
+        public bool CanOpen;
         public bool IsFeature;
         public Texture2D Glyph;
         public Color Color;

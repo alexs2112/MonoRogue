@@ -195,7 +195,8 @@ namespace MonoRogue {
                 " - Spacebar or click yourself to interact with items on the ground",
                 " - [.] or [5] to wait one turn",
                 " - [r] to rest and repair armor",
-                " - [f] to fire a ranged weapon without using the mouse"
+                " - [f] to fire a ranged weapon without using the mouse",
+                " - [c] to close all adjacent open, non-broken doors"
             };
             AddTextArea(title, SplitList(text));
 

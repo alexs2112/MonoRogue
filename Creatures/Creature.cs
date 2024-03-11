@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -187,8 +188,8 @@ namespace MonoRogue {
         public bool MoveTo(int x, int y) { 
             if (!CanEnter(x, y)) { return false; }
             if (World.IsDoor(x, y)) {
-                World.OpenDoor(x, y);
-                NotifyWorld(new DoorNotification(this), x, y);
+                bool broken = World.OpenDoor(x, y);
+                NotifyWorld(new OpenDoorNotification(this, broken), x, y);
                 TurnTimer = GetAttackDelay();
                 return true;
             }
@@ -237,7 +238,7 @@ namespace MonoRogue {
                             Attack(poke);
                             if (IsPlayer) { 
                                 AddMessage($"You lunge at the {poke.Name}.");
-                                Attack(poke);
+                                if (!poke.IsDead()) {Attack(poke); }
                             }
                             break;
                         }
@@ -251,6 +252,31 @@ namespace MonoRogue {
         }
         public bool MoveRelative(int dx, int dy) { 
             return MoveTo(X + dx, Y + dy);
+        }
+
+        public bool CloseDoors() {
+            bool foundBroken = false;
+            bool foundOpen = false;
+            bool foundCreature = false;
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (dx == 0 && dy == 0) { continue; }
+                    if (Feature.IsOpenDoor(World.GetTile(X + dx, Y + dy))) {
+                        if (World.GetCreatureAt(X + dx, Y + dy) == null) {
+                            foundOpen = true;
+                            World.Tiles[X + dx, Y + dy] = Feature.GetClosedDoor();
+                        } else {
+                            foundCreature = true;
+                        }
+                    }
+                    if (Feature.IsBrokenDoor(World.GetTile(X + dx, Y + dy))) {
+                        foundBroken = true;
+                    }
+                }
+            }
+
+            NotifyWorld(new CloseDoorNotification(foundOpen, foundBroken, foundCreature), X, Y);
+            return foundOpen;
         }
 
         public bool CanSee(Point p) { return CanSee(p.X, p.Y); }

@@ -12,6 +12,7 @@ Escape of the Blue Man is a lightweight and short classic roguelike. Your goal i
  - `[r]` to rest and repair armor
  - `[.]` to wait one turn
  - `[f]` to fire your weapon at visible enemies in range
+ - `[c]` to close all adjacent, unbroken doors
  - `[m]` to view your world map, regions are colour coded by difficulty
  - `[x]` to examine specific tiles without using the mouse
  - `[/]` or `[?]` to show the help menu

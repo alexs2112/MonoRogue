@@ -23,21 +23,22 @@ namespace MonoRogue {
 
         private static List<Vault> Vaults;
         public static void LoadVaults() {
-            Vaults = new List<Vault>();
-            Vaults.Add(Pillar());
-            Vaults.Add(Pillar2());
-            Vaults.Add(TableVertical());
-            Vaults.Add(TableHorizontal());
-            Vaults.Add(SmallCandelabra());
-            Vaults.Add(Campfire());
-            Vaults.Add(Bones());
-            Vaults.Add(SmallLibrary());
-            Vaults.Add(MediumLibrary());
-            Vaults.Add(CollapsedMine());
-            Vaults.Add(CeilingCollapse());
-            Vaults.Add(TreeSmall());
-            Vaults.Add(TreeMedium());
-            Vaults.Add(Prison());
+            Vaults = new List<Vault> {
+                Pillar(),
+                Pillar2(),
+                TableVertical(),
+                TableHorizontal(),
+                SmallCandelabra(),
+                Campfire(),
+                Bones(),
+                SmallLibrary(),
+                MediumLibrary(),
+                CollapsedMine(),
+                CeilingCollapse(),
+                TreeSmall(),
+                TreeMedium(),
+                Prison()
+            };
         }
         public static Vault GetVault(System.Random random, int maxWidth, int maxHeight) {
             List<Vault> potential = new List<Vault>(Vaults);
@@ -252,9 +253,9 @@ namespace MonoRogue {
             string[] tiles = new string[7] {
                 ".........",
                 "..#####..",
-                "...r#,b..",
+                "...r#gB..",
                 "..#####..",
-                "..b,#,...",
+                "..Bg#,b..",
                 "..#####..",
                 "........."
             };
@@ -262,6 +263,7 @@ namespace MonoRogue {
             map.Add('B', Feature.Bars);
             map.Add('b', Feature.BarsBroken);
             map.Add('r', Feature.Bones);
+            map.Add('g', Feature.ImpassableGround);
             return new Vault(tiles, map);
         }
 

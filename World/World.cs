@@ -40,7 +40,7 @@ namespace MonoRogue {
         public bool BlockSight(Point p) { return BlockSight(p.X, p.Y); }
         public bool BlockSight(int x, int y) { return !Tiles[x,y].SeeThrough; }
         public bool IsDoor(Point p) { return IsDoor(p.X, p.Y); }
-        public bool IsDoor(int x, int y) { return Tiles[x,y].Breakable; }
+        public bool IsDoor(int x, int y) { return Tiles[x,y].CanOpen; }
 
         public Point GetRandomFloor(System.Random random) {
             int x;
@@ -84,10 +84,18 @@ namespace MonoRogue {
             if (food.Eat(c)) { Items.Remove(p); }
         }
 
-        public void OpenDoor(int x, int y) {
-            if (Tiles[x,y].Breakable) {
-                Tiles[x,y] = Feature.GetOpenDoor();
+        public bool OpenDoor(int x, int y) {
+            if (Tiles[x,y].CanOpen) {
+                if (new System.Random().Next(6) == 0) { // 1/6 chance for the door to break
+                    Tiles[x,y] = Feature.GetBrokenDoor();
+                    return true;
+                } else {
+                    Tiles[x,y] = Feature.DoorOpen;
+                    return false;
+                }
             }
+            // Shouldn't ever reach here
+            return false;
         }
 
         // Each alive creature takes their turn, each dead creature is removed from creatures once everyone is done
@@ -133,7 +141,7 @@ namespace MonoRogue {
                 for (int x = 0; x < Width; x++) {
                     char c;
                     if (Tiles[x,y].Walkable) { c = '.'; }
-                    else if (Tiles[x,y].Breakable) { c = '+'; }
+                    else if (Tiles[x,y].CanOpen) { c = '+'; }
                     else { c = '#'; }
                     System.Console.Write(c);
                 }

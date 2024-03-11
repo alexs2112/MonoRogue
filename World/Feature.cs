@@ -14,10 +14,11 @@ namespace MonoRogue {
         public static Feature ExitOpen;
 
         public static Feature DoorClosed;
-        public static Feature DoorOpen0;
-        public static Feature DoorOpen1;
-        public static Feature DoorOpen2;
-        public static Feature DoorOpen3;
+        public static Feature DoorOpen;
+        public static Feature DoorBroken0;
+        public static Feature DoorBroken1;
+        public static Feature DoorBroken2;
+        public static Feature DoorBroken3;
         public static Feature Bookshelf;
         public static Feature BookshelfSmall;
         public static Feature Table;
@@ -37,17 +38,19 @@ namespace MonoRogue {
         public static Feature Tree;
         public static Feature Bars;
         public static Feature BarsBroken;
+        public static Feature ImpassableGround;
 
         public static void LoadFeatures(ContentManager content) {
             Exit = new Feature("Exit", true, true, content.Load<Texture2D>("Misc/ExitLocked"), Color.Gold);
             ExitOpen = new Feature("Exit", true, true, content.Load<Texture2D>("Misc/ExitOpen"), Color.SkyBlue);
 
             DoorClosed = new Feature("Door", false, false, content.Load<Texture2D>("Tiles/DoorClosed"), Color.Brown);
-            DoorClosed.Breakable = true;
-            DoorOpen0 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen0"), Color.Brown);
-            DoorOpen1 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen1"), Color.Brown);
-            DoorOpen2 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen2"), Color.Brown);
-            DoorOpen3 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen3"), Color.Brown);
+            DoorClosed.CanOpen = true;
+            DoorOpen = new Feature("Open Door", true, true, content.Load<Texture2D>("Tiles/DoorOpen"), Color.Brown);
+            DoorBroken0 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorBroken0"), Color.Brown);
+            DoorBroken1 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorBroken1"), Color.Brown);
+            DoorBroken2 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorBroken2"), Color.Brown);
+            DoorBroken3 = new Feature("Broken Door", true, true, content.Load<Texture2D>("Tiles/DoorBroken3"), Color.Brown);
 
             Bookshelf = new Feature("Bookshelf", false, false, content.Load<Texture2D>("Tiles/Bookshelf"), Color.RosyBrown);
             BookshelfSmall = new Feature("Bookshelf", false, true, content.Load<Texture2D>("Tiles/BookshelfSmall"), Color.RosyBrown);
@@ -69,24 +72,28 @@ namespace MonoRogue {
             Tree = new Feature("Tree", false, false, content.Load<Texture2D>("Tiles/Tree"), Color.ForestGreen);
             Bars = new Feature("Bars", false, true, content.Load<Texture2D>("Tiles/Bars"), Color.LightGray);
             BarsBroken = new Feature("Bars", true, true, content.Load<Texture2D>("Tiles/BarsBroken"), Color.LightGray);
+            ImpassableGround = new Feature("Cell", false, true, content.Load<Texture2D>("Tiles/Floor0"), Color.LightGray);
         }
 
         public static Feature GetClosedDoor() {
             return DoorClosed;
         }
-        public static Feature GetOpenDoor() {
+        public static Feature GetBrokenDoor() {
             switch(new System.Random().Next(4)) {
-                case 0: return DoorOpen0;
-                case 1: return DoorOpen1;
-                case 2: return DoorOpen2;
-                default: return DoorOpen3;
+                case 0: return DoorBroken0;
+                case 1: return DoorBroken1;
+                case 2: return DoorBroken2;
+                default: return DoorBroken3;
             }
         }
+        public static bool IsBrokenDoor(Tile f) {
+            return f == DoorBroken0 ||
+                   f == DoorBroken1 ||
+                   f == DoorBroken2 ||
+                   f == DoorBroken3;
+        }
         public static bool IsOpenDoor(Tile f) {
-            return f == DoorOpen0 ||
-                   f == DoorOpen1 ||
-                   f == DoorOpen2 ||
-                   f == DoorOpen3;
+            return f == DoorOpen;
         }
 
         // Movement blocking features

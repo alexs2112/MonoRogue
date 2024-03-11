@@ -79,14 +79,18 @@ namespace MonoRogue {
                 });
             }
 
-            List<PointData> doors = new List<PointData>();
+            List<PointData> brokenDoors = new List<PointData>();
+            List<PointData> openDoors = new List<PointData>();
             List<PointData> blood = new List<PointData>();
             List<ColumnData> hasSeen = new List<ColumnData>();
             for (int x = 0; x < World.Width; x++) {
                 bool[] nextColumn = new bool[World.Height];
                 for (int y = 0; y < World.Height; y++) {
+                    if (Feature.IsBrokenDoor(World.GetTile(x, y))) {
+                        brokenDoors.Add(new PointData { X = x, Y = y });
+                    }
                     if (Feature.IsOpenDoor(World.GetTile(x, y))) {
-                        doors.Add(new PointData { X = x, Y = y });
+                        openDoors.Add(new PointData { X = x, Y = y });
                     }
                     if (World.Bloodstains[x,y]) {
                         blood.Add(new PointData { X = x, Y = y });
@@ -101,7 +105,8 @@ namespace MonoRogue {
                 Height = Constants.WorldHeight,
                 Creatures = creatures,
                 Items = items,
-                OpenDoors = doors,
+                BrokenDoors = brokenDoors,
+                OpenDoors = openDoors,
                 Bloodstains = blood,
                 HasSeen = hasSeen
             };

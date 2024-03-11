@@ -93,22 +93,49 @@ namespace MonoRogue {
         }
     }
 
-    public class DoorNotification : Notification {
+    public class OpenDoorNotification : Notification {
         private Creature Creature;
-        public DoorNotification(Creature creature) {
+        private string VerbSelf;
+        private string VerbOther;
+        public OpenDoorNotification(Creature creature, bool broken) {
             Creature = creature;
+            if (broken) { VerbSelf = "break down"; VerbOther = "breaks down"; }
+            else { VerbSelf = "open"; VerbOther = "opens"; }
         }
 
         public override string Parse(Creature player) {
             EffectPlayer.PlaySoundEffect(EffectType.Door);
-            if (Creature == player) { return "You break down the door."; }
+            if (Creature == player) { return $"You {VerbSelf} the door."; }
             else { 
                 if (player.CanSee(Creature.X, Creature.Y)) {
-                    return $"The {Creature.Name} breaks down the door.";
+                    return $"The {Creature.Name} {VerbOther} the door.";
                 } else {
-                    return "Something breaks down the door.";
+                    return $"Something {VerbOther} the door.";
                 }
             }
+        }
+    }
+
+    public class CloseDoorNotification : Notification {
+        private bool FoundOpen;
+        private bool FoundBroken;
+        private bool FoundCreature;
+        public CloseDoorNotification(bool foundOpen, bool foundBroken, bool foundCreature) {
+            FoundOpen = foundOpen;
+            FoundBroken = foundBroken;
+            FoundCreature = foundCreature;
+        }
+
+        public override string Parse(Creature player) {
+            if (FoundOpen) {
+                EffectPlayer.PlaySoundEffect(EffectType.Door);
+                return "You close the door.";
+            } else if (FoundCreature) {
+                return "Somebody is in the way.";
+            } else if (FoundBroken) {
+                return "Cannot close a broken door.";
+            }
+            return "No doors to close.";
         }
     }
 
