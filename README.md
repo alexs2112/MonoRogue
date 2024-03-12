@@ -18,6 +18,7 @@ A work in progress simple turn based roguelike written in monogame to learn how 
 ## Command Line Instructions:
  - `dotnet run Program.cs` in the terminal will compile and run the game for testing.
  - Optional Parameters:
+    - `--no-build` to speed up starting the program without building any new changes
     - `--debug` option to enter debug mode
     - `--seed <seed>` to input a seed to use for world generation
     - `--messages` to print player notifications to the terminal

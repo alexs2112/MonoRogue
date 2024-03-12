@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Xna.Framework;
@@ -100,10 +101,10 @@ namespace MonoRogue {
             return Armor.Weight;
         }
         public int GetCritChance() {
-            return GetWeaponType() == Weapon.Type.Dagger ? (IsPlayer ? 50 - 8 * (GetArmorWeight() + BaseWeight) : 15 - 3 * (GetArmorWeight() + BaseWeight)) : 0;
+            return GetWeaponType() == Weapon.Type.Dagger ? (IsPlayer ? 30 + (10 * Weapon.Strength) - 8 * (GetArmorWeight() + BaseWeight) : 15 - 3 * (GetArmorWeight() + BaseWeight)) : 0;
         }
         public int GetParryChance() {
-            return GetWeaponType() == Weapon.Type.Sword ? (IsPlayer ? 50 - 6 * (GetArmorWeight() + BaseWeight) : 30 - 5 * (GetArmorWeight() + BaseWeight)) : 0;
+            return GetWeaponType() == Weapon.Type.Sword ? (IsPlayer ? 30 + (10 * Weapon.Strength) - 6 * (GetArmorWeight() + BaseWeight) : 30 - 5 * (GetArmorWeight() + BaseWeight)) : 0;
         }
         public int GetBlock() {
             return BaseBlock + (Armor != null ? Armor.Block : 0);
@@ -200,7 +201,7 @@ namespace MonoRogue {
                     TurnTimer = GetAttackDelay();
                 } else {
                     if (GetWeaponType() == Item.Type.Axe && IsPlayer) {
-                        // Axes hit all enemies adjacent to you and deal bonus damage per hit
+                        // Axes hit all enemies adjacent to you and regenerate your shields for each additional enemy
                         List<Creature> adjacent = new List<Creature>();
                         for (int mx = -1; mx <= 1; mx++) {
                             for (int my = -1; my <= 1; my++) {
@@ -208,10 +209,8 @@ namespace MonoRogue {
                                 if (World.GetCreatureAt(X + mx, Y + my) != null) adjacent.Add(World.GetCreatureAt(X + mx, Y + my));
                             }
                         }
-                        int bonus = 0;
-                        if (adjacent.Count > 1) bonus = (adjacent.Count - 1) * ((Weapon.Damage.Max + 1) / 2);
+                        if (adjacent.Count > 1) { Defense = Math.Min(Defense + 2 * (adjacent.Count - 1) * Weapon.Strength, GetDefense().Max); }
                         foreach (Creature adj in adjacent) {
-                            adj.DamageMark = bonus;
                             Attack(adj);
                         }
                     } else {
@@ -221,11 +220,11 @@ namespace MonoRogue {
             } else {
                 int oldX = X;
                 int oldY = Y;
-                X = x; 
+                X = x;
                 Y = y;
                 TurnTimer = GetMovementDelay();
 
-                // Spears get 2 free lunge attack if you move towards an enemy and end up in range
+                // Spears get a free lunge attack if you move towards an enemy and end up in range
                 if (GetWeaponType() == Item.Type.Spear) {
                     int dx = X - oldX;
                     int dy = Y - oldY;
@@ -235,11 +234,11 @@ namespace MonoRogue {
                         Creature poke = World.GetCreatureAt(X + dx * r, Y + dy * r);
                         if (poke == null) { continue; }
                         else if (poke.IsPlayer != IsPlayer) { 
-                            Attack(poke);
-                            if (IsPlayer) { 
+                            if (IsPlayer) {
+                                poke.DamageMark += Weapon.Strength * 2;
                                 AddMessage($"You lunge at the {poke.Name}.");
-                                if (!poke.IsDead()) {Attack(poke); }
                             }
+                            Attack(poke);
                             break;
                         }
                     }
